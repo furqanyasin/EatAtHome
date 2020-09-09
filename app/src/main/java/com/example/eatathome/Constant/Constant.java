@@ -1,0 +1,82 @@
+package com.example.eatathome.Constant;
+
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
+import com.example.eatathome.Models.ClientUsers;
+import com.example.eatathome.Models.Request;
+import com.example.eatathome.Models.RestaurantUser;
+import com.example.eatathome.Remote.IGeoCoordinates;
+import com.example.eatathome.Remote.RetrofitClient;
+import com.google.android.gms.dynamic.IFragmentWrapper;
+
+public class Constant {
+    public static ClientUsers currentUser;
+    public static RestaurantUser restaurantUser;
+    public static Request currentRequest;
+    public static final String CATEGORY_ID = "CategoryId";
+    public static final String FOOD_ID = "FoodId";
+    public static final String UPDATE = "Update";
+    public static final String DELETE = "Delete";
+    public static final String USER_KEY = "User";
+    public static final String PASSWORD_KEY = "Password";
+    public static  String restaurantSelected = "";
+
+    public static final String baseUrl = "https://maps.googleapis.com";
+
+    public static IGeoCoordinates getGeoCodeService(){
+        return RetrofitClient.getClient(baseUrl).create(IGeoCoordinates.class);
+    }
+
+
+    public static String convertCodeToStatus(String code)
+    {
+        if (code.equals("0"))
+            return "Placed";
+        else if (code.equals("1"))
+            return "On My Way";
+        else
+            return "Shipped";
+    }
+
+    public static Bitmap scaleBitmap(Bitmap bitmap, int newWidth, int newHight)
+    {
+        Bitmap scaledBitmap = Bitmap.createBitmap(newWidth,newHight, Bitmap.Config.ARGB_8888);
+        float scaleX  = newWidth/(float)bitmap.getWidth();
+        float scaleY  = newHight/(float)bitmap.getHeight();
+        float pivotX=0, pivotY=0;
+
+        Matrix scaleMatrix = new Matrix();
+        scaleMatrix.setScale(scaleX,scaleY,pivotX,pivotY);
+
+        Canvas canvas = new Canvas(scaledBitmap);
+        canvas.setMatrix(scaleMatrix);
+        canvas.drawBitmap(bitmap,0,0, new Paint(Paint.FILTER_BITMAP_FLAG));
+        return scaledBitmap;
+    }
+
+    public static boolean isConnectedToInternet(Context context)
+    {
+        ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null)
+        {
+            NetworkInfo[] info  = connectivityManager.getAllNetworkInfo();
+            if (info != null)
+            {
+                for (int i=0;i<info.length;i++)
+                {
+                    if (info[i].getState() == NetworkInfo.State.CONNECTED)
+                        return true;
+                }
+            }
+        }
+        return false;
+
+    }
+}

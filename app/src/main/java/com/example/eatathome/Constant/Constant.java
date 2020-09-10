@@ -28,6 +28,7 @@ public class Constant {
     public static final String PASSWORD_KEY = "Password";
     public static  String restaurantSelected = "";
 
+
     public static final String baseUrl = "https://maps.googleapis.com";
 
     public static IGeoCoordinates getGeoCodeService(){

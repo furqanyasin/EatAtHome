@@ -1,8 +1,11 @@
 package com.example.eatathome.Client.Activities;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
@@ -14,6 +17,8 @@ import com.example.eatathome.Constant.Constant;
 import com.example.eatathome.Models.ClientUsers;
 import com.example.eatathome.R;
 import com.example.eatathome.databinding.ActivitySignInBinding;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,6 +32,9 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     public ActivitySignInBinding activitySignInBinding;
     String phoneNumber, password;
 
+    FirebaseDatabase database;
+    DatabaseReference table_users;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +43,8 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
         activitySignInBinding.btnSignIn.setOnClickListener(this);
         activitySignInBinding.txtSignUp.setOnClickListener(this);
-        activitySignInBinding.chbRemember.setOnClickListener(this);
+        activitySignInBinding.chkRemember.setOnClickListener(this);
+        activitySignInBinding.tvForgotPassword.setOnClickListener(this);
 
         //init paper
         Paper.init(this);
@@ -52,8 +61,8 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     private void login(final String user, final String password) {
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference table_users = database.getReference("users");
+        database = FirebaseDatabase.getInstance();
+        table_users = database.getReference("users");
 
         if (Constant.isConnectedToInternet(getBaseContext())) {
 
@@ -106,8 +115,63 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         } else if (view == activitySignInBinding.txtSignUp) {
             Intent intent = new Intent(SignInActivity.this, SignUpActivity.class);
             startActivity(intent);
+        } else if (view == activitySignInBinding.tvForgotPassword) {
+            showForgotPasswordDialog();
         }
 
+    }
+
+    private void showForgotPasswordDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Forgot Password");
+        builder.setMessage("Enter your secure code");
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View forgot_view = inflater.inflate(R.layout.forgot_password_layout, null);
+
+        builder.setView(forgot_view);
+        builder.setIcon(R.drawable.ic_security);
+
+        final TextInputEditText edtPhone = forgot_view.findViewById(R.id.et_phone_number);
+        final TextInputEditText edtSecureCode = forgot_view.findViewById(R.id.et_secure_code);
+
+        database = FirebaseDatabase.getInstance();
+        table_users = database.getReference("users");
+
+        final String phone = edtPhone.getText().toString();
+        final String secureCode = edtSecureCode.getText().toString();
+
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                table_users.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        ClientUsers user = dataSnapshot.child(phone).getValue(ClientUsers.class);
+
+                        if (user.getSecureCode().equals(secureCode))
+                            Toast.makeText(SignInActivity.this, "Your Password "+user.getPassword() , Toast.LENGTH_SHORT).show();
+                        else
+                            Toast.makeText(SignInActivity.this, "Wrong Secure Code", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        builder.show();
     }
 
     public void buttonSignIn() {
@@ -115,13 +179,13 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         phoneNumber = activitySignInBinding.etPhoneNumber.getText().toString();
         password = activitySignInBinding.etPassword.getText().toString();
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference table_users = database.getReference("users");
+        database = FirebaseDatabase.getInstance();
+        table_users = database.getReference("users");
 
         if (Constant.isConnectedToInternet(getBaseContext())) {
 
             //save user & password
-            if (activitySignInBinding.chbRemember.isChecked()) {
+            if (activitySignInBinding.chkRemember.isChecked()) {
                 Paper.book().write(Constant.USER_KEY, phoneNumber);
                 Paper.book().write(Constant.PASSWORD_KEY, password);
             }

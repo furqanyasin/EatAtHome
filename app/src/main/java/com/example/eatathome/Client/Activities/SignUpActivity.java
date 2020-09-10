@@ -23,7 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ActivitySignUpBinding activitySignUpBinding;
-    String phoneNumber, name, password;
+    String phoneNumber, name, password, secureCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +50,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         phoneNumber = activitySignUpBinding.etPhoneNumber.getText().toString();
         password = activitySignUpBinding.etPassword.getText().toString();
         name = activitySignUpBinding.etName.getText().toString();
+        secureCode = activitySignUpBinding.etSecureCode.getText().toString();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference table_users = database.getReference("users");
@@ -71,7 +72,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                     } else {
                         mDialog.dismiss();
-                        ClientUsers clientUsers = new ClientUsers(name, password);
+                        ClientUsers clientUsers = new ClientUsers(name, password, secureCode);
                         table_users.child(phoneNumber).setValue(clientUsers);
                         Toast.makeText(SignUpActivity.this, "Sign Up Successfully", Toast.LENGTH_SHORT).show();
                         finish();

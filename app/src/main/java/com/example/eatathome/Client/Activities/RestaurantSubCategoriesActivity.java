@@ -88,7 +88,7 @@ public class RestaurantSubCategoriesActivity extends AppCompatActivity {
             }
 
             @Override
-            protected void onBindViewHolder(@NonNull MenuViewHolder holder, int position, @NonNull Category model) {
+            protected void onBindViewHolder(@NonNull final MenuViewHolder holder, int position, @NonNull Category model) {
                 holder.txtMenuName.setText(model.getName());
                 Picasso.get().load(model.getImage())
                         .into(holder.menuImage);
@@ -107,6 +107,8 @@ public class RestaurantSubCategoriesActivity extends AppCompatActivity {
                 });
             }
         };
+
+        adapter.notifyDataSetChanged();
         recyclerMenu.setAdapter(adapter);
         adapter.startListening();
     }

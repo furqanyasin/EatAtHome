@@ -18,16 +18,36 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-        <TextView
-            android:id="@+id/food_name"
-            android:text="@string/name_of_food"
-            android:textColor="@color/colorWhite"
-            android:textSize="25sp"
-            android:gravity="center"
-            android:layout_alignParentBottom="true"
-            android:background="@color/OverlayBackground"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:orientation="horizontal"
+            android:weightSum="10"
+            android:background="@color/OverlayBackground"
+            android:layout_alignParentBottom="true"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/food_name"
+                android:text="@string/name_of_food"
+                android:textColor="@color/colorWhite"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:layout_weight="9"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+            
+            <ImageView
+                android:id="@+id/iv_fav"
+                android:layout_width="0dp"
+                android:tint="@android:color/white"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:src="@drawable/ic_favorite_border"/>
+
+        </LinearLayout>
+
+
 
     </RelativeLayout>
 

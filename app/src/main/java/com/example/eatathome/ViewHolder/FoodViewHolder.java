@@ -17,7 +17,7 @@ public class FoodViewHolder extends RecyclerView.ViewHolder implements
         View.OnCreateContextMenuListener{
 
     public TextView txtFoodName;
-    public ImageView foodImage;
+    public ImageView foodImage, fav_image;
 
     private ItemClickListener itemClickListener;
 
@@ -25,6 +25,8 @@ public class FoodViewHolder extends RecyclerView.ViewHolder implements
         super(itemView);
         txtFoodName = itemView.findViewById(R.id.food_name);
         foodImage = itemView.findViewById(R.id.food_image);
+        fav_image = itemView.findViewById(R.id.iv_fav);
+
         itemView.setOnClickListener(this);
 
         itemView.setOnCreateContextMenuListener(this);

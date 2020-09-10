@@ -1,7 +1,6 @@
 package com.example.eatathome.Client.Activities;
 
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -114,7 +113,6 @@ public class FoodDetailsActivity extends AppCompatActivity implements RatingDial
 
         foodRating.addValueEventListener(new ValueEventListener() {
             int count = 0, sum = 0;
-
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
@@ -126,7 +124,8 @@ public class FoodDetailsActivity extends AppCompatActivity implements RatingDial
 
                 }
                 if (count != 0) {
-                    float average = sum / count;
+                    float average;
+                    average = sum % count;
 
                     ratingBar.setRating(average);
                 }

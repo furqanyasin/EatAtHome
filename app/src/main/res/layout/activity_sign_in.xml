@@ -33,7 +33,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/phone"
                     android:inputType="phone"
-                    android:text="03214124521"
+                    android:text=""
                     android:textColor="@android:color/white"
                     android:textColorHint="@android:color/white"
                     android:textSize="20sp" />
@@ -57,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/password"
                     android:inputType="textPassword"
-                    android:text="123456"
+                    android:text=""
                     android:textColor="@android:color/white"
                     android:textColorHint="@android:color/white"
                     android:textSize="20sp" />
@@ -89,7 +89,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:checked="true"
                     android:gravity="center_vertical"
                     android:text="Remember me "
                     android:textColor="@android:color/white"

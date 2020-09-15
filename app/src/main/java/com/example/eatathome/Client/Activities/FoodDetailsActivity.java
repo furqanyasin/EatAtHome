@@ -1,5 +1,6 @@
 package com.example.eatathome.Client.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,14 +11,17 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.eatathome.Constant.Constant;
-import com.example.eatathome.Database.Database;
-import com.example.eatathome.Models.Order;
-import com.example.eatathome.Models.Rating;
+import com.example.eatathome.Client.Activities.Constant.Constant;
+import com.example.eatathome.Client.Activities.Database.Database;
+import com.example.eatathome.Client.Activities.Model.Food;
+import com.example.eatathome.Client.Activities.Model.Order;
+import com.example.eatathome.Client.Activities.Model.Rating;
 import com.example.eatathome.R;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
-import com.example.eatathome.Models.Food;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,11 +43,12 @@ public class FoodDetailsActivity extends AppCompatActivity implements RatingDial
     FloatingActionButton btnCart, btnRating;
     ElegantNumberButton numberButton;
     RatingBar ratingBar = null;
+    MaterialButton showComment;
 
     FirebaseDatabase database;
     DatabaseReference food;
     DatabaseReference ratingsTable;
-    String mFoodId = "";
+    String foodId = "";
     Food currentFood;
 
 
@@ -54,6 +59,16 @@ public class FoodDetailsActivity extends AppCompatActivity implements RatingDial
 
         numberButton = findViewById(R.id.number_button);
         btnRating = findViewById(R.id.btn_rating);
+        showComment = findViewById(R.id.btn_show_comment);
+        showComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(FoodDetailsActivity.this, ShowCommentActivity.class);
+                intent.putExtra(Constant.FOOD_ID, foodId);
+                startActivity(intent);
+            }
+        });
+
         ratingBar = findViewById(R.id.ratingBar);
         btnRating.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,11 +82,13 @@ public class FoodDetailsActivity extends AppCompatActivity implements RatingDial
             @Override
             public void onClick(View view) {
                 new Database(getBaseContext()).addToCart(new Order(
-                        mFoodId,
+                        Constant.currentUser.getPhone(),
+                        foodId,
                         currentFood.getName(),
                         numberButton.getNumber(),
                         currentFood.getPrice(),
-                        currentFood.getDiscount()
+                        currentFood.getImage()
+
                 ));
                 Toast.makeText(FoodDetailsActivity.this, "Added to Cart", Toast.LENGTH_SHORT).show();
             }
@@ -95,12 +112,12 @@ public class FoodDetailsActivity extends AppCompatActivity implements RatingDial
 
         // get intent here
         if (getIntent() != null)
-            mFoodId = getIntent().getStringExtra("FoodId");
-        if (!mFoodId.isEmpty()) {
+            foodId = getIntent().getStringExtra("FoodId");
+        if (!foodId.isEmpty()) {
 
             if (Constant.isConnectedToInternet(this)) {
-                getFoodDetails(mFoodId);
-                getRatingsFood(mFoodId);
+                getFoodDetails(foodId);
+                getRatingsFood(foodId);
             } else {
                 Toast.makeText(this, "Please check your Internet Connection", Toast.LENGTH_SHORT).show();
                 return;
@@ -108,11 +125,12 @@ public class FoodDetailsActivity extends AppCompatActivity implements RatingDial
         }
     }
 
-    private void getRatingsFood(String mFoodId) {
-        Query foodRating = ratingsTable.orderByChild("mFoodId").equalTo(mFoodId);
+    private void getRatingsFood(String foodId) {
+        Query foodRating = ratingsTable.orderByChild("foodId").equalTo(foodId);
 
         foodRating.addValueEventListener(new ValueEventListener() {
             int count = 0, sum = 0;
+
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
@@ -158,53 +176,49 @@ public class FoodDetailsActivity extends AppCompatActivity implements RatingDial
                 .show();
     }
 
-    private void getFoodDetails(String mFoodId) {
-        food.child(mFoodId).addValueEventListener(new ValueEventListener() {
+    private void getFoodDetails(String foodId) {
+        food.child(foodId).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
                 currentFood = dataSnapshot.getValue(Food.class);
+
+                //set Image
                 Picasso.get().load(currentFood.getImage()).into(food_image);
-
                 collapsingToolbarLayout.setTitle(currentFood.getName());
-                food_name.setText(currentFood.getName());
                 food_price.setText(currentFood.getPrice());
+                food_name.setText(currentFood.getName());
                 food_description.setText(currentFood.getDescription());
-
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onCancelled(DatabaseError databaseError) {
 
             }
         });
     }
 
     @Override
-    public void onPositiveButtonClicked(int value, String comment) {
-        final Rating rating = new Rating(Constant.currentUser.getPhone(), mFoodId, String.valueOf(value), comment);
+    public void onPositiveButtonClicked(int value, String comments) {
 
-        ratingsTable.child(Constant.currentUser.getPhone()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.child(Constant.currentUser.getPhone()).exists()) {
-                    //remove old value
-                    ratingsTable.child(Constant.currentUser.getPhone()).removeValue();
-                    //add new value
-                    ratingsTable.child(Constant.currentUser.getPhone()).setValue(rating);
-                } else {
-                    //update new value
+        //get rating and upload to firebase
+        final Rating rating = new Rating(
+                Constant.currentUser.getPhone(),
+                foodId,
+                String.valueOf(value),
+                comments,
+                currentFood.getImage()
+        );
 
-                    ratingsTable.child(Constant.currentUser.getPhone()).setValue(rating);
-                }
-                Toast.makeText(FoodDetailsActivity.this, "Thank you for your feedback", Toast.LENGTH_SHORT).show();
+        //Fix user can rate multiple time
+        ratingsTable.push()
+                .setValue(rating)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(FoodDetailsActivity.this, "Thank you for submit!", Toast.LENGTH_SHORT).show();
 
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+                    }
+                });
 
     }
 

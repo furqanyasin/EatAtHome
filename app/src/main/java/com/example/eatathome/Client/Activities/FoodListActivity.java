@@ -3,7 +3,6 @@ package com.example.eatathome.Client.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -14,18 +13,20 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.eatathome.Database.Database;
+import com.example.eatathome.Client.Activities.Database.Database;
 import com.example.eatathome.Interface.ItemClickListener;
+import com.example.eatathome.Client.Activities.Model.Favorites;
+import com.example.eatathome.Client.Activities.Model.Food;
+import com.example.eatathome.Client.Activities.Model.Order;
+import com.example.eatathome.Client.Activities.ViewHolder.FoodViewHolder;
 import com.example.eatathome.R;
-import com.example.eatathome.Constant.Constant;
-import com.example.eatathome.Models.Food;
-import com.example.eatathome.ViewHolder.FoodViewHolder;
+import com.example.eatathome.Client.Activities.Constant.Constant;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.android.gms.common.internal.service.Common;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
 
 public class FoodListActivity extends AppCompatActivity {
@@ -80,7 +81,7 @@ public class FoodListActivity extends AppCompatActivity {
         if (!categoryId.isEmpty() && categoryId != null) {
 
             if (Constant.isConnectedToInternet(this))
-                loadFood();
+                loadFood(categoryId);
             else {
                 Toast.makeText(this, "Please check your Internet Connection", Toast.LENGTH_SHORT).show();
                 return;
@@ -89,64 +90,117 @@ public class FoodListActivity extends AppCompatActivity {
 
     }
 
-    private void loadFood() {
+    private void loadFood(String categoryId) {
 
-        adapter = new FirebaseRecyclerAdapter<Food, FoodViewHolder>(firebaseRecyclerOptions) {
-            @NonNull
+        //create query by category ID
+        Query searchByName = foodList.orderByChild("menuId").equalTo(categoryId);
+
+        //create option with query
+        FirebaseRecyclerOptions<Food> foodOptions = new FirebaseRecyclerOptions.Builder<Food>()
+                .setQuery(searchByName, Food.class)
+                .build();
+
+
+        adapter = new FirebaseRecyclerAdapter<Food, com.example.eatathome.Client.Activities.ViewHolder.FoodViewHolder>(foodOptions) {
             @Override
-            public FoodViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.food_item, parent, false);
-                return new FoodViewHolder(view);
-            }
+            protected void onBindViewHolder(@NonNull final com.example.eatathome.Client.Activities.ViewHolder.FoodViewHolder viewHolder, final int position, @NonNull final Food model) {
 
-            @Override
-            protected void onBindViewHolder(@NonNull final FoodViewHolder holder, final int position, @NonNull Food model) {
-                holder.txtFoodName.setText(model.getName());
-                Picasso.get().load(model.getImage())
-                        .into(holder.foodImage);
+                viewHolder.food_name.setText(model.getName());
+                viewHolder.food_price.setText(String.format("%s", model.getPrice().toString()));
+                Picasso.get().load(model.getImage()).into(viewHolder.food_image);
 
-                //add favourite
-                if (localDB.isFavourite(adapter.getRef(position).getKey()))
-                    holder.fav_image.setImageResource(R.drawable.ic_favorite);
+                //Quick cart
 
-                //click to change the state of favourite
-                holder.fav_image.setOnClickListener(new View.OnClickListener() {
+                viewHolder.quick_cart.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view) {
-                        if (!localDB.isFavourite(adapter.getRef(position).getKey())) {
-                            localDB.addToFavourite(adapter.getRef(position).getKey());
-                            holder.fav_image.setImageResource(R.drawable.ic_favorite);
-                            Toast.makeText(FoodListActivity.this, "was added to Favourites", Toast.LENGTH_SHORT).show();
-                        } else {
-                            localDB.removeFromFavourite(adapter.getRef(position).getKey());
-                            holder.fav_image.setImageResource(R.drawable.ic_favorite_border);
-                            Toast.makeText(FoodListActivity.this, "was removed from Favourites", Toast.LENGTH_SHORT).show();
-                        }
+                    public void onClick(View v) {
 
+                        boolean isExists = new Database(getBaseContext()).checkFoodExists(adapter.getRef(position).getKey(), Constant.currentUser.getPhone());
+
+                        if (!isExists) {
+                            new Database(getBaseContext()).addToCart(new Order(
+                                    Constant.currentUser.getPhone(),
+                                    adapter.getRef(position).getKey(),
+                                    model.getName(),
+                                    "1",
+                                    model.getPrice(),
+                                    model.getImage()
+
+                            ));
+                        } else {
+                            new Database(getBaseContext()).increaseCart(Constant.currentUser.getPhone(), adapter.getRef(position).getKey());
+                        }
+                        Toast.makeText(FoodListActivity.this, "Added to Cart", Toast.LENGTH_SHORT).show();
                     }
                 });
 
+                //add favourites
+                if (localDB.isFavourite(adapter.getRef(position).getKey(), Constant.currentUser.getPhone()))
+                    viewHolder.fav_image.setImageResource(R.drawable.ic_favorite);
 
-                final Food clickItem = model;
-                holder.setItemClickListener(new ItemClickListener() {
+                //click to share
+                viewHolder.share_image.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                       /* Picasso.get()
+                                .load(model.getImage())
+                                .into(target);*/
+                    }
+                });
+
+                //click to change the status of favourites
+                viewHolder.fav_image.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        Favorites favorites = new Favorites();
+                        favorites.setFoodId(adapter.getRef(position).getKey());
+                        favorites.setFoodName(model.getName());
+                        favorites.setFoodDescription(model.getDescription());
+                        favorites.setFoodImage(model.getImage());
+                        favorites.setFoodMenuId(model.getMenuId());
+                        favorites.setUserPhone(Constant.currentUser.getPhone());
+                        favorites.setFoodPrice(model.getPrice());
+
+                        if (!localDB.isFavourite(adapter.getRef(position).getKey(), Constant.currentUser.getPhone())) {
+
+                            localDB.addToFavourites(favorites);
+                            viewHolder.fav_image.setImageResource(R.drawable.ic_favorite);
+                            Toast.makeText(FoodListActivity.this, "" + model.getName() +
+                                    " was added to Favourites", Toast.LENGTH_SHORT).show();
+                        } else {
+                            localDB.removeFromFavourites(adapter.getRef(position).getKey(), Constant.currentUser.getPhone());
+                            viewHolder.fav_image.setImageResource(R.drawable.ic_favorite_border);
+                            Toast.makeText(FoodListActivity.this, "" + model.getName() +
+                                    " was removed from Favourites", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                final Food local = model;
+                viewHolder.setItemClickListener(new ItemClickListener() {
                     @Override
                     public void onClick(View view, int position, boolean isLongClick) {
-                        //Toast.makeText(HomeActivity.this, "" + clickItem.getName(), Toast.LENGTH_SHORT).show();
-                        //Get CategoryId and send to new activity
-                        Intent foodDetails = new Intent(FoodListActivity.this, FoodDetailsActivity.class);
-                        //Because foodId is a key, so we just key of this item
-                        foodDetails.putExtra("FoodId", adapter.getRef(position).getKey());
-                        startActivity(foodDetails);
+                        //start new activity
+                        Intent foodDetail = new Intent(FoodListActivity.this, FoodDetailsActivity.class);
+                        foodDetail.putExtra("FoodId", adapter.getRef(position).getKey()); //send FoodId to new activity
+                        startActivity(foodDetail);
                     }
                 });
+            }
 
+            @NonNull
+            @Override
+            public com.example.eatathome.Client.Activities.ViewHolder.FoodViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View itemView = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.food_item, parent, false);
+                return new com.example.eatathome.Client.Activities.ViewHolder.FoodViewHolder(itemView);
             }
         };
-        //set adapter
-
-        adapter.notifyDataSetChanged();
-        recyclerViewFood.setAdapter(adapter);
         adapter.startListening();
+        recyclerViewFood.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+
     }
 
 }

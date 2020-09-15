@@ -41,7 +41,7 @@
             android:weightSum="2">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_select"
+                android:id="@+id/btn_category_select"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
@@ -53,7 +53,7 @@
                 app:cornerRadius="5dp" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_upload"
+                android:id="@+id/btn_category_upload"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"

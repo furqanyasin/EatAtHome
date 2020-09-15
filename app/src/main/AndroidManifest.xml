@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:allowBackup="true"
@@ -17,31 +18,89 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".Client.Activities.TrackingOrderActivity"></activity>
+        <activity
+            android:name=".Rider.Activities.TrackingOrderActivityRider"
+            android:label="@string/title_activity_tracking_order" />
+        <activity android:name=".Rider.Activities.HomeActivityRider" />
+        <activity android:name=".Rider.Activities.SignInAsRiderActivity" />
+        <activity android:name=".Client.Activities.UpdateAddressActivity" />
+        <activity android:name=".Client.Activities.UpdateUsernameActivity" />
+        <activity android:name=".Client.Activities.ProfileActivity" />
+        <activity android:name=".Server.Activities.ManageAccountActivity" />
+        <activity android:name=".Server.Activities.OrderDetailActivity" />
+        <activity android:name=".Server.Activities.RiderManagementActivityRes" />
+        <activity android:name=".Server.Activities.TrackingOrderActivityRes" />
+        <activity android:name=".Server.Activities.ViewCommentActivityRes" />
+        <activity android:name=".Server.Activities.MainAdminActivity" />
+        <activity android:name=".Server.Activities.StaffSignInActivity" />
+        <activity android:name=".Server.Activities.RestaurantMainActivity" />
+        <activity android:name=".Client.Activities.FavoritesActivity" />
+        <activity android:name=".Client.Activities.ShowCommentActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
-        <activity
-            android:name=".Server.Activities.TrackingOrderActivityRes"
-            android:label="@string/title_activity_tracking_order_res"></activity>
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
 
+        <service android:name=".Rider.Service.MyFirebaseIdServiceRider">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".Rider.Service.MyFirebaseMessagingRider">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
         <service
             android:name=".Client.Activities.Services.ListenOrder"
             android:enabled="true"
             android:exported="true" />
+        <service
+            android:name=".Client.Activities.Services.MyFirebaseIdService"
+            android:exported="true"
+            android:stopWithTask="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".Client.Activities.Services.MyFirebaseMessaging"
+            android:exported="true"
+            android:stopWithTask="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".Server.Activities.Service.MyFirebaseIdServiceRes">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".Server.Activities.Service.MyFirebaseMessagingRes">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
         <activity android:name=".Server.Activities.OrderStatusActivityRes" />
         <activity android:name=".Client.Activities.RestaurantListActivity" />
         <activity android:name=".Server.Activities.FoodListActivityRes" />
-        <activity android:name=".Server.Activities.HomeActivityRes" />
-        <activity android:name=".Server.Activities.SignInActivityRes" />
+        <activity android:name=".Server.Activities.CategoryActivityRes" />
+        <activity android:name=".Server.Activities.AdminSignInActivity" />
         <activity android:name=".Client.Activities.OrderStatusActivity" />
         <activity android:name=".Client.Activities.CartActivity" />
         <activity android:name=".Client.Activities.FoodDetailsActivity" />
         <activity android:name=".Client.Activities.FoodListActivity" />
         <activity
-            android:name=".Client.Activities.RestaurantSubCategoriesActivity"
+            android:name=".Client.Activities.CategoriesActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Client.Activities.SignUpActivity" />

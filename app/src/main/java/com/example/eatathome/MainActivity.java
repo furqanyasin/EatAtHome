@@ -1,30 +1,17 @@
 package com.example.eatathome;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
-import com.example.eatathome.Client.Activities.RestaurantListActivity;
 import com.example.eatathome.Client.Activities.SignInActivity;
-import com.example.eatathome.Client.Activities.SignUpActivity;
-import com.example.eatathome.Constant.Constant;
-import com.example.eatathome.Models.ClientUsers;
-import com.example.eatathome.Server.Activities.SignInActivityRes;
+import com.example.eatathome.Rider.Activities.SignInAsRiderActivity;
+import com.example.eatathome.Server.Activities.AdminSignInActivity;
 import com.example.eatathome.databinding.ActivityMainBinding;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import io.paperdb.Paper;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -42,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // set on click listener
         activityMainBinding.btnSignIn.setOnClickListener(this);
         activityMainBinding.btnSignInRestaurant.setOnClickListener(this);
+        activityMainBinding.btnSignInAsShipper.setOnClickListener(this);
 
 
     }
@@ -54,12 +42,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
 
         } else if (view == activityMainBinding.btnSignInRestaurant) {
-            Intent intent = new Intent(this, SignInActivityRes.class);
+            Intent intent = new Intent(this, AdminSignInActivity.class);
+            startActivity(intent);
+
+        } else if (view == activityMainBinding.btnSignInAsShipper) {
+            Intent intent = new Intent(this, SignInAsRiderActivity.class);
             startActivity(intent);
         }
 
     }
-
 
 
 }

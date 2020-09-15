@@ -4,11 +4,21 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_baseline_person_24"
+            android:title="Profile"/>
         <item
             android:id="@+id/nav_menu"
             android:icon="@drawable/ic_restaurant"
             android:iconTint="@color/colorWhite"
             android:title="Menu" />
+
+        <item
+            android:id="@+id/nav_favorites"
+            android:icon="@drawable/ic_favorite"
+            android:title="Favorites" />
         <item
             android:id="@+id/nav_cart"
             android:icon="@drawable/ic_baseline_shopping_cart_24"

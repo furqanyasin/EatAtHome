@@ -31,4 +31,6 @@
     <string name="title_activity_tracking_order_res">Map</string>
     <string name="secure_code">Secure Code</string>
     <string name="_03214124521">03214124521</string>
+
+    <string name="title_activity_tracking_order">Map</string>
 </resources>

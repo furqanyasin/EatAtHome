@@ -1,8 +1,8 @@
 package com.example.eatathome.Client.Activities;
 
-import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,27 +14,28 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.eatathome.Client.Activities.Services.ListenOrder;
-import com.example.eatathome.Constant.Constant;
 import com.example.eatathome.Interface.ItemClickListener;
-import com.example.eatathome.Models.Restaurant;
+import com.example.eatathome.Client.Activities.Model.Restaurant;
+import com.example.eatathome.Client.Activities.Model.Token;
+import com.example.eatathome.Client.Activities.Services.ListenOrder;
+import com.example.eatathome.Client.Activities.Constant.Constant;
+import com.example.eatathome.Client.Activities.ViewHolder.RestaurantViewHolder;
 import com.example.eatathome.R;
-import com.example.eatathome.ViewHolder.RestaurantViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.picasso.Picasso;
 
 import io.paperdb.Paper;
@@ -49,10 +50,17 @@ public class RestaurantListActivity extends AppCompatActivity implements Navigat
     FirebaseRecyclerAdapter<Restaurant, RestaurantViewHolder> adapter;
     FirebaseRecyclerOptions<Restaurant> firebaseRecyclerOptions;
 
+
+    SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_list);
+
+
+        //for first-time login, pop up notification to complete profile.
+        sharedPreferences = getSharedPreferences("com.example.eatathome.Client", MODE_PRIVATE);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Restaurants");
@@ -88,6 +96,8 @@ public class RestaurantListActivity extends AppCompatActivity implements Navigat
         category = database.getReference("Restaurants");
         firebaseRecyclerOptions = new FirebaseRecyclerOptions.Builder<Restaurant>().setQuery(category, Restaurant.class).build();
 
+        updateToken(FirebaseInstanceId.getInstance().getToken());
+
         //paper init
         Paper.init(this);
 
@@ -107,6 +117,53 @@ public class RestaurantListActivity extends AppCompatActivity implements Navigat
         Intent services = new Intent(RestaurantListActivity.this, ListenOrder.class);
         startService(services);
 
+    }
+
+    private void CompleteProfileNotification() {
+
+        android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(this);
+        alertDialog.setTitle("Incomplete Profile");
+        alertDialog.setMessage("Please Add Username and Home Address before ordering.");
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View layout_profile = inflater.inflate(R.layout.confirm_signout_layout, null);
+        alertDialog.setView(layout_profile);
+        alertDialog.setIcon(R.drawable.ic_baseline_person_24);
+
+        alertDialog.setPositiveButton("OKAY", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                Intent profileIntent = new Intent(RestaurantListActivity.this, ProfileActivity.class);
+                startActivity(profileIntent);
+            }
+        });
+
+        alertDialog.show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        textFullName.setText(Constant.currentUser.getName());
+        if(adapter !=null)
+            adapter.startListening();
+        if (sharedPreferences.getBoolean("firstrun", true)){
+            CompleteProfileNotification();
+            sharedPreferences.edit().putBoolean("firstrun", false)
+                    .commit();
+        }
+    }
+
+
+    private void updateToken(String token) {
+
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference tokens = db.getReference("Tokens");
+        Token data = new Token(token, false);
+        // false because token send from client app
+
+        tokens.child(Constant.currentUser.getPhone()).setValue(data);
     }
 
 
@@ -130,7 +187,7 @@ public class RestaurantListActivity extends AppCompatActivity implements Navigat
                 holder.setItemClickListener(new ItemClickListener() {
                     @Override
                     public void onClick(View view, int position, boolean isLongClick) {
-                        Intent foodList = new Intent(RestaurantListActivity.this, RestaurantSubCategoriesActivity.class);
+                        Intent foodList = new Intent(RestaurantListActivity.this, CategoriesActivity.class);
                         Constant.restaurantSelected = adapter.getRef(position).getKey();
                         startActivity(foodList);
                     }
@@ -154,6 +211,12 @@ public class RestaurantListActivity extends AppCompatActivity implements Navigat
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        adapter.stopListening();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
@@ -162,7 +225,7 @@ public class RestaurantListActivity extends AppCompatActivity implements Navigat
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() ==R.id.refresh)
+        if (item.getItemId() == R.id.refresh)
             loadRestaurant();
         return super.onOptionsItemSelected(item);
     }
@@ -183,14 +246,56 @@ public class RestaurantListActivity extends AppCompatActivity implements Navigat
             startActivity(orderIntent);
 
         } else if (id == R.id.nav_sign_out) {
-            Paper.book().destroy();
+      /*      Paper.book().destroy();
             Intent signIn = new Intent(RestaurantListActivity.this, SignInActivity.class);
             signIn.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(signIn);
+            startActivity(signIn);*/
+            ConfirmSignOutDialog();
 
+        } else if (id == R.id.nav_profile) {
+
+            Intent profileIntent = new Intent(RestaurantListActivity.this, ProfileActivity.class);
+            startActivity(profileIntent);
+        } else if (id == R.id.nav_favorites) {
+            startActivity(new Intent(RestaurantListActivity.this, FavoritesActivity.class));
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    private void ConfirmSignOutDialog() {
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(RestaurantListActivity.this);
+        alertDialog.setTitle("Confirm Sign Out?");
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View layout_signout = inflater.inflate(R.layout.confirm_signout_layout, null);
+        alertDialog.setView(layout_signout);
+        alertDialog.setIcon(R.drawable.ic_exit_to_app_black_24dp);
+
+        alertDialog.setPositiveButton("SIGN OUT", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                //Delete remember user && password
+                Paper.book().destroy();
+
+                //log out
+                Intent logout = new Intent(RestaurantListActivity.this, SignInActivity.class);
+                logout.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(logout);
+
+            }
+        });
+        alertDialog.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alertDialog.show();
     }
 }

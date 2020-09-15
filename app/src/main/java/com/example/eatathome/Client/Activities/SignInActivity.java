@@ -13,12 +13,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
-import com.example.eatathome.Constant.Constant;
-import com.example.eatathome.Models.ClientUsers;
+import com.example.eatathome.Client.Activities.Constant.Constant;
+import com.example.eatathome.Client.Activities.Model.User;
 import com.example.eatathome.R;
 import com.example.eatathome.databinding.ActivitySignInBinding;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -55,6 +54,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         if (user != null && password != null) {
             if (!user.isEmpty() && !password.isEmpty())
                 login(user, password);
+
         }
 
     }
@@ -62,7 +62,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     private void login(final String user, final String password) {
 
         database = FirebaseDatabase.getInstance();
-        table_users = database.getReference("users");
+        table_users = database.getReference("User");
 
         if (Constant.isConnectedToInternet(getBaseContext())) {
 
@@ -78,9 +78,9 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                     if (dataSnapshot.child(user).exists()) {
                         //Get User Information
                         mDialog.dismiss();
-                        ClientUsers clientUsers = dataSnapshot.child(user).getValue(ClientUsers.class);
+                        User clientUsers = dataSnapshot.child(user).getValue(User.class);
                         clientUsers.setPhone(user);
-                        if (clientUsers.getPassword().equals(password)) {
+                        if (clientUsers.getpassword().equals(password)) {
                             Toast.makeText(SignInActivity.this, "Sign In Successfully !", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(SignInActivity.this, RestaurantListActivity.class);
                             Constant.currentUser = clientUsers;
@@ -136,7 +136,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         final TextInputEditText edtSecureCode = forgot_view.findViewById(R.id.et_secure_code);
 
         database = FirebaseDatabase.getInstance();
-        table_users = database.getReference("users");
+        table_users = database.getReference("User");
 
         final String phone = edtPhone.getText().toString();
         final String secureCode = edtSecureCode.getText().toString();
@@ -147,10 +147,10 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                 table_users.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        ClientUsers user = dataSnapshot.child(phone).getValue(ClientUsers.class);
+                        User user = dataSnapshot.child(phone).getValue(User.class);
 
                         if (user.getSecureCode().equals(secureCode))
-                            Toast.makeText(SignInActivity.this, "Your Password "+user.getPassword() , Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignInActivity.this, "Your Password " + user.getpassword(), Toast.LENGTH_SHORT).show();
                         else
                             Toast.makeText(SignInActivity.this, "Wrong Secure Code", Toast.LENGTH_SHORT).show();
                     }
@@ -180,7 +180,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         password = activitySignInBinding.etPassword.getText().toString();
 
         database = FirebaseDatabase.getInstance();
-        table_users = database.getReference("users");
+        table_users = database.getReference("User");
 
         if (Constant.isConnectedToInternet(getBaseContext())) {
 
@@ -203,9 +203,9 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                     if (dataSnapshot.child(activitySignInBinding.etPhoneNumber.getText().toString()).exists()) {
                         //Get User Information
                         mDialog.dismiss();
-                        ClientUsers clientUsers = dataSnapshot.child(activitySignInBinding.etPhoneNumber.getText().toString()).getValue(ClientUsers.class);
+                        User clientUsers = dataSnapshot.child(activitySignInBinding.etPhoneNumber.getText().toString()).getValue(User.class);
                         clientUsers.setPhone(activitySignInBinding.etPhoneNumber.getText().toString());
-                        if (clientUsers.getPassword().equals(activitySignInBinding.etPassword.getText().toString())) {
+                        if (clientUsers.getpassword().equals(activitySignInBinding.etPassword.getText().toString())) {
                             Toast.makeText(SignInActivity.this, "Sign In Successfully !", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(SignInActivity.this, RestaurantListActivity.class);
                             Constant.currentUser = clientUsers;

@@ -50,29 +50,42 @@
                 android:id="@+id/btn_sign_in"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_margin="20dp"
+                android:layout_margin="10dp"
                 android:text="Client Sign In"
-                android:textAllCaps="true"
+                android:textAllCaps="false"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/white"
                 android:theme="@style/Theme.MyApp"
-                android:background="@color/btnColorLightGreen"
-                app:backgroundTint="@color/btnColorLightGreen"
+                app:backgroundTint="@android:color/holo_green_dark"
                 app:cornerRadius="10dp"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_sign_in_restaurant"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_margin="20dp"
-                android:textAllCaps="true"
+                android:layout_margin="10dp"
+                android:textAllCaps="false"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:text="Restaurant Sign In"
                 android:textColor="@android:color/white"
                 android:theme="@style/Theme.MyApp"
                 app:backgroundTint="@android:color/holo_red_dark"
+                app:cornerRadius="10dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSignInAsShipper"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_margin="10dp"
+                android:textAllCaps="false"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:text="Rider Sign In"
+                android:textColor="@android:color/white"
+                android:theme="@style/Theme.MyApp"
+                app:backgroundTint="@android:color/holo_orange_dark"
                 app:cornerRadius="10dp" />
 
         </LinearLayout>

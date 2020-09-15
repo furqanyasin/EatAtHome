@@ -10,8 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
-import com.example.eatathome.Constant.Constant;
-import com.example.eatathome.Models.ClientUsers;
+import com.example.eatathome.Client.Activities.Constant.Constant;
+import com.example.eatathome.Client.Activities.Model.User;
 import com.example.eatathome.R;
 import com.example.eatathome.databinding.ActivitySignUpBinding;
 import com.google.firebase.database.DataSnapshot;
@@ -38,8 +38,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View view) {
         if (view == activitySignUpBinding.btnSignUp) {
             buttonSignUp();
-        }else if (view == activitySignUpBinding.txtSignIn) {
-            Intent intent = new Intent(SignUpActivity.this,SignInActivity.class);
+        } else if (view == activitySignUpBinding.txtSignIn) {
+            Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
             startActivity(intent);
         }
 
@@ -53,10 +53,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         secureCode = activitySignUpBinding.etSecureCode.getText().toString();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference table_users = database.getReference("users");
+        final DatabaseReference table_users = database.getReference("User");
 
-        if (Constant.isConnectedToInternet(getBaseContext()))
-        {
+        if (Constant.isConnectedToInternet(getBaseContext())) {
             final ProgressDialog mDialog = new ProgressDialog(SignUpActivity.this);
             mDialog.setMessage("Please waiting...");
             mDialog.show();
@@ -72,7 +71,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                     } else {
                         mDialog.dismiss();
-                        ClientUsers clientUsers = new ClientUsers(name, password, secureCode);
+                        User clientUsers = new User(phoneNumber, name, password, secureCode);
                         table_users.child(phoneNumber).setValue(clientUsers);
                         Toast.makeText(SignUpActivity.this, "Sign Up Successfully", Toast.LENGTH_SHORT).show();
                         finish();
@@ -85,13 +84,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                 }
             });
-        }
-        else {
+        } else {
             Toast.makeText(this, "Please check your Internet Connection", Toast.LENGTH_SHORT).show();
             return;
 
         }
-
 
 
     }

@@ -1,25 +1,33 @@
 package com.example.eatathome.Client.Activities;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.eatathome.Client.Activities.Model.Request;
+import com.example.eatathome.Client.Activities.ViewHolder.OrderViewHolder;
 import com.example.eatathome.R;
-import com.example.eatathome.Constant.Constant;
-import com.example.eatathome.Models.Request;
-import com.example.eatathome.ViewHolder.OrderViewHolder;
+import com.example.eatathome.Client.Activities.Constant.Constant;
+import com.example.eatathome.Server.Activities.TrackingOrderActivityRes;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 public class OrderStatusActivity extends AppCompatActivity {
+
+
     public RecyclerView recyclerView;
     public RecyclerView.LayoutManager layoutManager;
 
@@ -27,7 +35,6 @@ public class OrderStatusActivity extends AppCompatActivity {
     DatabaseReference requests;
 
     FirebaseRecyclerAdapter<Request, OrderViewHolder> adapter;
-    FirebaseRecyclerOptions<Request> firebaseRecyclerOptions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,43 +44,169 @@ public class OrderStatusActivity extends AppCompatActivity {
         //init firebase
         database = FirebaseDatabase.getInstance();
         requests = database.getReference("Request");
-        firebaseRecyclerOptions = new FirebaseRecyclerOptions.Builder<Request>().setQuery(requests, Request.class).build();
 
         //Load menu
-        recyclerView = findViewById(R.id.listOrder);
+        recyclerView = findViewById(R.id.listOrder1);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getBaseContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        if (getIntent()==null)
+
+        if (getIntent().getExtras() != null)
             loadOrder(Constant.currentUser.getPhone());
-        else
-            loadOrder(getIntent().getStringExtra("userPhone"));
+        else {
+            if (getIntent().getStringExtra("userPhone") == null)
+                loadOrder(Constant.currentUser.getPhone());
+            else
+                loadOrder(getIntent().getStringExtra("userPhone"));
+
+        }
     }
 
     private void loadOrder(String phone) {
 
-        adapter = new FirebaseRecyclerAdapter<Request, OrderViewHolder>(firebaseRecyclerOptions) {
+        Query getOrderByUser = requests.orderByChild("phone").equalTo(phone);
+
+        FirebaseRecyclerOptions<Request> orderOptions = new FirebaseRecyclerOptions.Builder<Request>()
+                .setQuery(getOrderByUser, Request.class)
+                .build();
+
+        adapter = new FirebaseRecyclerAdapter<Request, OrderViewHolder>(orderOptions) {
             @Override
-            protected void onBindViewHolder(@NonNull OrderViewHolder holder, int position, @NonNull Request model) {
-                holder.txtOrderID.setText(adapter.getRef(position).getKey());
-                holder.txtOrderPhone.setText(model.getPhone());
-                holder.txtOrderStatus.setText(Constant.convertCodeToStatus(model.getStatus()));
-                holder.txtOrderAddress.setText(model.getAddress());
+            protected void onBindViewHolder(@NonNull OrderViewHolder viewHolder, final int position, @NonNull Request model) {
+                viewHolder.txtOrderId.setText(adapter.getRef(position).getKey());
+                viewHolder.txtOrderStatus.setText(Constant.convertCodeToStatus(model.getStatus()));
+                viewHolder.txtOrderPhone.setText(model.getPhone());
+                viewHolder.txtOrderAddress.setText(model.getAddress());
+                viewHolder.txtOrderDate.setText(Constant.getDate(Long.parseLong(adapter.getRef(position).getKey())));
+                viewHolder.txtOrderName.setText(model.getName());
+                viewHolder.txtOrderPrice.setText(model.getTotal());
+
+                viewHolder.btnDirection.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Constant.currentKey = adapter.getRef(position).getKey();
+                        if (adapter.getItem(position).getStatus().equals("2"))
+                            startActivity(new Intent(OrderStatusActivity.this, TrackingOrderActivity.class));
+                        else
+                            Toast.makeText(OrderStatusActivity.this, "You cannot track this Order!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                viewHolder.btnDeleteOrder.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (adapter.getItem(position).getStatus().equals("0"))
+                            deleteOrder(adapter.getRef(position).getKey());
+                        else
+                            Toast.makeText(OrderStatusActivity.this, "You cannot delete this Order!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                viewHolder.btnConfirmShip.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (adapter.getItem(position).getStatus().equals("03"))
+                            ConfirmReceiveOrder(adapter.getRef(position).getKey());
+                        else
+                            Toast.makeText(OrderStatusActivity.this, "You cannot confirm receive this Order!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
             }
 
             @NonNull
             @Override
             public OrderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.order_layout, parent, false);
-                return new OrderViewHolder(view);
+                View itemView = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.order_layout, parent, false);
+                return new OrderViewHolder(itemView);
             }
         };
-
-        //set adapter
+        adapter.startListening();
+        adapter.notifyDataSetChanged();
         recyclerView.setAdapter(adapter);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
         adapter.startListening();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        adapter.stopListening();
+    }
+
+
+    private void ConfirmReceiveOrder(String key) {
+
+        showConfirmReceiveOrder(key);
+    }
+
+
+    private void deleteOrder(final String key) {
+
+        showConfirmDeleteDialog(key);
+    }
+
+    private void showConfirmDeleteDialog(final String key) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(OrderStatusActivity.this, R.style.Theme_AppCompat_DayNight_Dialog_Alert);
+        alertDialog.setTitle("Confirm Delete?");
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View confirm_delete_layout = inflater.inflate(R.layout.confirm_signout_layout, null);
+        alertDialog.setView(confirm_delete_layout);
+        alertDialog.setIcon(R.drawable.ic_delete);
+
+        alertDialog.setPositiveButton("DELETE", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                requests.child(key).removeValue();
+                Toast.makeText(OrderStatusActivity.this, new StringBuilder("Order" + " ")
+                        .append(key)
+                        .append(" " + "has been deleted").toString(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        alertDialog.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alertDialog.show();
+    }
+
+    private void showConfirmReceiveOrder(final String key) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(OrderStatusActivity.this, R.style.Theme_AppCompat_DayNight_Dialog_Alert);
+        alertDialog.setTitle("Confirm Receive?");
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View confirm_delete_layout = inflater.inflate(R.layout.confirm_signout_layout, null);
+        alertDialog.setView(confirm_delete_layout);
+        alertDialog.setIcon(R.drawable.ic_local_shipping_black_24dp);
+
+        alertDialog.setPositiveButton("CONFIRM", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                requests.child(key).removeValue();
+                Toast.makeText(OrderStatusActivity.this, new StringBuilder("Order" + " ")
+                        .append(key)
+                        .append(" " + "has been confirm received").toString(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        alertDialog.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alertDialog.show();
+    }
 
 }

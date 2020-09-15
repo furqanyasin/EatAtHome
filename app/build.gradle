@@ -36,6 +36,9 @@ dependencies {
 
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'com.google.android.gms:play-services-places:17.0.0'
+
+    implementation 'com.google.maps.android:android-maps-utils:0.4+'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
@@ -47,21 +50,28 @@ dependencies {
     //spinner
     implementation 'com.jaredrummler:material-spinner:1.1.0'
 
+    implementation 'com.github.d-max:spots-dialog:0.7@aar'
+
     implementation 'com.cepheuen.elegant-number-button:lib:1.0.2'
 
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'com.google.android.material:material:1.2.1'
 
-    implementation 'com.google.firebase:firebase-database:19.3.0'
-    implementation 'com.google.firebase:firebase-analytics:17.0.0'
+    implementation 'com.mikhaellopez:circularimageview:3.2.0'
+
+    implementation 'com.google.firebase:firebase-database:19.2.0'
+    implementation 'com.google.firebase:firebase-analytics:17.5.0'
     implementation 'com.firebaseui:firebase-ui-database:6.2.1'
-    implementation 'com.google.firebase:firebase-storage:19.1.1'
+    implementation 'com.google.firebase:firebase-storage:19.2.0'
     implementation 'com.google.firebase:firebase-auth:19.3.2'
+    implementation 'com.google.firebase:firebase-messaging:20.2.4'
+    implementation 'com.firebaseui:firebase-ui-storage:3.3.0'
 
     implementation 'com.squareup.picasso:picasso:2.71828'
 
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     implementation 'io.paperdb:paperdb:2.1'
     implementation 'com.stepstone.apprating:app-rating:2.0.0'

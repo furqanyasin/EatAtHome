@@ -18,7 +18,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Client.Activities.TrackingOrderActivity"></activity>
+        <activity android:name=".Server.Activities.SignInAdminActivity"></activity>
+        <activity android:name=".Client.Activities.TrackingOrderActivity" />
         <activity
             android:name=".Rider.Activities.TrackingOrderActivityRider"
             android:label="@string/title_activity_tracking_order" />

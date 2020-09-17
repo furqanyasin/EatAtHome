@@ -303,7 +303,7 @@ public class CategoryActivityRes extends AppCompatActivity implements Navigation
             startActivity(order);
 
         } else if (id == R.id.nav_sign_out) {
-            Intent signIn = new Intent(CategoryActivityRes.this, AdminSignInActivity.class);
+            Intent signIn = new Intent(CategoryActivityRes.this, SignInAdminActivity.class);
             signIn.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(signIn);
 

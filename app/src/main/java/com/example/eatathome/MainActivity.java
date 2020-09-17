@@ -10,7 +10,7 @@ import android.view.View;
 
 import com.example.eatathome.Client.Activities.SignInActivity;
 import com.example.eatathome.Rider.Activities.SignInAsRiderActivity;
-import com.example.eatathome.Server.Activities.AdminSignInActivity;
+import com.example.eatathome.Server.Activities.SignInAdminActivity;
 import com.example.eatathome.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
 
         } else if (view == activityMainBinding.btnSignInRestaurant) {
-            Intent intent = new Intent(this, AdminSignInActivity.class);
+            Intent intent = new Intent(this, SignInAdminActivity.class);
             startActivity(intent);
 
         } else if (view == activityMainBinding.btnSignInAsShipper) {

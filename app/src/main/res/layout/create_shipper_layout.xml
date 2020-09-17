@@ -18,7 +18,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="4dp"
-            android:textColorHint="@android:color/white"
             app:boxStrokeColor="@android:color/white"
             app:counterTextColor="@android:color/white"
             app:hintTextColor="@android:color/white">
@@ -42,7 +41,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="4dp"
-            android:textColorHint="@android:color/white"
             app:boxStrokeColor="@android:color/white"
             app:hintTextColor="@android:color/white">
 
@@ -65,7 +63,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="4dp"
-            android:textColorHint="@android:color/white"
             app:boxStrokeColor="@android:color/white"
             app:endIconMode="password_toggle"
             app:hintTextColor="@android:color/white">

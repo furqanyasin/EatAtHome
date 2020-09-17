@@ -25,7 +25,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.eatathome.Interface.ItemClickListener;
 import com.example.eatathome.Client.Activities.Model.Restaurant;
 import com.example.eatathome.Client.Activities.Model.Token;
-import com.example.eatathome.Client.Activities.Services.ListenOrder;
 import com.example.eatathome.Client.Activities.Constant.Constant;
 import com.example.eatathome.Client.Activities.ViewHolder.RestaurantViewHolder;
 import com.example.eatathome.R;
@@ -113,9 +112,7 @@ public class RestaurantListActivity extends AppCompatActivity implements Navigat
             return;
         }
 
-        //load services
-        Intent services = new Intent(RestaurantListActivity.this, ListenOrder.class);
-        startService(services);
+        updateToken(FirebaseInstanceId.getInstance().getToken());
 
     }
 

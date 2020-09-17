@@ -583,7 +583,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
                     adapter.restoreItem(deleteItem, deleteIndex);
                     new Database(getBaseContext()).addToCart(deleteItem);
 
-                    //update txttotal
+                    //update txt total
                     //calculation total price
                     float total = 0;
                     List<Order> orders = new Database(getBaseContext()).getCarts(Constant.currentUser.getPhone());

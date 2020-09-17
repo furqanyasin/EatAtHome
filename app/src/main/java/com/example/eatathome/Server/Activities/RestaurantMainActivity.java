@@ -40,7 +40,7 @@ public class RestaurantMainActivity extends AppCompatActivity implements View.On
             startActivity(intent);
 
         } else if (view == activityRestaurantMainBinding.btnAdminSignIn) {
-            Intent intent = new Intent(this, AdminSignInActivity.class);
+            Intent intent = new Intent(this, SignInAdminActivity.class);
             startActivity(intent);
         }
 

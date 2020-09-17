@@ -5,16 +5,16 @@
 
     <group android:checkableBehavior="single">
 
-        <item
+      <!--  <item
             android:id="@+id/nav_view_account"
             android:icon="@drawable/ic_pageview_black_24dp"
             android:title="View Accounts"/>
-
+-->
 
         <item
             android:id="@+id/nav_shipper"
             android:icon="@drawable/ic_local_shipping_black_24dp"
-            android:title="Shippers Management"/>
+            android:title="Rider Management"/>
 
         <item
             android:id="@+id/nav_view_comment"
@@ -26,20 +26,20 @@
             android:icon="@drawable/ic_access_time_black_24dp"
             android:title="Orders"/>
 
-        <item
+        <!--<item
             android:id="@+id/nav_message_admin"
             android:icon="@drawable/ic_message_black_24dp"
-            android:title="Send Message"/>
+            android:title="Send Message"/>-->
 
         <item
             android:id="@+id/nav_menu_admin"
             android:icon="@drawable/ic_restaurant_black_24dp"
             android:title="Menu" />
 
-        <item
+       <!-- <item
             android:id="@+id/nav_about"
             android:icon="@drawable/ic_about_black_24dp"
-            android:title="About" />
+            android:title="About" />-->
 
         <item
             android:id="@+id/nav_sign_out_admin"

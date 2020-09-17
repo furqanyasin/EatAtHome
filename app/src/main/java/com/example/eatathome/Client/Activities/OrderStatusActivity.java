@@ -18,12 +18,13 @@ import com.example.eatathome.Client.Activities.Model.Request;
 import com.example.eatathome.Client.Activities.ViewHolder.OrderViewHolder;
 import com.example.eatathome.R;
 import com.example.eatathome.Client.Activities.Constant.Constant;
-import com.example.eatathome.Server.Activities.TrackingOrderActivityRes;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+
+import java.util.Objects;
 
 public class OrderStatusActivity extends AppCompatActivity {
 
@@ -78,7 +79,7 @@ public class OrderStatusActivity extends AppCompatActivity {
                 viewHolder.txtOrderStatus.setText(Constant.convertCodeToStatus(model.getStatus()));
                 viewHolder.txtOrderPhone.setText(model.getPhone());
                 viewHolder.txtOrderAddress.setText(model.getAddress());
-                viewHolder.txtOrderDate.setText(Constant.getDate(Long.parseLong(adapter.getRef(position).getKey())));
+                viewHolder.txtOrderDate.setText(Constant.getDate(Long.parseLong(Objects.requireNonNull(adapter.getRef(position).getKey()))));
                 viewHolder.txtOrderName.setText(model.getName());
                 viewHolder.txtOrderPrice.setText(model.getTotal());
 
@@ -165,9 +166,10 @@ public class OrderStatusActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 requests.child(key).removeValue();
-                Toast.makeText(OrderStatusActivity.this, new StringBuilder("Order" + " ")
-                        .append(key)
-                        .append(" " + "has been deleted").toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(OrderStatusActivity.this,
+                        "Order"  + " "+
+                        key +
+                        " " + "has been deleted", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -194,9 +196,9 @@ public class OrderStatusActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 requests.child(key).removeValue();
-                Toast.makeText(OrderStatusActivity.this, new StringBuilder("Order" + " ")
-                        .append(key)
-                        .append(" " + "has been confirm received").toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(OrderStatusActivity.this, "Order" + " " +
+                        key +
+                        " " + "has been confirm received", Toast.LENGTH_SHORT).show();
 
             }
         });

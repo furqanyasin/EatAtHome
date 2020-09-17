@@ -50,6 +50,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.UUID;
 
 import static com.example.eatathome.Server.Activities.Constant.ConstantRes.PICK_IMAGE_REQUEST;
@@ -262,7 +264,7 @@ public class MainAdminActivity extends AppCompatActivity
 
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                         @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                        public void onProgress(@NotNull UploadTask.TaskSnapshot taskSnapshot) {
 
                             double progress = (100 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
                             mDialog.setMessage("Uploading " + progress + " % ");
@@ -349,24 +351,24 @@ public class MainAdminActivity extends AppCompatActivity
         if (id == R.id.nav_orders) {
             Intent orders = new Intent(MainAdminActivity.this, OrderStatusActivityRes.class);
             startActivity(orders);
-        } else if (id == R.id.nav_message_admin) {
-         /*   Intent message = new Intent(MainAdminActivity.this, SendMessage.class);
-            startActivity(message);*/
-        } else if (id == R.id.nav_sign_out_admin) {
+        } /*else if (id == R.id.nav_message_admin) {
+            Intent message = new Intent(MainAdminActivity.this, SendMessage.class);
+            startActivity(message);
+        } */ else if (id == R.id.nav_sign_out_admin) {
             ConfirmSignOutDialog();
-        } else if (id == R.id.nav_view_account) {
+        }/* else if (id == R.id.nav_view_account) {
             Intent create = new Intent(MainAdminActivity.this, ManageAccountActivity.class);
             startActivity(create);
-        } else if (id == R.id.nav_view_comment) {
+        } */ else if (id == R.id.nav_view_comment) {
             Intent comment = new Intent(MainAdminActivity.this, ViewCommentActivityRes.class);
             startActivity(comment);
         } else if (id == R.id.nav_shipper) {
             Intent shippers = new Intent(MainAdminActivity.this, RiderManagementActivityRes.class);
             startActivity(shippers);
-        } else if (id == R.id.nav_about) {
-           /* Intent about = new Intent(MainAdminActivity.this, AdminScrollingActivity.class);
-            startActivity(about);*/
-        }
+        } /*else if (id == R.id.nav_about) {
+         *//* Intent about = new Intent(MainAdminActivity.this, AdminScrollingActivity.class);
+            startActivity(about);*//*
+        }*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_admin);
         drawer.closeDrawer(GravityCompat.START);

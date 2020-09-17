@@ -62,12 +62,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -223,7 +225,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
 
 
         //Hide search icon before fragment
-        edtAddress.getView().findViewById(R.id.place_autocomplete_search_button).setVisibility(View.VISIBLE);
+        Objects.requireNonNull(edtAddress.getView()).findViewById(R.id.place_autocomplete_search_button).setVisibility(View.VISIBLE);
 
         //set hint for Autocomplete EditText
         ((EditText) edtAddress.getView().findViewById(R.id.place_autocomplete_search_input)).setHint("Enter your address");
@@ -240,6 +242,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
 
             @Override
             public void onError(Status status) {
+                assert status.getStatusMessage() != null;
                 Log.e("ERROR", status.getStatusMessage());
             }
         });
@@ -282,9 +285,10 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
                             mLastLocation.getLongitude()))
                             .enqueue(new Callback<String>() {
                                 @Override
-                                public void onResponse(Call<String> call, Response<String> response) {
+                                public void onResponse(@NotNull Call<String> call, @NotNull Response<String> response) {
                                     // if fetch API ok
                                     try {
+                                        assert response.body() != null;
                                         JSONObject jsonObject = new JSONObject(response.body().toString());
 
                                         JSONArray resultArray = jsonObject.getJSONArray("results");
@@ -303,7 +307,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
                                 }
 
                                 @Override
-                                public void onFailure(Call<String> call, Throwable t) {
+                                public void onFailure(@NotNull Call<String> call, @NotNull Throwable t) {
                                     Toast.makeText(CartActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             });
@@ -323,7 +327,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
                 //if user select home address, get homeaddress from profile and use it
                 if (!rdyShipToAddress.isChecked() && !rdyHomeAddress.isChecked()) {
                     if (shippingAddress != null)
-                        address = shippingAddress.getAddress().toString();
+                        address = Objects.requireNonNull(shippingAddress.getAddress()).toString();
                     else {
                         Toast.makeText(CartActivity.this, "Please enter address or select option address", Toast.LENGTH_SHORT).show();
 
@@ -356,7 +360,6 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
                             .remove(getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment))
                             .commit();
 
-                    return;
                 } else if (cashOnDelivery.isChecked()) {
                     //create new request
                     Request request = new Request(
@@ -365,7 +368,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
                             address,
                             txtTotalPrice.getText().toString(),
                             "0",
-                            edtComment.getText().toString(),
+                            Objects.requireNonNull(edtComment.getText()).toString(),
                             "Cash On Delivery",
                             String.format("%s,%s", mLastLocation.getLatitude(), mLastLocation.getLongitude()),
                             cart
@@ -404,16 +407,13 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case LOCATION_REQUEST_CODE: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (checkPlayServices()) {
-                        buildGoogleApiClient();
-                        createLocationRequest();
-                    }
+        if (requestCode == LOCATION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (checkPlayServices()) {
+                    buildGoogleApiClient();
+                    createLocationRequest();
                 }
             }
-            break;
         }
     }
 
@@ -425,21 +425,22 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
         Query data = tokens.orderByChild("serverToken").equalTo(true);
         data.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapShot : dataSnapshot.getChildren()) {
 
                     Token serverToken = postSnapShot.getValue(Token.class);
 
                     //create raw payload to send
                     Notification notification = new Notification("EatatHome", "You have new order " + order_number);
+                    assert serverToken != null;
                     Sender content = new Sender(serverToken.getToken(), notification);
 
                     mService.sendNotification(content).enqueue(new Callback<MyResponse>() {
                         @Override
-
-                        public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
+                        public void onResponse(@NotNull Call<MyResponse> call, @NotNull Response<MyResponse> response) {
                             //only run when get result
                             if (response.code() == 200) {
+                                assert response.body() != null;
                                 if (response.body().success == 1) {
                                     Toast.makeText(CartActivity.this, "Thank you, Order placed.", Toast.LENGTH_SHORT).show();
                                     finish();
@@ -451,8 +452,8 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
                         }
 
                         @Override
-                        public void onFailure(Call<MyResponse> call, Throwable t) {
-                            Log.e("ERROR", t.getMessage());
+                        public void onFailure(@NotNull Call<MyResponse> call, @NotNull Throwable t) {
+                            Log.e("ERROR", Objects.requireNonNull(t.getMessage()));
                         }
                     });
 
@@ -460,7 +461,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NotNull DatabaseError databaseError) {
 
             }
         });
@@ -556,7 +557,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         if (viewHolder instanceof CartViewHolder) {
-            String name = ((CartAdapter) recyclerView.getAdapter()).getItem(viewHolder.getAdapterPosition()).getProductName();
+            String name = ((CartAdapter) Objects.requireNonNull(recyclerView.getAdapter())).getItem(viewHolder.getAdapterPosition()).getProductName();
 
             final Order deleteItem = ((CartAdapter) recyclerView.getAdapter()).getItem(viewHolder.getAdapterPosition());
 

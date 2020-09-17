@@ -28,7 +28,6 @@
             style="@style/Theme.MyApp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:outlineSpotShadowColor="@color/colorWhite"
             android:padding="4dp"
             android:textColorHint="@color/colorWhite"
             app:boxStrokeColor="@color/colorWhite"

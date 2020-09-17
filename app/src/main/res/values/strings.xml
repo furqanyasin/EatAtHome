@@ -79,4 +79,5 @@
     <string name="shipper_name">Shipper Name</string>
     <string name="shipper_password">Shipper Password</string>
     <string name="shipper">Shipper:</string>
+    <string name="confirm">Confirm</string>
 </resources>

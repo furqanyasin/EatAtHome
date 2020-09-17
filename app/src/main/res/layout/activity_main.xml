@@ -16,16 +16,12 @@
             android:layout_centerInParent="true"
             android:orientation="vertical">
 
-       <!--     <ImageView
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:src="@drawable/logo_eat_it" />-->
             <TextView
                 android:id="@+id/txt_Logo"
                 android:layout_width="300dp"
                 android:layout_height="150dp"
                 android:gravity="center"
-                android:text="Eat at Home"
+                android:text="@string/eat_at_home"
                 android:textColor="@android:color/white"
                 android:textSize="50sp" />
 
@@ -51,7 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_margin="10dp"
-                android:text="Client Sign In"
+                android:text="@string/client_sign_in"
                 android:textAllCaps="false"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -68,7 +64,7 @@
                 android:textAllCaps="false"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:text="Restaurant Sign In"
+                android:text="@string/restaurant_sign_in"
                 android:textColor="@android:color/white"
                 android:theme="@style/Theme.MyApp"
                 app:backgroundTint="@android:color/holo_red_dark"
@@ -82,7 +78,7 @@
                 android:textAllCaps="false"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:text="Rider Sign In"
+                android:text="@string/rider_sign_in"
                 android:textColor="@android:color/white"
                 android:theme="@style/Theme.MyApp"
                 app:backgroundTint="@android:color/holo_orange_dark"

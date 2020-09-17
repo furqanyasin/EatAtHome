@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/order_info"
         android:layout_margin="8dp"
-        app:cardBackgroundColor="#FFFFFF"
         app:cardElevation="4dp">
 
         <LinearLayout
@@ -21,39 +20,41 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:orientation="horizontal"
-            android:layout_gravity="center_vertical">
+            android:layout_gravity="center_vertical"
+            android:baselineAligned="false">
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="9"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                tools:ignore="UselessParent">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/order_id"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:gravity="center_vertical|start"
                     android:textAllCaps="true"
                     android:textStyle="bold"
-                    android:text="Order Id"/>
+                    android:text="@string/order_id"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/order_phone"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:gravity="center_vertical|start"
                     android:textAllCaps="true"
                     android:textStyle="italic"
-                    android:text="Order Phone"/>
+                    android:text="@string/order_phone"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/order_total"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:gravity="center_vertical|start"
                     android:textAllCaps="true"
                     android:textStyle="italic"
@@ -63,21 +64,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/order_address"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:gravity="center_vertical|start"
                     android:textAllCaps="true"
                     android:textStyle="italic"
-                    android:text="Address"/>
+                    android:text="@string/address"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/order_comment"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:gravity="center_vertical|start"
                     android:textAllCaps="true"
                     android:textStyle="italic"
-                    android:text="Comment"/>
+                    android:text="@string/comment"/>
 
             </LinearLayout>
 

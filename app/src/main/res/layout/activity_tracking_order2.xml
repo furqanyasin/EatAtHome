@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".Client.Activities.TrackingOrderActivity">
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
@@ -27,15 +27,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Distance:"
-                android:layout_marginLeft="10dp"
+                android:text="@string/distance"
+                android:layout_marginStart="10dp"
                 android:textSize="20sp"
                 android:textColor="@android:color/black"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="100dp"
+                android:layout_marginStart="100dp"
                 android:id="@+id/display_distance"
                 android:text=""
                 android:textSize="20sp"
@@ -45,15 +45,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:layout_marginLeft="10dp"
-                android:text="Duration:"
+                android:layout_marginStart="10dp"
+                android:text="@string/duration"
                 android:textSize="20sp"
                 android:textColor="@android:color/black"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="100dp"
+                android:layout_marginStart="100dp"
                 android:layout_marginTop="30dp"
                 android:id="@+id/display_duration"
                 android:text=""
@@ -66,15 +66,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="60dp"
-                android:layout_marginLeft="10dp"
-                android:text="Time Reach:"
+                android:layout_marginStart="10dp"
+                android:text="@string/time_reach"
                 android:textSize="20sp"
                 android:textColor="@android:color/black"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="100dp"
+                android:layout_marginStart="100dp"
                 android:layout_marginTop="60dp"
                 android:id="@+id/display_expected_hour"
                 android:text=""
@@ -92,12 +92,11 @@
                     android:id="@+id/btnCall"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
                     android:layout_margin="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:layout_weight="1"
-                    android:text="CALL"
+                    android:text="@string/call"
                     android:textColor="@android:color/white"
                     android:theme="@style/Theme.MyApp"
                     app:backgroundTint="@color/btnColorLightGreen"

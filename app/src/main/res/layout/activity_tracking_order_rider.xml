@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".Rider.Activities.TrackingOrderActivityRider">
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
@@ -27,8 +27,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="Distance:"
+                android:layout_marginStart="10dp"
+                android:text="@string/distance"
                 android:textColor="@android:color/black"
                 android:textSize="20sp" />
 
@@ -36,7 +36,7 @@
                 android:id="@+id/display_distance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="100dp"
+                android:layout_marginStart="100dp"
                 android:text=""
                 android:textColor="@android:color/black"
                 android:textSize="20sp" />
@@ -44,9 +44,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="30dp"
-                android:text="Duration:"
+                android:text="@string/duration"
                 android:textColor="@android:color/black"
                 android:textSize="20sp" />
 
@@ -54,19 +54,20 @@
                 android:id="@+id/display_duration"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="100dp"
+                android:layout_marginStart="100dp"
                 android:layout_marginTop="30dp"
                 android:text=""
                 android:textColor="@android:color/black"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="60dp"
-                android:text="Time Reach:"
+                android:text="@string/time_reach"
                 android:textColor="@android:color/black"
                 android:textSize="20sp" />
 
@@ -74,7 +75,7 @@
                 android:id="@+id/display_expected_hour"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="100dp"
+                android:layout_marginStart="100dp"
                 android:layout_marginTop="60dp"
                 android:text=""
                 android:textColor="@android:color/black"

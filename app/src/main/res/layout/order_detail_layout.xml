@@ -14,7 +14,8 @@
         android:layout_gravity="center_vertical"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:baselineAligned="false">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -26,9 +27,9 @@
                 android:id="@+id/product_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:gravity="center_vertical|start"
-                android:text="Product Name"
+                android:text="@string/product_name"
                 android:textAllCaps="true"
                 android:textStyle="bold" />
 
@@ -36,9 +37,9 @@
                 android:id="@+id/product_quantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:gravity="center_vertical|start"
-                android:text="Product Quantity"
+                android:text="@string/product_quantity"
                 android:textAllCaps="true"
                 android:textStyle="italic" />
 
@@ -46,9 +47,9 @@
                 android:id="@+id/product_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:gravity="center_vertical|start"
-                android:text="Product Price"
+                android:text="@string/product_price"
                 android:textAllCaps="true"
                 android:textStyle="italic" />
 

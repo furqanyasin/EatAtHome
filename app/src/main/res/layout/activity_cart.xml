@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/my_bg"
     android:id="@+id/rootLayout"
-    android:padding="16dp"
+    android:padding="8dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Client.Activities.CartActivity">
@@ -33,14 +33,14 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Total: "
+                        android:text="@string/total"
                         android:textSize="22sp"
                         android:textColor="@color/colorWhite"/>
                     <TextView
                         android:id="@+id/total"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Rs: 10,000"
+                        android:text=""
                         android:textSize="25sp"
                         android:textColor="@color/colorWhite"/>
 
@@ -53,7 +53,7 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="30dp"
                     android:layout_marginRight="8dp"
-                    android:text="Place Order"
+                    android:text="@string/place_order"
                     android:layout_margin="8dp"
                     android:layout_alignParentBottom="true"
                     android:textColor="@android:color/white"

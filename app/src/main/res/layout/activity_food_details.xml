@@ -118,7 +118,7 @@
                             android:layout_marginStart="10dp"
                             android:layout_weight="2"
                             android:padding="5dp"
-                            android:text="Price:"
+                            android:text="@string/price"
                             android:textColor="@color/colorPrimary"
                             android:textSize="18sp"
                             android:textStyle="bold" />
@@ -129,7 +129,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="8"
                             android:padding="2dp"
-                            android:text="500"
+                            android:text=""
                             android:textColor="@color/colorPrimary"
                             android:textSize="18sp"
                             android:textStyle="bold" />
@@ -208,7 +208,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Show Comment"
+                android:text="@string/show_comment"
                 android:textColor="@android:color/white"
                 android:theme="@style/Theme.MyApp"
                 app:backgroundTint="@color/colorAccent"

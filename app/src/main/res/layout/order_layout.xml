@@ -25,19 +25,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/order_id"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:gravity="center_vertical|start"
                 android:textAllCaps="true"
                 android:textStyle="bold"
-                android:text="Order Id"/>
+                android:text="@string/order_id"/>
 
             <TextView
                 android:id="@+id/order_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:gravity="center_vertical|start"
-                android:text="Order Date "
+                android:text="@string/order_date"
                 android:textAllCaps="true"
                 android:textStyle="italic" />
 
@@ -45,9 +45,9 @@
                 android:id="@+id/order_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:gravity="center_vertical|start"
-                android:text="Order Name"
+                android:text="@string/order_name"
                 android:textAllCaps="true"
                 android:textStyle="italic" />
 
@@ -55,18 +55,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/order_status"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:gravity="center_vertical|start"
                 android:textAllCaps="true"
                 android:textStyle="italic"
                 android:textColor="@android:color/holo_red_dark"
-                android:text="Status"/>
+                android:text="@string/status"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/order_phone"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:gravity="center_vertical|start"
                 android:textAllCaps="true"
                 android:textStyle="italic"
@@ -76,21 +76,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/order_address"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:gravity="center_vertical|start"
                 android:textAllCaps="true"
                 android:textStyle="italic"
-                android:text="Address"/>
+                android:text="@string/address"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/order_price"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:gravity="center_vertical|start"
                 android:textAllCaps="true"
                 android:textStyle="italic"
-                android:text="Price"/>
+                android:text="@string/price"/>
 
 
         </LinearLayout>

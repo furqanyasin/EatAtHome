@@ -13,7 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_margin="8dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
 
         <ImageView
             android:layout_width="150dp"
@@ -38,7 +39,7 @@
                 android:id="@+id/et_rider_phone_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Phone Number"
+                android:hint="@string/phone_number"
                 android:inputType="phone"
                 android:text=""
                 android:textColor="@android:color/white"
@@ -62,7 +63,7 @@
                 android:id="@+id/et_rider_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Password"
+                android:hint="@string/password"
                 android:inputType="textPassword"
                 android:text=""
                 android:textColor="@android:color/white"
@@ -78,7 +79,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginTop="30dp"
             android:layout_marginRight="8dp"
-            android:text="Sign In"
+            android:text="@string/sign_in"
             android:textColor="@android:color/white"
             android:theme="@style/Theme.MyApp"
             app:backgroundTint="@color/btnColorLightGreen"

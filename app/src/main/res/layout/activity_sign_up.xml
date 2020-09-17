@@ -14,7 +14,8 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_margin="8dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:ignore="UselessParent">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/ti_phone_number"
@@ -102,7 +103,7 @@
                     android:id="@+id/et_secure_code"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Secure Code"
+                    android:hint="@string/secure_code"
                     android:inputType="text"
                     android:text=""
                     android:textColor="@android:color/white"
@@ -144,7 +145,7 @@
                     android:id="@+id/textView2"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:text="or"
+                    android:text="@string/or"
                     android:textColor="@android:color/white"
                     android:textSize="20sp" />
 

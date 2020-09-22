@@ -35,6 +35,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import java.util.Objects;
+
 public class HomeActivityRider extends AppCompatActivity {
 
     FusedLocationProviderClient fusedLocationProviderClient;
@@ -103,7 +105,7 @@ public class HomeActivityRider extends AppCompatActivity {
                 viewHolder.txtOrderPhone.setText(model.getPhone());
                 viewHolder.txtOrderAddress.setText(model.getAddress());
                 viewHolder.txtOrderStatus.setText(ConstantRider.convertCodeToStatus(model.getStatus()));
-                viewHolder.txtOrderDate.setText(ConstantRider.getDate(Long.parseLong(adapter.getRef(position).getKey())));
+                viewHolder.txtOrderDate.setText(ConstantRider.getDate(Long.parseLong(Objects.requireNonNull(adapter.getRef(position).getKey()))));
                 viewHolder.txtOrderName.setText(model.getName());
                 viewHolder.txtOrderPrice.setText(model.getTotal());
 

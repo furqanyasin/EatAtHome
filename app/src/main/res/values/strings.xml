@@ -66,11 +66,11 @@
     <string name="product_name">Product Name</string>
     <string name="product_quantity">Product Quantity</string>
     <string name="product_price">Product Price</string>
-    <string name="order_id">Order Id</string>
-    <string name="order_date">Order Date</string>
-    <string name="order_name">Order Name</string>
-    <string name="status">Status</string>
-    <string name="address">Address</string>
+    <string name="order_id">Order Id: </string>
+    <string name="order_date">Order Date: </string>
+    <string name="customer_name">Customer: </string>
+    <string name="status">Status: </string>
+    <string name="address">Address: </string>
     <string name="edit">Edit</string>
     <string name="remove">Remove</string>
     <string name="shipping">Shipping</string>
@@ -80,4 +80,9 @@
     <string name="shipper_password">Shipper Password</string>
     <string name="shipper">Shipper:</string>
     <string name="confirm">Confirm</string>
+    <string name="confirm_ship">Confirm Ship</string>
+    <string name="direction">Direction</string>
+    <string name="delete_order">Delete Order</string>
+    <string name="phone_no">Phone No: </string>
+    <string name="total_price">Total Price:</string>
 </resources>

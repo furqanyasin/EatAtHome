@@ -110,7 +110,7 @@ public class OrderStatusActivity extends AppCompatActivity {
                 viewHolder.btnConfirmShip.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (adapter.getItem(position).getStatus().equals("03"))
+                        if (adapter.getItem(position).getStatus().equals("3"))
                             ConfirmReceiveOrder(adapter.getRef(position).getKey());
                         else
                             Toast.makeText(OrderStatusActivity.this, "You cannot confirm receive this Order!", Toast.LENGTH_SHORT).show();

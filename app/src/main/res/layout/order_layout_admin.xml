@@ -53,7 +53,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:gravity="center_vertical|start"
-                    android:text="@string/order_name"
+                    android:text="@string/customer_name"
                     android:textAllCaps="true"
                     android:textStyle="italic" />
 

@@ -67,6 +67,12 @@
 
         </LinearLayout>
 
-
+        <Button
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+            android:id="@+id/btnDeleteComment"
+            android:background="@drawable/ic_delete"
+            />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

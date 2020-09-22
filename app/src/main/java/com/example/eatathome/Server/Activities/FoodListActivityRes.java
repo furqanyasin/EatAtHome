@@ -88,9 +88,9 @@ public class FoodListActivityRes extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         //set layout of foodlist
-        rootLayout = (RelativeLayout) findViewById(R.id.rootLayout);
+        rootLayout =  findViewById(R.id.rootLayout);
 
-        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab =  findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -398,8 +398,7 @@ public class FoodListActivityRes extends AppCompatActivity {
 
                 foodList.child(key).setValue(item);
 
-                Snackbar.make(rootLayout, " Food " + item.getName() + " was edited ",
-                        Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(R.id.rootLayout), " Food " + item.getName() + " was edited ", Snackbar.LENGTH_SHORT).show();
 
             }
         });

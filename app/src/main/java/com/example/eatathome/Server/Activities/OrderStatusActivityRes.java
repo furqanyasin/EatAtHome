@@ -35,6 +35,7 @@ import com.jaredrummler.materialspinner.MaterialSpinner;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -67,7 +68,7 @@ public class OrderStatusActivityRes extends AppCompatActivity {
         mService = ConstantRes.getFCMClient();
 
         //Init
-        recyclerView = (RecyclerView) findViewById(R.id.listOrder);
+        recyclerView = findViewById(R.id.listOrder);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -80,7 +81,6 @@ public class OrderStatusActivityRes extends AppCompatActivity {
         FirebaseRecyclerOptions<RequestRes> options = new FirebaseRecyclerOptions.Builder<RequestRes>()
                 .setQuery(requests, RequestRes.class)
                 .build();
-
         adapter = new FirebaseRecyclerAdapter<RequestRes, OrderViewHolderRes>(options) {
             @Override
             protected void onBindViewHolder(@NonNull OrderViewHolderRes viewHolder, final int position, @NonNull final RequestRes model) {
@@ -88,7 +88,7 @@ public class OrderStatusActivityRes extends AppCompatActivity {
                 viewHolder.txtOrderPhone.setText(model.getPhone());
                 viewHolder.txtOrderAddress.setText(model.getAddress());
                 viewHolder.txtOrderStatus.setText(ConstantRes.convertCodeToStatus(model.getStatus()));
-                viewHolder.txtOrderDate.setText(ConstantRes.getDate(Long.parseLong(adapter.getRef(position).getKey())));
+                viewHolder.txtOrderDate.setText(ConstantRes.getDate(Long.parseLong(Objects.requireNonNull(adapter.getRef(position).getKey()))));
                 viewHolder.txtOrderName.setText(model.getName());
                 viewHolder.txtOrderPrice.setText(model.getTotal());
 
@@ -164,10 +164,10 @@ public class OrderStatusActivityRes extends AppCompatActivity {
         LayoutInflater inflater = this.getLayoutInflater();
         final View view = inflater.inflate(R.layout.update_order_layout, null);
 
-        spinner = (MaterialSpinner) view.findViewById(R.id.statusSpinner);
+        spinner = view.findViewById(R.id.statusSpinner);
         spinner.setItems("Placed", "Preparing Orders", "Shipping", "Delivered");
 
-        shipperSpinner = (MaterialSpinner) view.findViewById(R.id.shipperSpinner);
+        shipperSpinner = view.findViewById(R.id.shipperSpinner);
 
         //load all shipper to spinner
         final List<String> shipperList = new ArrayList<>();
@@ -243,7 +243,7 @@ public class OrderStatusActivityRes extends AppCompatActivity {
                             TokenRes token = dataSnapshot.getValue(TokenRes.class);
 
                             //make raw payload
-                            NotificationRes notification = new NotificationRes("iDeliveryServer", "You have new order need ship");
+                            NotificationRes notification = new NotificationRes("EatatHome", "You have new order need ship");
                             SenderRes content = new SenderRes(token.getToken(), notification);
 
                             mService.sendNotification(content).enqueue(new Callback<MyResponseRes>() {

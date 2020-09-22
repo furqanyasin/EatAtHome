@@ -425,19 +425,18 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
         Query data = tokens.orderByChild("serverToken").equalTo(true);
         data.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapShot : dataSnapshot.getChildren()) {
 
                     Token serverToken = postSnapShot.getValue(Token.class);
 
                     //create raw payload to send
                     Notification notification = new Notification("EatatHome", "You have new order " + order_number);
-                    assert serverToken != null;
                     Sender content = new Sender(serverToken.getToken(), notification);
 
                     mService.sendNotification(content).enqueue(new Callback<MyResponse>() {
                         @Override
-                        public void onResponse(@NotNull Call<MyResponse> call, @NotNull Response<MyResponse> response) {
+                        public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
                             //only run when get result
                             if (response.code() == 200) {
                                 assert response.body() != null;

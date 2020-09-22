@@ -15,8 +15,8 @@ import com.example.eatathome.R;
 
 public class NotificationHelperRes extends ContextWrapper {
 
-    private static final String iDelivery_ID = "com.example.eatathome.Server.EatAtHome";
-    private static final String iDelivery_Name = "EatAtHome";
+    private static final String EatatHome_ID = "com.example.eatathome.Server.EatAtHome";
+    private static final String EatatHome_Name = "EatatHome";
 
     private NotificationManager manager;
 
@@ -28,8 +28,8 @@ public class NotificationHelperRes extends ContextWrapper {
 
     @TargetApi(Build.VERSION_CODES.O)
     private void createChannel() {
-        NotificationChannel iDeliveryChannel = new NotificationChannel(iDelivery_ID,
-                iDelivery_Name,
+        NotificationChannel iDeliveryChannel = new NotificationChannel(EatatHome_ID,
+                EatatHome_Name,
                 NotificationManager.IMPORTANCE_DEFAULT);
         iDeliveryChannel.enableLights(false);
         iDeliveryChannel.enableVibration(true);
@@ -48,7 +48,7 @@ public class NotificationHelperRes extends ContextWrapper {
     public android.app.Notification.Builder getiDeliveryChannelNotification
             (String title, String body, PendingIntent contentIntent, Uri soundUri)
     {
-        return new android.app.Notification.Builder(getApplicationContext(), iDelivery_ID)
+        return new android.app.Notification.Builder(getApplicationContext(), EatatHome_ID)
                 .setContentIntent(contentIntent)
                 .setContentTitle(title)
                 .setContentText(body)

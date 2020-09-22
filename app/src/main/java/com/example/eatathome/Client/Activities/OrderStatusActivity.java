@@ -20,6 +20,8 @@ import com.example.eatathome.R;
 import com.example.eatathome.Client.Activities.Constant.Constant;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.firebase.ui.database.SnapshotParser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
@@ -44,10 +46,10 @@ public class OrderStatusActivity extends AppCompatActivity {
 
         //init firebase
         database = FirebaseDatabase.getInstance();
-        requests = database.getReference("Request");
+        requests = database.getReference("Requests");
 
         //Load menu
-        recyclerView = findViewById(R.id.listOrder1);
+        recyclerView = findViewById(R.id.list_order_status);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getBaseContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -71,6 +73,7 @@ public class OrderStatusActivity extends AppCompatActivity {
         FirebaseRecyclerOptions<Request> orderOptions = new FirebaseRecyclerOptions.Builder<Request>()
                 .setQuery(getOrderByUser, Request.class)
                 .build();
+
 
         adapter = new FirebaseRecyclerAdapter<Request, OrderViewHolder>(orderOptions) {
             @Override

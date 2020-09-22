@@ -11,14 +11,13 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
-        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Server.Activities.SignInAdminActivity"></activity>
+        <activity android:name=".Server.Activities.SignInAdminActivity" />
         <activity android:name=".Client.Activities.TrackingOrderActivity" />
         <activity
             android:name=".Rider.Activities.TrackingOrderActivityRider"
@@ -95,7 +94,6 @@
         <activity android:name=".Client.Activities.RestaurantListActivity" />
         <activity android:name=".Server.Activities.FoodListActivityRes" />
         <activity android:name=".Server.Activities.CategoryActivityRes" />
-        <activity android:name=".Server.Activities.AdminSignInActivity" />
         <activity android:name=".Client.Activities.OrderStatusActivity" />
         <activity android:name=".Client.Activities.CartActivity" />
         <activity android:name=".Client.Activities.FoodDetailsActivity" />

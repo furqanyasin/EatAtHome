@@ -15,9 +15,22 @@ import java.util.List;
 
 public class Database extends SQLiteAssetHelper {
 
+    private static Database sInstance;
+
     private static final String DATABASE = "EATATHOME.db";
     private static final int VERSION = 1;
 
+
+    public static Database getInstance(Context context) {
+
+        // Use the application context, which will ensure that you
+        // don't accidentally leak an Activity's context.
+        // See this article for more information: http://bit.ly/6LRzfx
+        if (sInstance == null) {
+            sInstance = new Database(context.getApplicationContext());
+        }
+        return sInstance;
+    }
     public Database(Context context) {
         super(context, DATABASE, null, VERSION);
     }

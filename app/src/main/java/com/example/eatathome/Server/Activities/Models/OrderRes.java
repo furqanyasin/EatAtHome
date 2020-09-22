@@ -2,52 +2,51 @@ package com.example.eatathome.Server.Activities.Models;
 
 public class OrderRes {
 
-    private String ProductId;
-    private String ProductName;
-    private String Quantity;
-    private String Price;
+    private String productId;
+    private String productName;
+    private String quantity;
+    private String price;
 
     public OrderRes(){
 
     }
 
-    public OrderRes(String productId, String productName, String quantity, String price, String image) {
-        ProductId = productId;
-        ProductName = productName;
-        Quantity = quantity;
-        Price = price;
+    public OrderRes(String productId, String productName, String quantity, String price) {
+        this.productId = productId;
+        this.productName = productName;
+        this.quantity = quantity;
+        this.price = price;
     }
 
     public String getProductId() {
-        return ProductId;
+        return productId;
     }
 
     public void setProductId(String productId) {
-        ProductId = productId;
+        this.productId = productId;
     }
 
     public String getProductName() {
-        return ProductName;
+        return productName;
     }
 
     public void setProductName(String productName) {
-        ProductName = productName;
+        this.productName = productName;
     }
 
     public String getQuantity() {
-        return Quantity;
+        return quantity;
     }
 
     public void setQuantity(String quantity) {
-        Quantity = quantity;
+        this.quantity = quantity;
     }
 
     public String getPrice() {
-        return Price;
+        return price;
     }
 
     public void setPrice(String price) {
-        Price = price;
+        this.price = price;
     }
-
 }

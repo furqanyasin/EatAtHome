@@ -29,7 +29,7 @@ public class OrderViewHolderRes extends RecyclerView.ViewHolder {
         btnEdit = itemView.findViewById(R.id.btnEdit);
         btnRemove = itemView.findViewById(R.id.btnRemove);
         btnDetail = itemView.findViewById(R.id.btnDetail);
-        btnDirection = itemView.findViewById(R.id.btnDirection);
+        btnDirection = itemView.findViewById(R.id.btnShipping);
 
     }
 }

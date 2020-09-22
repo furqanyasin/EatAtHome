@@ -52,7 +52,7 @@ public class ViewCommentActivityRes extends AppCompatActivity {
         setContentView(R.layout.activity_view_comment);
 
         //Init SwipeRefreshLayout view
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
+        swipeRefreshLayout =  findViewById(R.id.swipe_layout);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary,
                 android.R.color.holo_green_dark,
                 android.R.color.holo_orange_dark,
@@ -85,9 +85,9 @@ public class ViewCommentActivityRes extends AppCompatActivity {
 
         //Firebase
         database = FirebaseDatabase.getInstance();
-        ratingDb = database.getReference("Rating");
+        ratingDb = database.getReference("Ratings");
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_comment);
+        recyclerView =  findViewById(R.id.recycler_comment);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
@@ -118,7 +118,7 @@ public class ViewCommentActivityRes extends AppCompatActivity {
             @Override
             public ShowCommentViewHolderRes onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.show_comment_layout, parent, false);
+                        .inflate(R.layout.show_comment_layout_res, parent, false);
                 return new ShowCommentViewHolderRes(view);
             }
         };

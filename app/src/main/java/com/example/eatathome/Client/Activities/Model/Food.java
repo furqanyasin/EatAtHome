@@ -3,57 +3,57 @@ package com.example.eatathome.Client.Activities.Model;
 
 public class Food {
 
-    private String Name,Image,Description,Price,MenuId;
+    private String name,image,description,price,menuId;
 
     public Food(){
 
     }
 
-    public Food(String name, String image, String description, String price, String menuId ){
-        Name=name;
-        Image=image;
-        Description=description;
-        Price=price;
-        MenuId=menuId;
+    public Food(String name, String image, String description, String price, String menuId) {
+        this.name = name;
+        this.image = image;
+        this.description = description;
+        this.price = price;
+        this.menuId = menuId;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
 
     public String getImage() {
-        return Image;
+        return image;
     }
 
     public void setImage(String image) {
-        Image = image;
+        this.image = image;
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
     public void setDescription(String description) {
-        Description = description;
+        this.description = description;
     }
 
     public String getPrice() {
-        return Price;
+        return price;
     }
 
     public void setPrice(String price) {
-        Price = price;
+        this.price = price;
     }
 
     public String getMenuId() {
-        return MenuId;
+        return menuId;
     }
 
     public void setMenuId(String menuId) {
-        MenuId = menuId;
+        this.menuId = menuId;
     }
 }

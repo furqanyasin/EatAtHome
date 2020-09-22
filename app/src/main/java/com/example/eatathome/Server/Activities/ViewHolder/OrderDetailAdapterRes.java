@@ -29,11 +29,7 @@ public class OrderDetailAdapterRes extends RecyclerView.Adapter<MyViewHolderRes>
 
     List<OrderRes> myOrders;
 
-/*    public OrderDetailAdapter(List<Order> myOrders) {
-        this.myOrders = myOrders;
-    }*/
-
-    public OrderDetailAdapterRes(List<OrderRes> foods) {
+    public OrderDetailAdapterRes(List<OrderRes> myOrders) {
         this.myOrders = myOrders;
     }
 

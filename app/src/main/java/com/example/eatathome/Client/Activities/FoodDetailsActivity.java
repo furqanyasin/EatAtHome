@@ -2,7 +2,9 @@ package com.example.eatathome.Client.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -16,8 +18,13 @@ import com.example.eatathome.Client.Activities.Database.Database;
 import com.example.eatathome.Client.Activities.Model.Food;
 import com.example.eatathome.Client.Activities.Model.Order;
 import com.example.eatathome.Client.Activities.Model.Rating;
+import com.example.eatathome.Client.Activities.ViewHolder.ShowCommentViewHolder;
 import com.example.eatathome.R;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
+import com.example.eatathome.Server.Activities.Models.RatingRes;
+import com.example.eatathome.Server.Activities.ViewHolder.ShowCommentViewHolderRes;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -42,7 +49,7 @@ public class FoodDetailsActivity extends AppCompatActivity implements RatingDial
     CollapsingToolbarLayout collapsingToolbarLayout;
     FloatingActionButton btnCart, btnRating;
     ElegantNumberButton numberButton;
-    RatingBar ratingBar = null;
+    RatingBar ratingBar;
     MaterialButton showComment;
 
     FirebaseDatabase database;
@@ -124,6 +131,7 @@ public class FoodDetailsActivity extends AppCompatActivity implements RatingDial
             }
         }
     }
+
 
     private void getRatingsFood(String foodId) {
         Query foodRating = ratingsTable.orderByChild("foodId").equalTo(foodId);
@@ -208,6 +216,28 @@ public class FoodDetailsActivity extends AppCompatActivity implements RatingDial
                 comments,
                 currentFood.getImage()
         );
+
+       /* ratingsTable.child(Constant.currentUser.getPhone()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.child(Constant.currentUser.getPhone()).exists())
+                {
+
+                    ratingsTable.child(Constant.currentUser.getPhone()).removeValue();
+
+                    ratingsTable.child(Constant.currentUser.getPhone()).setValue(rating);
+
+                }else
+
+                    ratingsTable.child(Constant.currentUser.getPhone()).setValue(rating);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });*/
 
         //Fix user can rate multiple time
         ratingsTable.push()

@@ -13,6 +13,7 @@ import androidx.core.app.NotificationCompat;
 import com.example.eatathome.Client.Activities.Constant.Constant;
 import com.example.eatathome.Client.Activities.Helper.NotificationHelper;
 import com.example.eatathome.Client.Activities.OrderStatusActivity;
+import com.example.eatathome.Client.Activities.RestaurantListActivity;
 import com.example.eatathome.Client.Activities.SignInActivity;
 import com.example.eatathome.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -50,7 +51,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
 
     private void sendNotification(RemoteMessage remoteMessage) {
         RemoteMessage.Notification notification = remoteMessage.getNotification();
-        Intent intent = new Intent(this, SignInActivity.class);
+        Intent intent = new Intent(this, RestaurantListActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 

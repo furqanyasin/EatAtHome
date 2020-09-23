@@ -354,8 +354,8 @@ public class TrackingOrderActivity extends FragmentActivity implements OnMapRead
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mDialog.show();
             mDialog.setMessage("Please waiting...");
+            mDialog.show();
 
         }
 
@@ -363,7 +363,6 @@ public class TrackingOrderActivity extends FragmentActivity implements OnMapRead
         protected List<List<HashMap<String, String>>> doInBackground(String... strings) {
 
             JSONObject jsonObject;
-
             List<List<HashMap<String, String>>> routes = null;
 
             try {

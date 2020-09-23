@@ -61,8 +61,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -285,7 +283,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
                             mLastLocation.getLongitude()))
                             .enqueue(new Callback<String>() {
                                 @Override
-                                public void onResponse(@NotNull Call<String> call, @NotNull Response<String> response) {
+                                public void onResponse( Call<String> call,  Response<String> response) {
                                     // if fetch API ok
                                     try {
                                         assert response.body() != null;
@@ -307,7 +305,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
                                 }
 
                                 @Override
-                                public void onFailure(@NotNull Call<String> call, @NotNull Throwable t) {
+                                public void onFailure( Call<String> call,  Throwable t) {
                                     Toast.makeText(CartActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             });
@@ -422,7 +420,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
         DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
 
         //get all node with isServerToken is true
-        Query data = tokens.orderByChild("serverToken").equalTo(true);
+        Query data = tokens.orderByChild("isServerToken").equalTo(true);
         data.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -451,7 +449,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
                         }
 
                         @Override
-                        public void onFailure(@NotNull Call<MyResponse> call, @NotNull Throwable t) {
+                        public void onFailure( Call<MyResponse> call,  Throwable t) {
                             Log.e("ERROR", Objects.requireNonNull(t.getMessage()));
                         }
                     });
@@ -460,7 +458,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
             }
 
             @Override
-            public void onCancelled(@NotNull DatabaseError databaseError) {
+            public void onCancelled( DatabaseError databaseError) {
 
             }
         });

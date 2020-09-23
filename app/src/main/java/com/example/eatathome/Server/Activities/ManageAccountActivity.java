@@ -45,9 +45,9 @@ public class ManageAccountActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_account);
-        //Init view
+
         //Init View
-        fabAddStaff = (FloatingActionButton) findViewById(R.id.fab_add_staff);
+        fabAddStaff =  findViewById(R.id.fab_add_staff);
         fabAddStaff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,7 +58,7 @@ public class ManageAccountActivity extends AppCompatActivity {
         db = FirebaseDatabase.getInstance();
         users = db.getReference(ConstantRes.Staff_TABLE);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_account);
+        recyclerView =  findViewById(R.id.recycler_account);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         loadAccount();

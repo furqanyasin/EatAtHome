@@ -60,7 +60,7 @@ public class UpdateUsernameActivity extends AppCompatActivity {
                     Toast.makeText(UpdateUsernameActivity.this, "Username is Empty!", Toast.LENGTH_SHORT).show();
                 } else {
 
-                    Constant.currentUser.setname(username.getText().toString());
+                    Constant.currentUser.setName(username.getText().toString());
 
                     FirebaseDatabase.getInstance().getReference("User")
                             .child(Constant.currentUser.getPhone())

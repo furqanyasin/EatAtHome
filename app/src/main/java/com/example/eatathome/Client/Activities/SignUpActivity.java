@@ -71,7 +71,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                     } else {
                         mDialog.dismiss();
-                        User clientUsers = new User(phoneNumber, name, password, secureCode);
+                        User clientUsers = new User(name,password,  phoneNumber,null , secureCode,null,null);
                         table_users.child(phoneNumber).setValue(clientUsers);
                         Toast.makeText(SignUpActivity.this, "Sign Up Successfully", Toast.LENGTH_SHORT).show();
                         finish();

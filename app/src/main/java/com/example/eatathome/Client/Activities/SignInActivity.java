@@ -80,7 +80,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                         mDialog.dismiss();
                         User clientUsers = dataSnapshot.child(user).getValue(User.class);
                         clientUsers.setPhone(user);
-                        if (clientUsers.getpassword().equals(password)) {
+                        if (clientUsers.getPassword().equals(password)) {
                             Toast.makeText(SignInActivity.this, "Sign In Successfully !", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(SignInActivity.this, RestaurantListActivity.class);
                             Constant.currentUser = clientUsers;
@@ -150,7 +150,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                         User user = dataSnapshot.child(phone).getValue(User.class);
 
                         if (user.getSecureCode().equals(secureCode))
-                            Toast.makeText(SignInActivity.this, "Your Password " + user.getpassword(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignInActivity.this, "Your Password " + user.getPassword(), Toast.LENGTH_SHORT).show();
                         else
                             Toast.makeText(SignInActivity.this, "Wrong Secure Code", Toast.LENGTH_SHORT).show();
                     }
@@ -205,7 +205,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                         mDialog.dismiss();
                         User clientUsers = dataSnapshot.child(activitySignInBinding.etPhoneNumber.getText().toString()).getValue(User.class);
                         clientUsers.setPhone(activitySignInBinding.etPhoneNumber.getText().toString());
-                        if (clientUsers.getpassword().equals(activitySignInBinding.etPassword.getText().toString())) {
+                        if (clientUsers.getPassword().equals(activitySignInBinding.etPassword.getText().toString())) {
                             Toast.makeText(SignInActivity.this, "Sign In Successfully !", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(SignInActivity.this, RestaurantListActivity.class);
                             Constant.currentUser = clientUsers;

@@ -8,27 +8,44 @@ public class User {
     private String isstaff;
     private String secureCode;
     private String homeAddress;
-    private String images;
+    private String image;
 
     public User(){
 
     }
 
-    public User(String Pname, String Ppassword, String PsecureCode,String image ){
-        name = Pname;
-        password = Ppassword;
-        isstaff = "false";
-        secureCode = PsecureCode;
-        images = image;
-    }
-
-
-    public String getSecureCode() {
-        return secureCode;
-    }
-
-    public void setSecureCode(String secureCode) {
+    public User(String name, String password, String phone, String isstaff, String secureCode, String homeAddress, String image) {
+        this.name = name;
+        this.password = password;
+        this.phone = phone;
+        this.isstaff = "false";
         this.secureCode = secureCode;
+        this.homeAddress = homeAddress;
+        this.image = image;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getIsstaff() {
@@ -39,33 +56,12 @@ public class User {
         this.isstaff = isstaff;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getSecureCode() {
+        return secureCode;
     }
 
-    public void setPhone(String Pphone) {
-        phone = Pphone;
-    }
-
-    public String getName(){
-        return name;
-    }
-
-    public String getImage() {
-        return images;
-    }
-
-    public void setImage(String image) {
-        images = image;
-    }
-
-    public String setname(String Pname){
-        name= Pname;
-        return name;
-    }
-
-    public String getpassword(){
-        return password;
+    public void setSecureCode(String secureCode) {
+        this.secureCode = secureCode;
     }
 
     public String getHomeAddress() {
@@ -74,5 +70,13 @@ public class User {
 
     public void setHomeAddress(String homeAddress) {
         this.homeAddress = homeAddress;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

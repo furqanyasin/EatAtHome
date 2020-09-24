@@ -46,12 +46,15 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
@@ -65,6 +68,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -110,11 +114,22 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
     //declare root layout
     RelativeLayout rootLayout;
 
+    private Place placeSelected;
+    private AutocompleteSupportFragment places_fragment;
+    private PlacesClient placesClient;
+    private List<Place.Field> placesField = Arrays.asList(Place.Field.ID,
+            Place.Field.NAME,
+            Place.Field.ADDRESS,
+            Place.Field.LAT_LNG);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
+
+        Places.initialize(this, getString(R.string.google_maps_key));
+        placesClient = Places.createClient(this);
 
 
         //Runtime permission
@@ -145,6 +160,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
         //Firebase
         database = FirebaseDatabase.getInstance();
         requests = database.getReference("Requests");
+
 
         //Init
         recyclerView = findViewById(R.id.listCart);
@@ -212,26 +228,53 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(CartActivity.this, R.style.Theme_AppCompat_DayNight_Dialog_Alert);
         alertDialog.setTitle("One more step!");
-        alertDialog.setMessage("Enter your address: ");
+        alertDialog.setMessage("Please Enter your address");
 
         LayoutInflater inflater = this.getLayoutInflater();
         View order_address_comment = inflater.inflate(R.layout.order_address_comment, null);
 
-        final PlaceAutocompleteFragment edtAddress = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        final TextInputEditText edtComment = order_address_comment.findViewById(R.id.et_edtComment);
+
+        //radio button
+        final RadioButton rdyShipToAddress = order_address_comment.findViewById(R.id.rdyShipToAddress);
+        final RadioButton rdyHomeAddress = order_address_comment.findViewById(R.id.rdyHomeAddress);
+        final RadioButton cashOnDelivery = order_address_comment.findViewById(R.id.cashOnDelivery);
+
+
+        places_fragment = (AutocompleteSupportFragment)getSupportFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        assert places_fragment != null;
+        places_fragment.setPlaceFields(placesField);
+        places_fragment.setCountry("PK");
+        places_fragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(@NonNull Place place) {
+                placeSelected = place;
+                rdyHomeAddress.setText(place.getAddress());
+
+            }
+
+            @Override
+            public void onError(@NonNull Status status) {
+                Toast.makeText(CartActivity.this, ""+status.getStatusMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+       // final PlaceAutocompleteFragment edtAddress = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
      /*   SupportPlaceAutocompleteFragment edtAddress = (SupportPlaceAutocompleteFragment) getChildFragmentManager()
                         .findFragmentById(R.id.place_autocomplete_fragment);*/
 
-
-        //Hide search icon before fragment
-        Objects.requireNonNull(edtAddress.getView()).findViewById(R.id.place_autocomplete_search_button).setVisibility(View.VISIBLE);
+/*        //Hide search icon before fragment
+        places_fragment.requireView().findViewById(R.id.place_autocomplete_search_button).setVisibility(View.VISIBLE);
 
         //set hint for Autocomplete EditText
-        ((EditText) edtAddress.getView().findViewById(R.id.place_autocomplete_search_input)).setHint("Enter your address");
+        ((EditText) places_fragment.getView().findViewById(R.id.place_autocomplete_search_input)).setHint("Enter your address");
 
         //set text size
-        ((EditText) edtAddress.getView().findViewById(R.id.place_autocomplete_search_input)).setTextSize(14);
+        ((EditText) places_fragment.getView().findViewById(R.id.place_autocomplete_search_input)).setTextSize(14);*/
 
-        //get address from place autocomplete
+   /*     //get address from place autocomplete
         edtAddress.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
@@ -243,14 +286,8 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
                 assert status.getStatusMessage() != null;
                 Log.e("ERROR", status.getStatusMessage());
             }
-        });
+        });*/
 
-        final TextInputEditText edtComment = order_address_comment.findViewById(R.id.et_edtComment);
-
-        //radio button
-        final RadioButton rdyShipToAddress = order_address_comment.findViewById(R.id.rdyShipToAddress);
-        final RadioButton rdyHomeAddress = order_address_comment.findViewById(R.id.rdyHomeAddress);
-        final RadioButton cashOnDelivery = order_address_comment.findViewById(R.id.cashOnDelivery);
 
 
         //radio event
@@ -262,8 +299,11 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
                     if (Constant.currentUser.getHomeAddress() != null ||
                             !TextUtils.isEmpty(Constant.currentUser.getHomeAddress())) {
                         address = Constant.currentUser.getHomeAddress();
-                        ((EditText) edtAddress.getView().findViewById(R.id.place_autocomplete_search_input))
-                                .setText(address);
+                        places_fragment.setText(address);
+
+
+
+
                     } else {
                         Toast.makeText(CartActivity.this, "Please Update Home Address!", Toast.LENGTH_SHORT).show();
                     }
@@ -296,8 +336,10 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
                                         address = firstObject.getString("formatted_address");
 
                                         //set this address to edtAddress
-                                        ((EditText) edtAddress.getView().findViewById(R.id.place_autocomplete_search_input))
-                                                .setText(address);
+                                        places_fragment.setText(address);
+
+                                    /*    ((EditText) places_fragment.getView().findViewById(R.id.place_autocomplete_search_input))
+                                                .setText(address);*/
 
                                     } catch (JSONException e) {
                                         e.printStackTrace();

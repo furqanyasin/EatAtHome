@@ -69,10 +69,8 @@ public class Constant {
             return "Preparing Orders";
         else if(status.equals("2"))
             return "Shipping";
-        else if(status.equals("3"))
-            return "Delivered";
         else
-            return "";
+            return "Delivered";
     }
 
     public static Bitmap scaleBitmap(Bitmap bitmap, int newWidth, int newHight)

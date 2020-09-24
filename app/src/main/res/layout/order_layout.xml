@@ -127,7 +127,7 @@
                     android:textAllCaps="true"
                     android:textStyle="italic"
                     android:textColor="@android:color/holo_red_dark"
-                    android:text=""/>
+                    android:text="placed"/>
 
             </LinearLayout>
 
@@ -227,8 +227,10 @@
             android:layout_weight="1"
             android:text="@string/confirm_ship"
             android:textAllCaps="false"
-            android:textColor="@color/colorBlack"
-            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:theme="@style/Theme.MyApp"
+            app:backgroundTint="@color/btnColorLightGreen"
+            android:textSize="12sp"
             app:cornerRadius="8dp"
             tools:ignore="ButtonStyle,NestedWeights" />
 
@@ -239,8 +241,10 @@
             android:layout_weight="1"
             android:text="@string/direction"
             android:textAllCaps="false"
-            android:textColor="@color/colorBlack"
-            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:theme="@style/Theme.MyApp"
+            app:backgroundTint="@color/btnColorLightGreen"
+            android:textSize="12sp"
             app:cornerRadius="8dp"
             tools:ignore="ButtonStyle" />
 
@@ -252,8 +256,10 @@
             android:layout_weight="1"
             android:text="@string/delete_order"
             android:textAllCaps="false"
-            android:textColor="@color/colorBlack"
-            android:textSize="16sp"
+            android:textSize="12sp"
+            android:textColor="@android:color/white"
+            android:theme="@style/Theme.MyApp"
+            app:backgroundTint="@color/btnColorLightGreen"
             tools:ignore="ButtonStyle"
             app:cornerRadius="8dp" />
 

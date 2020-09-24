@@ -116,8 +116,10 @@
                 android:layout_weight="1"
                 android:text="@string/edit"
                 android:textAllCaps="false"
-                android:textColor="@color/colorBlack"
-                android:textSize="16sp"
+                android:textColor="@android:color/white"
+                android:theme="@style/Theme.MyApp"
+                app:backgroundTint="@color/btnColorLightGreen"
+                android:textSize="12sp"
                 app:cornerRadius="8dp"
                 tools:ignore="ButtonStyle,NestedWeights" />
 
@@ -128,8 +130,10 @@
                 android:layout_weight="1"
                 android:text="@string/remove"
                 android:textAllCaps="false"
-                android:textColor="@color/colorBlack"
-                android:textSize="16sp"
+                android:textSize="12sp"
+                android:textColor="@android:color/white"
+                android:theme="@style/Theme.MyApp"
+                app:backgroundTint="@color/btnColorLightGreen"
                 tools:ignore="ButtonStyle"
                 app:cornerRadius="8dp" />
 
@@ -140,8 +144,10 @@
                 android:layout_weight="1"
                 android:text="@string/details"
                 android:textAllCaps="false"
-                android:textColor="@color/colorBlack"
-                android:textSize="16sp"
+                android:textColor="@android:color/white"
+                android:theme="@style/Theme.MyApp"
+                app:backgroundTint="@color/btnColorLightGreen"
+                android:textSize="12sp"
                 app:cornerRadius="8dp"
                 tools:ignore="ButtonStyle" />
 
@@ -152,8 +158,10 @@
                 android:layout_weight="1"
                 android:text="@string/shipping"
                 android:textAllCaps="false"
-                android:textColor="@color/colorBlack"
-                android:textSize="16sp"
+                android:textColor="@android:color/white"
+                android:theme="@style/Theme.MyApp"
+                app:backgroundTint="@color/btnColorLightGreen"
+                android:textSize="12sp"
                 app:cornerRadius="8dp"
                 tools:ignore="ButtonStyle" />
 

@@ -14,10 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eatathome.Interface.ItemClickListener;
-import com.example.eatathome.Client.Activities.Model.Category;
+import com.example.eatathome.Client.Model.Category;
 import com.example.eatathome.R;
-import com.example.eatathome.Client.Activities.ViewHolder.MenuViewHolder;
-import com.example.eatathome.Client.Activities.Constant.Constant;
+import com.example.eatathome.Client.ViewHolder.MenuViewHolder;
+import com.example.eatathome.Client.Constant.Constant;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;

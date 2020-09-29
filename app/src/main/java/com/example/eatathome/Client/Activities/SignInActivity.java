@@ -13,8 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
-import com.example.eatathome.Client.Activities.Constant.Constant;
-import com.example.eatathome.Client.Activities.Model.User;
+import com.example.eatathome.Client.Constant.Constant;
+import com.example.eatathome.Client.Model.User;
 import com.example.eatathome.R;
 import com.example.eatathome.databinding.ActivitySignInBinding;
 import com.google.android.material.textfield.TextInputEditText;

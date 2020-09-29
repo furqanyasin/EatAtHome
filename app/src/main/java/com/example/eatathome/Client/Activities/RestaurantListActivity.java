@@ -23,10 +23,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eatathome.Interface.ItemClickListener;
-import com.example.eatathome.Client.Activities.Model.Restaurant;
-import com.example.eatathome.Client.Activities.Model.Token;
-import com.example.eatathome.Client.Activities.Constant.Constant;
-import com.example.eatathome.Client.Activities.ViewHolder.RestaurantViewHolder;
+import com.example.eatathome.Client.Model.Restaurant;
+import com.example.eatathome.Client.Model.Token;
+import com.example.eatathome.Client.Constant.Constant;
+import com.example.eatathome.Client.ViewHolder.RestaurantViewHolder;
 import com.example.eatathome.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;

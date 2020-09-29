@@ -8,8 +8,8 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.example.eatathome.R;
-import com.example.eatathome.Server.Activities.Constant.ConstantRes;
-import com.example.eatathome.Server.Activities.ViewHolder.OrderDetailAdapterRes;
+import com.example.eatathome.Server.Constant.ConstantRes;
+import com.example.eatathome.Server.ViewHolder.OrderDetailAdapterRes;
 
 public class OrderDetailActivity extends AppCompatActivity {
 

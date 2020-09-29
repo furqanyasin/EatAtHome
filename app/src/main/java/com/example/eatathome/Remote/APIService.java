@@ -1,7 +1,7 @@
 package com.example.eatathome.Remote;
 
-import com.example.eatathome.Client.Activities.Model.MyResponse;
-import com.example.eatathome.Client.Activities.Model.Sender;
+import com.example.eatathome.Client.Model.MyResponse;
+import com.example.eatathome.Client.Model.Sender;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

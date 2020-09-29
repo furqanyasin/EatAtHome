@@ -7,9 +7,9 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.eatathome.Administrator.ConstantAdmin;
 import com.example.eatathome.Interface.ItemClickListener;
 import com.example.eatathome.R;
-import com.example.eatathome.Server.Activities.Constant.ConstantRes;
 
 public class RestaurantsAdminViewHolder extends RecyclerView.ViewHolder implements
         View.OnClickListener, View.OnCreateContextMenuListener {
@@ -46,8 +46,8 @@ public class RestaurantsAdminViewHolder extends RecyclerView.ViewHolder implemen
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 
         menu.setHeaderTitle("Select the action");
-        menu.add(0, 0, getAdapterPosition(), ConstantRes.UPDATE);
-        menu.add(0, 1, getAdapterPosition(), ConstantRes.DELETE);
+        menu.add(0, 0, getAdapterPosition(), ConstantAdmin.UPDATE);
+        menu.add(0, 1, getAdapterPosition(), ConstantAdmin.DELETE);
 
     }
 }

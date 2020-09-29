@@ -24,10 +24,10 @@ import android.widget.Toast;
 
 import com.example.eatathome.Interface.ItemClickListener;
 import com.example.eatathome.R;
-import com.example.eatathome.Server.Activities.Constant.ConstantRes;
-import com.example.eatathome.Server.Activities.Models.CategoryRes;
-import com.example.eatathome.Server.Activities.Models.TokenRes;
-import com.example.eatathome.Server.Activities.ViewHolder.CategoryViewHolderRes;
+import com.example.eatathome.Server.Constant.ConstantRes;
+import com.example.eatathome.Server.Models.CategoryRes;
+import com.example.eatathome.Server.Models.TokenRes;
+import com.example.eatathome.Server.ViewHolder.CategoryViewHolderRes;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -54,7 +54,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
-import static com.example.eatathome.Server.Activities.Constant.ConstantRes.PICK_IMAGE_REQUEST;
+import static com.example.eatathome.Server.Constant.ConstantRes.PICK_IMAGE_REQUEST;
 
 public class MainAdminActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {

@@ -17,9 +17,9 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.eatathome.R;
-import com.example.eatathome.Server.Activities.Constant.ConstantRes;
-import com.example.eatathome.Server.Activities.Models.UserRes;
-import com.example.eatathome.Server.Activities.ViewHolder.UserViewHolderRes;
+import com.example.eatathome.Server.Constant.ConstantRes;
+import com.example.eatathome.Server.Models.UserRes;
+import com.example.eatathome.Server.ViewHolder.UserViewHolderRes;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;

@@ -10,13 +10,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.example.eatathome.Client.Activities.Constant.Constant;
-import com.example.eatathome.Client.Activities.Database.Database;
-import com.example.eatathome.Client.Activities.Helper.RecyclerItemTouchHelper;
+import com.example.eatathome.Client.Constant.Constant;
+import com.example.eatathome.Client.Database.Database;
+import com.example.eatathome.Client.Helper.RecyclerItemTouchHelper;
 import com.example.eatathome.Interface.RecyclerItemTouchHelperListener;
-import com.example.eatathome.Client.Activities.Model.Favorites;
-import com.example.eatathome.Client.Activities.ViewHolder.FavoritesAdapter;
-import com.example.eatathome.Client.Activities.ViewHolder.FavoritesViewHolder;
+import com.example.eatathome.Client.Model.Favorites;
+import com.example.eatathome.Client.ViewHolder.FavoritesAdapter;
+import com.example.eatathome.Client.ViewHolder.FavoritesViewHolder;
 import com.example.eatathome.R;
 import com.google.android.material.snackbar.Snackbar;
 

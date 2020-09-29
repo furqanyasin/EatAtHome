@@ -10,10 +10,9 @@ import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.eatathome.Client.Activities.Model.User;
 import com.example.eatathome.R;
-import com.example.eatathome.Server.Activities.Constant.ConstantRes;
-import com.example.eatathome.Server.Activities.Models.UserRes;
+import com.example.eatathome.Server.Constant.ConstantRes;
+import com.example.eatathome.Server.Models.UserRes;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DataSnapshot;

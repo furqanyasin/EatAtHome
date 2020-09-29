@@ -18,8 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.eatathome.R;
-import com.example.eatathome.Server.Activities.Constant.ConstantRes;
-import com.example.eatathome.Server.Activities.Constant.DirectionJSONParserRes;
+import com.example.eatathome.Server.Constant.ConstantRes;
+import com.example.eatathome.Server.Constant.DirectionJSONParserRes;
 import com.example.eatathome.Remote.IGeoCoordinatesRes;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;

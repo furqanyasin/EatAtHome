@@ -13,14 +13,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.eatathome.Client.Activities.Database.Database;
+import com.example.eatathome.Client.Database.Database;
 import com.example.eatathome.Interface.ItemClickListener;
-import com.example.eatathome.Client.Activities.Model.Favorites;
-import com.example.eatathome.Client.Activities.Model.Food;
-import com.example.eatathome.Client.Activities.Model.Order;
-import com.example.eatathome.Client.Activities.ViewHolder.FoodViewHolder;
+import com.example.eatathome.Client.Model.Favorites;
+import com.example.eatathome.Client.Model.Food;
+import com.example.eatathome.Client.Model.Order;
+import com.example.eatathome.Client.ViewHolder.FoodViewHolder;
 import com.example.eatathome.R;
-import com.example.eatathome.Client.Activities.Constant.Constant;
+import com.example.eatathome.Client.Constant.Constant;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -101,9 +101,9 @@ public class FoodListActivity extends AppCompatActivity {
                 .build();
 
 
-        adapter = new FirebaseRecyclerAdapter<Food, com.example.eatathome.Client.Activities.ViewHolder.FoodViewHolder>(foodOptions) {
+        adapter = new FirebaseRecyclerAdapter<Food, com.example.eatathome.Client.ViewHolder.FoodViewHolder>(foodOptions) {
             @Override
-            protected void onBindViewHolder(@NonNull final com.example.eatathome.Client.Activities.ViewHolder.FoodViewHolder viewHolder, final int position, @NonNull final Food model) {
+            protected void onBindViewHolder(@NonNull final com.example.eatathome.Client.ViewHolder.FoodViewHolder viewHolder, final int position, @NonNull final Food model) {
 
                 viewHolder.food_name.setText(model.getName());
                 viewHolder.food_price.setText(String.format("%s", model.getPrice().toString()));
@@ -191,10 +191,10 @@ public class FoodListActivity extends AppCompatActivity {
 
             @NonNull
             @Override
-            public com.example.eatathome.Client.Activities.ViewHolder.FoodViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            public com.example.eatathome.Client.ViewHolder.FoodViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View itemView = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.food_item, parent, false);
-                return new com.example.eatathome.Client.Activities.ViewHolder.FoodViewHolder(itemView);
+                return new com.example.eatathome.Client.ViewHolder.FoodViewHolder(itemView);
             }
         };
         adapter.startListening();

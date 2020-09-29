@@ -1,7 +1,6 @@
 package com.example.eatathome.Administrator;
 
 import com.example.eatathome.Administrator.Model.UserAdministrator;
-import com.example.eatathome.Server.Activities.Models.UserRes;
 
 public class ConstantAdmin {
 

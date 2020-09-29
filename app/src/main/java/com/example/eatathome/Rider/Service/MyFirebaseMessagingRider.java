@@ -10,10 +10,7 @@ import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 
-import com.example.eatathome.Client.Activities.Constant.Constant;
-import com.example.eatathome.Client.Activities.Helper.NotificationHelper;
-import com.example.eatathome.Client.Activities.OrderStatusActivity;
-import com.example.eatathome.Client.Activities.SignInActivity;
+import com.example.eatathome.Client.Helper.NotificationHelper;
 import com.example.eatathome.MainActivity;
 import com.example.eatathome.R;
 import com.example.eatathome.Rider.Activities.HomeActivityRider;

@@ -16,8 +16,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.eatathome.Client.Activities.Constant.Constant;
-import com.example.eatathome.Client.Activities.Model.User;
+import com.example.eatathome.Client.Constant.Constant;
+import com.example.eatathome.Client.Model.User;
 import com.example.eatathome.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;

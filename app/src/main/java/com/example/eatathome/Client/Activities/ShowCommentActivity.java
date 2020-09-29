@@ -11,10 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.eatathome.Client.Activities.Model.Rating;
-import com.example.eatathome.Client.Activities.ViewHolder.ShowCommentViewHolder;
-import com.example.eatathome.Client.Activities.Constant.Constant;
-import com.example.eatathome.Client.Activities.Constant.NumberOfFood;
+import com.example.eatathome.Client.Model.Rating;
+import com.example.eatathome.Client.ViewHolder.ShowCommentViewHolder;
+import com.example.eatathome.Client.Constant.Constant;
+import com.example.eatathome.Client.Constant.NumberOfFood;
 import com.example.eatathome.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;

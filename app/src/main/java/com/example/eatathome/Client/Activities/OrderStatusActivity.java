@@ -14,10 +14,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.eatathome.Client.Activities.Model.Request;
-import com.example.eatathome.Client.Activities.ViewHolder.OrderViewHolder;
+import com.example.eatathome.Client.Model.Request;
+import com.example.eatathome.Client.ViewHolder.OrderViewHolder;
 import com.example.eatathome.R;
-import com.example.eatathome.Client.Activities.Constant.Constant;
+import com.example.eatathome.Client.Constant.Constant;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.SnapshotParser;

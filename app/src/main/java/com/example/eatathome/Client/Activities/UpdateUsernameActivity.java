@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.eatathome.Client.Activities.Constant.Constant;
+import com.example.eatathome.Client.Constant.Constant;
 import com.example.eatathome.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

@@ -15,10 +15,10 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.eatathome.R;
-import com.example.eatathome.Server.Activities.Constant.ConstantRes;
-import com.example.eatathome.Server.Activities.Constant.NumberOfFood;
-import com.example.eatathome.Server.Activities.Models.RatingRes;
-import com.example.eatathome.Server.Activities.ViewHolder.ShowCommentViewHolderRes;
+import com.example.eatathome.Server.Constant.ConstantRes;
+import com.example.eatathome.Server.Constant.NumberOfFood;
+import com.example.eatathome.Server.Models.RatingRes;
+import com.example.eatathome.Server.ViewHolder.ShowCommentViewHolderRes;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;

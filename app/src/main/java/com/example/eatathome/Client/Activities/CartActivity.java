@@ -1,6 +1,7 @@
 package com.example.eatathome.Client.Activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -27,20 +28,20 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.eatathome.Client.Activities.Constant.Constant;
-import com.example.eatathome.Client.Activities.Database.Database;
-import com.example.eatathome.Client.Activities.Helper.RecyclerItemTouchHelper;
+import com.example.eatathome.Client.Constant.Constant;
+import com.example.eatathome.Client.Database.Database;
+import com.example.eatathome.Client.Helper.RecyclerItemTouchHelper;
 import com.example.eatathome.Interface.RecyclerItemTouchHelperListener;
-import com.example.eatathome.Client.Activities.Model.MyResponse;
-import com.example.eatathome.Client.Activities.Model.Notification;
-import com.example.eatathome.Client.Activities.Model.Order;
-import com.example.eatathome.Client.Activities.Model.Request;
-import com.example.eatathome.Client.Activities.Model.Sender;
-import com.example.eatathome.Client.Activities.Model.Token;
+import com.example.eatathome.Client.Model.MyResponse;
+import com.example.eatathome.Client.Model.Notification;
+import com.example.eatathome.Client.Model.Order;
+import com.example.eatathome.Client.Model.Request;
+import com.example.eatathome.Client.Model.Sender;
+import com.example.eatathome.Client.Model.Token;
 import com.example.eatathome.Remote.APIService;
 import com.example.eatathome.Remote.IGoogleService;
-import com.example.eatathome.Client.Activities.ViewHolder.CartAdapter;
-import com.example.eatathome.Client.Activities.ViewHolder.CartViewHolder;
+import com.example.eatathome.Client.ViewHolder.CartAdapter;
+import com.example.eatathome.Client.ViewHolder.CartViewHolder;
 import com.example.eatathome.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -64,9 +65,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -241,7 +244,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
         final RadioButton cashOnDelivery = order_address_comment.findViewById(R.id.cashOnDelivery);
 
 
-        places_fragment = (AutocompleteSupportFragment)getSupportFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        places_fragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         assert places_fragment != null;
         places_fragment.setPlaceFields(placesField);
         places_fragment.setCountry("PK");
@@ -255,13 +258,13 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
 
             @Override
             public void onError(@NonNull Status status) {
-                Toast.makeText(CartActivity.this, ""+status.getStatusMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(CartActivity.this, "" + status.getStatusMessage(), Toast.LENGTH_SHORT).show();
 
             }
         });
 
 
-       // final PlaceAutocompleteFragment edtAddress = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        // final PlaceAutocompleteFragment edtAddress = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
      /*   SupportPlaceAutocompleteFragment edtAddress = (SupportPlaceAutocompleteFragment) getChildFragmentManager()
                         .findFragmentById(R.id.place_autocomplete_fragment);*/
 
@@ -289,7 +292,6 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
         });*/
 
 
-
         //radio event
         rdyHomeAddress.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -300,8 +302,6 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
                             !TextUtils.isEmpty(Constant.currentUser.getHomeAddress())) {
                         address = Constant.currentUser.getHomeAddress();
                         places_fragment.setText(address);
-
-
 
 
                     } else {
@@ -323,7 +323,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
                             mLastLocation.getLongitude()))
                             .enqueue(new Callback<String>() {
                                 @Override
-                                public void onResponse( Call<String> call,  Response<String> response) {
+                                public void onResponse(Call<String> call, Response<String> response) {
                                     // if fetch API ok
                                     try {
                                         assert response.body() != null;
@@ -347,7 +347,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
                                 }
 
                                 @Override
-                                public void onFailure( Call<String> call,  Throwable t) {
+                                public void onFailure(Call<String> call, Throwable t) {
                                     Toast.makeText(CartActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             });
@@ -491,7 +491,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
                         }
 
                         @Override
-                        public void onFailure( Call<MyResponse> call,  Throwable t) {
+                        public void onFailure(Call<MyResponse> call, Throwable t) {
                             Log.e("ERROR", Objects.requireNonNull(t.getMessage()));
                         }
                     });
@@ -500,7 +500,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
             }
 
             @Override
-            public void onCancelled( DatabaseError databaseError) {
+            public void onCancelled(DatabaseError databaseError) {
 
             }
         });

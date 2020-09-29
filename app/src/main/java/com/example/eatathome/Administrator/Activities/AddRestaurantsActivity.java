@@ -2,7 +2,6 @@ package com.example.eatathome.Administrator.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,21 +21,12 @@ import com.example.eatathome.Administrator.ConstantAdmin;
 import com.example.eatathome.Administrator.Model.RestaurantsAdmin;
 import com.example.eatathome.Administrator.ViewHolder.RestaurantsAdminViewHolder;
 import com.example.eatathome.R;
-import com.example.eatathome.Server.Activities.Constant.ConstantRes;
-import com.example.eatathome.Server.Activities.FoodListActivityRes;
-import com.example.eatathome.Server.Activities.MainAdminActivity;
-import com.example.eatathome.Server.Activities.Models.CategoryRes;
-import com.example.eatathome.Server.Activities.Models.FoodRes;
-import com.example.eatathome.Server.Activities.Models.RiderRes;
-import com.example.eatathome.Server.Activities.RiderManagementActivityRes;
-import com.example.eatathome.Server.Activities.ViewHolder.CategoryViewHolderRes;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -50,13 +40,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
-import static com.example.eatathome.Server.Activities.Constant.ConstantRes.PICK_IMAGE_REQUEST;
 
 public class AddRestaurantsActivity extends AppCompatActivity {
 
@@ -255,7 +240,7 @@ public class AddRestaurantsActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == ConstantRes.PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null
+        if (requestCode == ConstantAdmin.PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null
                 && data.getData() != null) {
 
             saveUri = data.getData();
@@ -324,7 +309,7 @@ public class AddRestaurantsActivity extends AppCompatActivity {
 
             showUpdateDialog(adapter.getRef(item.getOrder()).getKey(), adapter.getItem(item.getOrder()));
 
-        } else if (item.getTitle().equals(ConstantRes.DELETE)) {
+        } else if (item.getTitle().equals(ConstantAdmin.DELETE)) {
 
             ConfirmDeleteDialog(item);
         }

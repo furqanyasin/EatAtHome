@@ -50,7 +50,7 @@ public class RiderManagementActivityRes extends AppCompatActivity {
 
 
         //Init View
-        fabAdd = (FloatingActionButton) findViewById(R.id.fab_add);
+        fabAdd =  findViewById(R.id.fab_add);
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,7 +58,7 @@ public class RiderManagementActivityRes extends AppCompatActivity {
             }
         });
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_shippers);
+        recyclerView =  findViewById(R.id.recycler_shippers);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);

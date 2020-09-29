@@ -16,7 +16,7 @@ public class RestaurantViewHolder extends RecyclerView.ViewHolder implements
         View.OnClickListener,
         View.OnCreateContextMenuListener{
 
-    public TextView restaurantName;
+    public TextView restaurantName, restaurantLocation;
     public ImageView restaurantImage;
 
     private ItemClickListener itemClickListener;
@@ -26,6 +26,7 @@ public class RestaurantViewHolder extends RecyclerView.ViewHolder implements
 
         restaurantName = itemView.findViewById(R.id.restaurant_name);
         restaurantImage = itemView.findViewById(R.id.restaurant_image);
+        restaurantLocation = itemView.findViewById(R.id.restaurant_location);
         itemView.setOnClickListener(this);
         itemView.setOnCreateContextMenuListener(this);
 

@@ -1,11 +1,8 @@
-package com.example.eatathome.Server.Activities;
+package com.example.eatathome.Administrator.Activities;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,14 +16,19 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.eatathome.Interface.ItemClickListener;
+import com.example.eatathome.Administrator.ConstantAdmin;
+import com.example.eatathome.Administrator.Model.RestaurantsAdmin;
+import com.example.eatathome.Administrator.ViewHolder.RestaurantsAdminViewHolder;
 import com.example.eatathome.R;
 import com.example.eatathome.Server.Activities.Constant.ConstantRes;
+import com.example.eatathome.Server.Activities.FoodListActivityRes;
+import com.example.eatathome.Server.Activities.MainAdminActivity;
 import com.example.eatathome.Server.Activities.Models.CategoryRes;
-import com.example.eatathome.Server.Activities.Models.TokenRes;
+import com.example.eatathome.Server.Activities.Models.FoodRes;
+import com.example.eatathome.Server.Activities.Models.RiderRes;
+import com.example.eatathome.Server.Activities.RiderManagementActivityRes;
 import com.example.eatathome.Server.Activities.ViewHolder.CategoryViewHolderRes;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -34,7 +36,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DataSnapshot;
@@ -43,7 +44,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -52,263 +52,79 @@ import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import static com.example.eatathome.Server.Activities.Constant.ConstantRes.PICK_IMAGE_REQUEST;
 
-public class MainAdminActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
-
-    TextView txtFullNameAdmin;
+public class AddRestaurantsActivity extends AppCompatActivity {
 
     //Firebase
     FirebaseDatabase database;
-    DatabaseReference categories;
+    DatabaseReference restaurants;
     FirebaseStorage storage;
     StorageReference storageReference;
-    FirebaseRecyclerAdapter<CategoryRes, CategoryViewHolderRes> adapter;
+    FirebaseRecyclerAdapter<RestaurantsAdmin, RestaurantsAdminViewHolder> adapter;
 
     //View
     RecyclerView recycler_menu_admin;
     RecyclerView.LayoutManager layoutManager;
 
     //Add new menu layout
-    TextInputEditText edtName;
+    TextInputEditText edtName, edtId, edtLocation;
     MaterialButton btnUpload, btnSelect;
 
-    CategoryRes newCategory;
+    RestaurantsAdmin newRestaurants;
     Uri saveUri;
-    DrawerLayout drawer_admin;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_main_admin);
-        Toolbar toolbar = findViewById(R.id.toolbar_admin);
-        toolbar.setTitleTextColor(getResources().getColor(R.color.colorWhite));
-        toolbar.setTitle("Category Management");
-        setSupportActionBar(toolbar);
-
-        //Init firebase
+        setContentView(R.layout.activity_add_restaurants);
 
         database = FirebaseDatabase.getInstance();
-        categories = database.getReference("Restaurants").child(ConstantRes.currentUser.getRestaurantId()).child("detail").child("Category");
+        restaurants = database.getReference("Restaurants");
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
-        FloatingActionButton fab = findViewById(R.id.fab_admin);
+
+        FloatingActionButton fab = findViewById(R.id.fab_add_restaurants);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDialog();
+                addRestaurants();
             }
         });
 
-        drawer_admin =  findViewById(R.id.drawer_layout_admin);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer_admin, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer_admin.addDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView =  findViewById(R.id.nav_view_admin);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        //set name for user
-        View headerView = navigationView.getHeaderView(0);
-        txtFullNameAdmin =  headerView.findViewById(R.id.text_full_name);
-        txtFullNameAdmin.setText(ConstantRes.currentUser.getName());
-
         //init view
-        recycler_menu_admin =  findViewById(R.id.recycler_menu_admin);
+        recycler_menu_admin = findViewById(R.id.recycler_restaurants);
         recycler_menu_admin.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recycler_menu_admin.setLayoutManager(layoutManager);
 
-        loadMenu();
-
-        //send token
-        updateToken(FirebaseInstanceId.getInstance().getToken());
+        loadRestaurants();
     }
 
-    private void updateToken(String token) {
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference tokens = db.getReference("Tokens");
-        TokenRes data = new TokenRes(token, true);
-        // false because token send from client app
-
-        tokens.child(ConstantRes.currentUser.getPhone()).setValue(data);
-    }
-
-    private void showDialog() {
-
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainAdminActivity.this, R.style.Theme_AppCompat_DayNight_Dialog_Alert);
-        alertDialog.setTitle("Add New Category");
-        alertDialog.setMessage("Please fill full information");
-
-        LayoutInflater inflater = this.getLayoutInflater();
-        View add_menu_layout = inflater.inflate(R.layout.add_new_category, null);
-
-        edtName = add_menu_layout.findViewById(R.id.et_name_category);
-        btnSelect = add_menu_layout.findViewById(R.id.btn_category_select);
-        btnUpload = add_menu_layout.findViewById(R.id.btn_category_upload);
-
-        //Event for button
-        btnSelect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //let users select image from gallery and save URL of this image
-                chooseImage();
-            }
-        });
-
-        btnUpload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //upload image
-                uploadImage();
-            }
-        });
-
-        alertDialog.setView(add_menu_layout);
-        alertDialog.setIcon(R.drawable.ic_baseline_shopping_cart_24);
-
-        //set Button
-        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                dialog.dismiss();
-
-                //create new category
-                if (newCategory != null) {
-                    categories.push().setValue(newCategory);
-                    Snackbar.make(drawer_admin, " New Category " + newCategory.getName() + " was added ",
-                            Snackbar.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                dialog.dismiss();
-            }
-        });
-
-        alertDialog.show();
-
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null
-                && data.getData() != null) {
-
-            saveUri = data.getData();
-            btnSelect.setText("Image Selected!");
-        }
-    }
-
-    private void chooseImage() {
-
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Image"), PICK_IMAGE_REQUEST);
-
-    }
-
-    private void uploadImage() {
-
-        if (saveUri != null) {
-
-            final ProgressDialog mDialog = new ProgressDialog(this);
-            mDialog.setMessage("Uploading...");
-            mDialog.show();
-
-            String imageName = UUID.randomUUID().toString();
-            final StorageReference imageFolder = storageReference.child("images/" + imageName);
-            imageFolder.putFile(saveUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                    mDialog.dismiss();
-                    Toast.makeText(MainAdminActivity.this, "Uploaded!", Toast.LENGTH_SHORT).show();
-                    imageFolder.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-
-                            //set value for newCategory if image upload and we can get download link
-                            newCategory = new CategoryRes(edtName.getText().toString(), uri.toString());
-                        }
-                    });
-
-                }
-            })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-
-                            mDialog.dismiss();
-                            Toast.makeText(MainAdminActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    })
-
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(@NotNull UploadTask.TaskSnapshot taskSnapshot) {
-
-                            double progress = (100 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                            mDialog.setMessage("Uploading " + progress + " % ");
-
-                        }
-
-
-                    });
-            btnUpload.setText("Image Uploaded");
-        }
-    }
-
-
-    private void loadMenu() {
-
-        FirebaseRecyclerOptions<CategoryRes> options = new FirebaseRecyclerOptions.Builder<CategoryRes>()
-                .setQuery(categories, CategoryRes.class)
+    private void loadRestaurants() {
+        FirebaseRecyclerOptions<RestaurantsAdmin> options = new FirebaseRecyclerOptions.Builder<RestaurantsAdmin>()
+                .setQuery(restaurants, RestaurantsAdmin.class)
                 .build();
-
-        adapter = new FirebaseRecyclerAdapter<CategoryRes, CategoryViewHolderRes>(options) {
+        adapter = new FirebaseRecyclerAdapter<RestaurantsAdmin, RestaurantsAdminViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull CategoryViewHolderRes viewHolder, int position, @NonNull CategoryRes model) {
-
-                viewHolder.txtMenuName.setText(model.getName());
-                Picasso.get().load(model.getImage()).into(viewHolder.imageView);
-
-                viewHolder.setItemClickListener(new ItemClickListener() {
-                    @Override
-                    public void onClick(View view, int position, boolean isLongClick) {
-
-                        Intent foodList = new Intent(MainAdminActivity.this, FoodListActivityRes.class);
-                        foodList.putExtra("CategoryId", adapter.getRef(position).getKey());
-                        startActivity(foodList);
-
-                    }
-                });
+            protected void onBindViewHolder(@NonNull RestaurantsAdminViewHolder holder, int position, @NonNull RestaurantsAdmin model) {
+                holder.txtMenuName.setText(model.getName());
+                holder.txtLocation.setText(model.getLocation());
+                Picasso.get().load(model.getImage()).into(holder.imageView);
             }
 
             @NonNull
             @Override
-            public CategoryViewHolderRes onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            public RestaurantsAdminViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View itemView = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.menu_item, parent, false);
-                return new CategoryViewHolderRes(itemView);
+                        .inflate(R.layout.restaurant_item, parent, false);
+                return new RestaurantsAdminViewHolder(itemView);
             }
         };
 
@@ -331,75 +147,171 @@ public class MainAdminActivity extends AppCompatActivity
         adapter.startListening();
     }
 
+
+    private void addRestaurants() {
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(AddRestaurantsActivity.this, R.style.Theme_AppCompat_DayNight_Dialog_Alert);
+        alertDialog.setTitle("Add New Restaurant");
+        alertDialog.setMessage("Please fill information");
+
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View add_restaurant_layout = inflater.inflate(R.layout.add_new_restaurants, null);
+
+        edtName = add_restaurant_layout.findViewById(R.id.et_name_restaurants);
+        edtId = add_restaurant_layout.findViewById(R.id.et_name_restaurants_id);
+        edtLocation = add_restaurant_layout.findViewById(R.id.et_name_restaurants_location);
+        btnSelect = add_restaurant_layout.findViewById(R.id.btn_restaurant_select);
+        btnUpload = add_restaurant_layout.findViewById(R.id.btn_restaurant_upload);
+
+        //Event for button
+        btnSelect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //let users select image from gallery and save URL of this image
+                chooseImage();
+            }
+        });
+
+        btnUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //upload image
+                uploadImage();
+            }
+        });
+
+        alertDialog.setView(add_restaurant_layout);
+        alertDialog.setIcon(R.drawable.ic_baseline_restaurant_24);
+
+        //set Button
+        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.dismiss();
+
+           /*     //create new food
+                if (newRestaurants != null) {
+                    restaurants.push().setValue(newRestaurants);
+                    //Snackbar.make(rootLayout, " New Food " + newFood.getName() + " was added ",Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(findViewById(R.id.root_layout), " New Restaurant " + newRestaurants.getName() + " was added ",Snackbar.LENGTH_SHORT).show();
+
+
+                }*/
+
+                RestaurantsAdmin restaurant = new RestaurantsAdmin();
+                restaurant.setName(edtName.getText().toString());
+                restaurant.setId(edtId.getText().toString());
+                restaurant.setLocation(edtLocation.getText().toString());
+                restaurant.setImage(saveUri.toString());
+
+
+                restaurants.child(edtId.getText().toString())
+                        .setValue(restaurant)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(AddRestaurantsActivity.this, "Restaurant Created Successfully!", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(AddRestaurantsActivity.this, "Failed to Create Restaurant!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+            }
+        });
+
+
+        alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
+
+
+    }
+
+    private void chooseImage() {
+
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Image"), ConstantAdmin.PICK_IMAGE_REQUEST);
+
+    }
+
     @Override
-    public void onBackPressed() {
-        DrawerLayout drawer =  findViewById(R.id.drawer_layout_admin);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == ConstantRes.PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null
+                && data.getData() != null) {
+
+            saveUri = data.getData();
+            btnSelect.setText("Image Selected!");
         }
     }
 
+    private void uploadImage() {
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
+        if (saveUri != null) {
 
-        if (id == R.id.nav_orders) {
-            Intent orders = new Intent(MainAdminActivity.this, OrderStatusActivityRes.class);
-            startActivity(orders);
-        } /*else if (id == R.id.nav_message_admin) {
-            Intent message = new Intent(MainAdminActivity.this, SendMessage.class);
-            startActivity(message);
-        } */ else if (id == R.id.nav_sign_out_admin) {
-            ConfirmSignOutDialog();
-        }/* else if (id == R.id.nav_view_account) {
-            Intent create = new Intent(MainAdminActivity.this, ManageAccountActivity.class);
-            startActivity(create);
-        } */ else if (id == R.id.nav_view_comment) {
-            Intent comment = new Intent(MainAdminActivity.this, ViewCommentActivityRes.class);
-            startActivity(comment);
-        } else if (id == R.id.nav_shipper) {
-            Intent shippers = new Intent(MainAdminActivity.this, RiderManagementActivityRes.class);
-            startActivity(shippers);
-        } /*else if (id == R.id.nav_about) {
-         *//* Intent about = new Intent(MainAdminActivity.this, AdminScrollingActivity.class);
-            startActivity(about);*//*
-        }*/
+            final ProgressDialog mDialog = new ProgressDialog(this);
+            mDialog.setMessage("Uploading...");
+            mDialog.show();
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_admin);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
+            String imageName = UUID.randomUUID().toString();
+            final StorageReference imageFolder = storageReference.child("images/" + imageName);
+            imageFolder.putFile(saveUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-    private void ConfirmSignOutDialog() {
+                    mDialog.dismiss();
+                    Toast.makeText(AddRestaurantsActivity.this, "Uploaded!!!", Toast.LENGTH_SHORT).show();
+                    imageFolder.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
 
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainAdminActivity.this, R.style.Theme_AppCompat_DayNight_Dialog_Alert);
-        alertDialog.setTitle("Confirm Sign Out?");
+                            //set value for newCategory if image upload and we can get download link
+                            newRestaurants = new RestaurantsAdmin();
+                            newRestaurants.setName(edtName.getText().toString());
+                            newRestaurants.setLocation(edtLocation.getText().toString());
+                            newRestaurants.setId(edtId.getText().toString());
+                            newRestaurants.setImage(uri.toString());
+                        }
+                    });
 
-        LayoutInflater inflater = LayoutInflater.from(this);
-        View layout_signout = inflater.inflate(R.layout.confirm_signout_layout, null);
-        alertDialog.setView(layout_signout);
-        alertDialog.setIcon(R.drawable.ic_exit_to_app_black_24dp);
+                }
+            })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
 
-        alertDialog.setPositiveButton("SIGN OUT", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                Intent signout = new Intent(MainAdminActivity.this, RestaurantMainActivity.class);
-                startActivity(signout);
-            }
-        });
-        alertDialog.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        alertDialog.show();
+                            mDialog.dismiss();
+                            Toast.makeText(AddRestaurantsActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    })
+
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+
+                            double progress = (100 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                            mDialog.setMessage("Uploading" + progress + " % ");
+                        }
+                    });
+        }
     }
 
 
@@ -408,7 +320,7 @@ public class MainAdminActivity extends AppCompatActivity
     @Override
     public boolean onContextItemSelected(MenuItem item) {
 
-        if (item.getTitle().equals(ConstantRes.UPDATE)) {
+        if (item.getTitle().equals(ConstantAdmin.UPDATE)) {
 
             showUpdateDialog(adapter.getRef(item.getOrder()).getKey(), adapter.getItem(item.getOrder()));
 
@@ -423,7 +335,7 @@ public class MainAdminActivity extends AppCompatActivity
 
     private void ConfirmDeleteDialog(final MenuItem item) {
 
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainAdminActivity.this, R.style.Theme_AppCompat_DayNight_Dialog_Alert);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(AddRestaurantsActivity.this, R.style.Theme_AppCompat_DayNight_Dialog_Alert);
         alertDialog.setTitle("Confirm Delete?");
 
         LayoutInflater inflater = this.getLayoutInflater();
@@ -448,19 +360,21 @@ public class MainAdminActivity extends AppCompatActivity
     }
 
 
-    private void showUpdateDialog(final String key, final CategoryRes item) {
+    private void showUpdateDialog(final String key, final RestaurantsAdmin item) {
 
 
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainAdminActivity.this, R.style.Theme_AppCompat_DayNight_Dialog_Alert);
-        alertDialog.setTitle("Update Category");
-        alertDialog.setMessage("Please fill full formation");
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(AddRestaurantsActivity.this, R.style.Theme_AppCompat_DayNight_Dialog_Alert);
+        alertDialog.setTitle("Update Restaurant");
+        alertDialog.setMessage("Please fill information");
 
         LayoutInflater inflater = this.getLayoutInflater();
-        View add_menu_layout = inflater.inflate(R.layout.add_new_category, null);
+        View add_menu_layout = inflater.inflate(R.layout.add_new_restaurants, null);
 
-        edtName = add_menu_layout.findViewById(R.id.et_name_category);
-        btnSelect = add_menu_layout.findViewById(R.id.btn_category_select);
-        btnUpload = add_menu_layout.findViewById(R.id.btn_category_upload);
+        edtName = add_menu_layout.findViewById(R.id.et_name_restaurants);
+        edtId = add_menu_layout.findViewById(R.id.et_name_restaurants_id);
+        edtLocation = add_menu_layout.findViewById(R.id.et_name_restaurants_location);
+        btnSelect = add_menu_layout.findViewById(R.id.btn_restaurant_select);
+        btnUpload = add_menu_layout.findViewById(R.id.btn_restaurant_upload);
 
         //set default name
         edtName.setText(item.getName());
@@ -496,8 +410,8 @@ public class MainAdminActivity extends AppCompatActivity
 
                 //update information
                 item.setName(edtName.getText().toString());
-                categories.child(key).setValue(item);
-                Toast.makeText(MainAdminActivity.this, "Category Name Updated Successfully!", Toast.LENGTH_SHORT).show();
+                restaurants.child(key).setValue(item);
+                Toast.makeText(AddRestaurantsActivity.this, "Restaurant Name Updated Successfully!", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -517,7 +431,7 @@ public class MainAdminActivity extends AppCompatActivity
     private void deleteCategory(String key) {
 
         //get all food in category
-        DatabaseReference foods = database.getReference("Foods");
+        DatabaseReference foods = database.getReference("Restaurants");
         final Query foodInCategory = foods.orderByChild("menuId").equalTo(key);
         foodInCategory.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -533,12 +447,12 @@ public class MainAdminActivity extends AppCompatActivity
             }
         });
 
-        categories.child(key).removeValue();
-        Toast.makeText(MainAdminActivity.this, "Category Deleted Successfully!", Toast.LENGTH_SHORT).show();
+        restaurants.child(key).removeValue();
+        Toast.makeText(AddRestaurantsActivity.this, "Restaurant Deleted Successfully!", Toast.LENGTH_SHORT).show();
     }
 
 
-    private void changeImage(final CategoryRes item) {
+    private void changeImage(final RestaurantsAdmin item) {
 
         if (saveUri != null) {
 
@@ -553,14 +467,14 @@ public class MainAdminActivity extends AppCompatActivity
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
                     mDialog.dismiss();
-                    Toast.makeText(MainAdminActivity.this, "Uploaded!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddRestaurantsActivity.this, "Uploaded!", Toast.LENGTH_SHORT).show();
                     imageFolder.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
 
                             //set value for newCategory if image upload and we can get download link
                             item.setImage(uri.toString());
-                            Toast.makeText(MainAdminActivity.this, "Image Changed Successfully!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddRestaurantsActivity.this, "Image Changed Successfully!", Toast.LENGTH_SHORT).show();
                         }
                     });
 
@@ -571,7 +485,7 @@ public class MainAdminActivity extends AppCompatActivity
                         public void onFailure(@NonNull Exception e) {
 
                             mDialog.dismiss();
-                            Toast.makeText(MainAdminActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddRestaurantsActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
 

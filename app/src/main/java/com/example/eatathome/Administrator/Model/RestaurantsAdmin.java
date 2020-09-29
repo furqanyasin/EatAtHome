@@ -1,18 +1,28 @@
-package com.example.eatathome.Client.Activities.Model;
+package com.example.eatathome.Administrator.Model;
 
-public class Restaurant {
+public class RestaurantsAdmin {
 
     private String name;
     private String image;
+    private String id;
     private String location;
 
-    public Restaurant() {
+    public RestaurantsAdmin() {
     }
 
-    public Restaurant(String name, String image, String location) {
+    public RestaurantsAdmin(String name, String image, String id, String location) {
         this.name = name;
         this.image = image;
+        this.id = id;
         this.location = location;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getLocation() {

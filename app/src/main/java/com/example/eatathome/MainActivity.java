@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.eatathome.Administrator.Activities.SignInActivityAppAdmin;
 import com.example.eatathome.Client.Activities.SignInActivity;
 import com.example.eatathome.Rider.Activities.SignInAsRiderActivity;
 import com.example.eatathome.Server.Activities.SignInAdminActivity;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         activityMainBinding.btnSignIn.setOnClickListener(this);
         activityMainBinding.btnSignInRestaurant.setOnClickListener(this);
         activityMainBinding.btnSignInAsShipper.setOnClickListener(this);
+        activityMainBinding.btnSignInAdmin.setOnClickListener(this);
 
 
     }
@@ -47,6 +49,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         } else if (view == activityMainBinding.btnSignInAsShipper) {
             Intent intent = new Intent(this, SignInAsRiderActivity.class);
+            startActivity(intent);
+        } else if (view == activityMainBinding.btnSignInAdmin) {
+            Intent intent = new Intent(this, SignInActivityAppAdmin.class);
             startActivity(intent);
         }
 

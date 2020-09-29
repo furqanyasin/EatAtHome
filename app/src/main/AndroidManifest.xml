@@ -17,6 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".Administrator.Activities.AddRestaurantsActivity"></activity>
+        <activity android:name=".Administrator.Activities.SignInActivityAppAdmin" />
         <activity android:name=".Server.Activities.SignInAdminActivity" />
         <activity android:name=".Client.Activities.TrackingOrderActivity" />
         <activity
@@ -37,7 +39,6 @@
         <activity android:name=".Server.Activities.RestaurantMainActivity" />
         <activity android:name=".Client.Activities.FavoritesActivity" />
         <activity android:name=".Client.Activities.ShowCommentActivity" />
-
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -60,7 +61,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <service
             android:name=".Client.Activities.Services.MyFirebaseIdService"
             android:exported="true"

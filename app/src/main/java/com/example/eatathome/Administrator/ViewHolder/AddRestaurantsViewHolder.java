@@ -11,14 +11,14 @@ import com.example.eatathome.Administrator.ConstantAdmin;
 import com.example.eatathome.Interface.ItemClickListener;
 import com.example.eatathome.R;
 
-public class RestaurantsAdminViewHolder extends RecyclerView.ViewHolder implements
+public class AddRestaurantsViewHolder extends RecyclerView.ViewHolder implements
         View.OnClickListener, View.OnCreateContextMenuListener {
 
     public TextView txtMenuName, txtLocation;
     public ImageView imageView;
     private ItemClickListener itemClickListener;
 
-    public RestaurantsAdminViewHolder(View itemView) {
+    public AddRestaurantsViewHolder(View itemView) {
         super(itemView);
 
         txtMenuName = itemView.findViewById(R.id.restaurant_name);

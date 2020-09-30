@@ -256,7 +256,7 @@ public class RestaurantListActivity extends AppCompatActivity implements Navigat
         } else if (id == R.id.nav_favorites) {
             startActivity(new Intent(RestaurantListActivity.this, FavoritesActivity.class));
         }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer =  findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

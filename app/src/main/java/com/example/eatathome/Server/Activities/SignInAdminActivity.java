@@ -43,7 +43,7 @@ public class SignInAdminActivity extends AppCompatActivity {
         //Init firebase
 
         db = FirebaseDatabase.getInstance();
-        users = db.getReference("User");
+        users = db.getReference("UserRestaurantAdmin");
 
         btnSignInAsAdmin.setOnClickListener(new View.OnClickListener() {
             @Override

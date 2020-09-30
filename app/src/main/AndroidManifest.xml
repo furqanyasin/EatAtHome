@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Administrator.Activities.AddRestaurantsActivity"></activity>
+        <activity android:name=".Administrator.Activities.AddRestaurantsAdminActivity"></activity>
+        <activity android:name=".Administrator.Activities.AddRestaurantsActivity" />
         <activity android:name=".Administrator.Activities.SignInActivityAppAdmin" />
         <activity android:name=".Server.Activities.SignInAdminActivity" />
         <activity android:name=".Client.Activities.TrackingOrderActivity" />

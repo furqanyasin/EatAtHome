@@ -1,16 +1,16 @@
 package com.example.eatathome.Administrator.Model;
 
-public class RestaurantsAdmin {
+public class AddRestaurants {
 
     private String name;
     private String image;
     private String id;
     private String location;
 
-    public RestaurantsAdmin() {
+    public AddRestaurants() {
     }
 
-    public RestaurantsAdmin(String name, String image, String id, String location) {
+    public AddRestaurants(String name, String image, String id, String location) {
         this.name = name;
         this.image = image;
         this.id = id;

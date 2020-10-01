@@ -177,6 +177,7 @@ public class RestaurantListActivity extends AppCompatActivity implements Navigat
             @Override
             protected void onBindViewHolder(@NonNull RestaurantViewHolder holder, int position, @NonNull Restaurant model) {
                 holder.restaurantName.setText(model.getName());
+                holder.restaurantLocation.setText(model.getLocation());
                 Picasso.get().load(model.getImage())
                         .into(holder.restaurantImage);
 
@@ -233,6 +234,8 @@ public class RestaurantListActivity extends AppCompatActivity implements Navigat
         int id = item.getItemId();
 
         if (id == R.id.nav_menu) {
+            Intent NearbyIntent = new Intent(RestaurantListActivity.this, NearbyRestaurantsActivity.class);
+            startActivity(NearbyIntent);
 
         } else if (id == R.id.nav_cart) {
             Intent cartIntent = new Intent(RestaurantListActivity.this, CartActivity.class);

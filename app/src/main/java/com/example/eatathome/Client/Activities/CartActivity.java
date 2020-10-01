@@ -1,7 +1,6 @@
 package com.example.eatathome.Client.Activities;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -13,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -52,7 +50,6 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
@@ -262,35 +259,6 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
 
             }
         });
-
-
-        // final PlaceAutocompleteFragment edtAddress = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-     /*   SupportPlaceAutocompleteFragment edtAddress = (SupportPlaceAutocompleteFragment) getChildFragmentManager()
-                        .findFragmentById(R.id.place_autocomplete_fragment);*/
-
-/*        //Hide search icon before fragment
-        places_fragment.requireView().findViewById(R.id.place_autocomplete_search_button).setVisibility(View.VISIBLE);
-
-        //set hint for Autocomplete EditText
-        ((EditText) places_fragment.getView().findViewById(R.id.place_autocomplete_search_input)).setHint("Enter your address");
-
-        //set text size
-        ((EditText) places_fragment.getView().findViewById(R.id.place_autocomplete_search_input)).setTextSize(14);*/
-
-   /*     //get address from place autocomplete
-        edtAddress.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(Place place) {
-                shippingAddress = place;
-            }
-
-            @Override
-            public void onError(Status status) {
-                assert status.getStatusMessage() != null;
-                Log.e("ERROR", status.getStatusMessage());
-            }
-        });*/
-
 
         //radio event
         rdyHomeAddress.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -559,6 +527,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
             return;
         }
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+
     }
 
     private void displayLocation() {

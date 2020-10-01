@@ -25,7 +25,6 @@ import com.example.eatathome.Administrator.ConstantAdmin;
 import com.example.eatathome.Administrator.Model.AddRestaurants;
 import com.example.eatathome.Administrator.ViewHolder.AddRestaurantsViewHolder;
 import com.example.eatathome.R;
-import com.example.eatathome.Server.Activities.Constant.ConstantRes;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -48,7 +47,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.UUID;
 
-public class AddRestaurantsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class AddRestaurantsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     //Firebase
     FirebaseDatabase database;
@@ -62,7 +61,7 @@ public class AddRestaurantsActivity extends AppCompatActivity implements Navigat
     RecyclerView.LayoutManager layoutManager;
 
     //Add new menu layout
-    TextInputEditText edtName, edtId, edtLocation;
+    TextInputEditText edtName, edtId, edtLocation, latitude, longitude;
     MaterialButton btnUpload, btnSelect;
 
     AddRestaurants newRestaurants;
@@ -167,6 +166,8 @@ public class AddRestaurantsActivity extends AppCompatActivity implements Navigat
         edtName = add_restaurant_layout.findViewById(R.id.et_name_restaurants);
         edtId = add_restaurant_layout.findViewById(R.id.et_name_restaurants_id);
         edtLocation = add_restaurant_layout.findViewById(R.id.et_name_restaurants_location);
+        latitude = add_restaurant_layout.findViewById(R.id.et_name_restaurants_latitude);
+        longitude = add_restaurant_layout.findViewById(R.id.et_name_restaurants_longitude);
         btnSelect = add_restaurant_layout.findViewById(R.id.btn_restaurant_select);
         btnUpload = add_restaurant_layout.findViewById(R.id.btn_restaurant_upload);
 
@@ -199,21 +200,13 @@ public class AddRestaurantsActivity extends AppCompatActivity implements Navigat
 
                 dialog.dismiss();
 
-           /*     //create new food
-                if (newRestaurants != null) {
-                    restaurants.push().setValue(newRestaurants);
-                    //Snackbar.make(rootLayout, " New Food " + newFood.getName() + " was added ",Snackbar.LENGTH_SHORT).show();
-                    Snackbar.make(findViewById(R.id.root_layout), " New Restaurant " + newRestaurants.getName() + " was added ",Snackbar.LENGTH_SHORT).show();
-
-
-                }*/
-
                 AddRestaurants restaurant = new AddRestaurants();
                 restaurant.setName(edtName.getText().toString());
                 restaurant.setId(edtId.getText().toString());
                 restaurant.setLocation(edtLocation.getText().toString());
+                restaurant.setLatitude(latitude.getText().toString());
+                restaurant.setLongitude(longitude.getText().toString());
                 restaurant.setImage(saveUri.toString());
-
 
                 restaurants.child(edtId.getText().toString())
                         .setValue(restaurant)
@@ -261,7 +254,7 @@ public class AddRestaurantsActivity extends AppCompatActivity implements Navigat
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == ConstantRes.PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null
+        if (requestCode == ConstantAdmin.PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null
                 && data.getData() != null) {
 
             saveUri = data.getData();
@@ -289,11 +282,13 @@ public class AddRestaurantsActivity extends AppCompatActivity implements Navigat
                         @Override
                         public void onSuccess(Uri uri) {
 
-                            //set value for newCategory if image upload and we can get download link
+                            //set value for newRestaurants if image upload and we can get download link
                             newRestaurants = new AddRestaurants();
                             newRestaurants.setName(edtName.getText().toString());
                             newRestaurants.setLocation(edtLocation.getText().toString());
                             newRestaurants.setId(edtId.getText().toString());
+                            newRestaurants.setLatitude(latitude.getText().toString());
+                            newRestaurants.setLongitude(longitude.getText().toString());
                             newRestaurants.setImage(uri.toString());
                         }
                     });
@@ -330,7 +325,7 @@ public class AddRestaurantsActivity extends AppCompatActivity implements Navigat
 
             showUpdateDialog(adapter.getRef(item.getOrder()).getKey(), adapter.getItem(item.getOrder()));
 
-        } else if (item.getTitle().equals(ConstantRes.DELETE)) {
+        } else if (item.getTitle().equals(ConstantAdmin.DELETE)) {
 
             ConfirmDeleteDialog(item);
         }
@@ -374,16 +369,22 @@ public class AddRestaurantsActivity extends AppCompatActivity implements Navigat
         alertDialog.setMessage("Please fill information");
 
         LayoutInflater inflater = this.getLayoutInflater();
-        View add_menu_layout = inflater.inflate(R.layout.add_new_restaurants, null);
+        View update_restaurant_layout = inflater.inflate(R.layout.add_new_restaurants, null);
 
-        edtName = add_menu_layout.findViewById(R.id.et_name_restaurants);
-        edtId = add_menu_layout.findViewById(R.id.et_name_restaurants_id);
-        edtLocation = add_menu_layout.findViewById(R.id.et_name_restaurants_location);
-        btnSelect = add_menu_layout.findViewById(R.id.btn_restaurant_select);
-        btnUpload = add_menu_layout.findViewById(R.id.btn_restaurant_upload);
+        edtName = update_restaurant_layout.findViewById(R.id.et_name_restaurants);
+        edtId = update_restaurant_layout.findViewById(R.id.et_name_restaurants_id);
+        edtLocation = update_restaurant_layout.findViewById(R.id.et_name_restaurants_location);
+        latitude = update_restaurant_layout.findViewById(R.id.et_name_restaurants_latitude);
+        longitude = update_restaurant_layout.findViewById(R.id.et_name_restaurants_longitude);
+        btnSelect = update_restaurant_layout.findViewById(R.id.btn_restaurant_select);
+        btnUpload = update_restaurant_layout.findViewById(R.id.btn_restaurant_upload);
 
         //set default name
         edtName.setText(item.getName());
+        edtId.setText(item.getId());
+        edtLocation.setText(item.getLocation());
+        latitude.setText(item.getLatitude());
+        longitude.setText(item.getLongitude());
 
         //Event for button
         btnSelect.setOnClickListener(new View.OnClickListener() {
@@ -404,7 +405,7 @@ public class AddRestaurantsActivity extends AppCompatActivity implements Navigat
             }
         });
 
-        alertDialog.setView(add_menu_layout);
+        alertDialog.setView(update_restaurant_layout);
         alertDialog.setIcon(R.drawable.ic_baseline_shopping_cart_24);
 
         //set Button
@@ -518,15 +519,9 @@ public class AddRestaurantsActivity extends AppCompatActivity implements Navigat
             startActivity(cartIntent);
 
         } else if (id == R.id.nav_sign_out) {
-           /* Paper.book().destroy();
-            Intent signIn = new Intent(AddRestaurantsActivity.this, SignInActivityAppAdmin.class);
-            signIn.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(signIn);*/
             ConfirmSignOutDialog();
-
-
         }
-        DrawerLayout drawer =  findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

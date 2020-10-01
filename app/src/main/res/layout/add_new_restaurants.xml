@@ -69,7 +69,49 @@
                 android:id="@+id/et_name_restaurants_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Restaurant Location"
+                android:hint="Address"
+                android:inputType="text"
+                android:textColor="@android:color/black"
+                android:textSize="20sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ti_name_restaurants_latitude"
+            style="@style/Theme.MyApp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:counterTextColor="@android:color/black"
+            app:boxStrokeColor="@android:color/black"
+            app:hintTextColor="@android:color/black"
+            android:padding="4dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_name_restaurants_latitude"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Latitude"
+                android:inputType="text"
+                android:textColor="@android:color/black"
+                android:textSize="20sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ti_name_restaurants_longitude"
+            style="@style/Theme.MyApp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:counterTextColor="@android:color/black"
+            app:boxStrokeColor="@android:color/black"
+            app:hintTextColor="@android:color/black"
+            android:padding="4dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_name_restaurants_longitude"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Longitude"
                 android:inputType="text"
                 android:textColor="@android:color/black"
                 android:textSize="20sp" />

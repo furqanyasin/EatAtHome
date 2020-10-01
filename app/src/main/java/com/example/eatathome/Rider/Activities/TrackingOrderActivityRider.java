@@ -83,7 +83,6 @@ public class TrackingOrderActivityRider extends FragmentActivity implements OnMa
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        assert mapFragment != null;
         mapFragment.getMapAsync(this);
 
         btn_call = findViewById(R.id.btnCall);

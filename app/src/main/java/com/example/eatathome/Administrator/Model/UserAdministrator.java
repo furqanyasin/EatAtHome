@@ -11,7 +11,7 @@ public class UserAdministrator {
     public UserAdministrator() {
     }
 
-    public UserAdministrator(String name, String password, String phone, String isstaff, String isadmin) {
+    public UserAdministrator(String name, String password, String phone) {
         this.name = name;
         this.password = password;
         this.phone = phone;

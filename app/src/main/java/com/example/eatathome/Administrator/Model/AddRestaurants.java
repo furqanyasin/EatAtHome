@@ -6,15 +6,34 @@ public class AddRestaurants {
     private String image;
     private String id;
     private String location;
+    private String latitude,longitude;
 
     public AddRestaurants() {
     }
 
-    public AddRestaurants(String name, String image, String id, String location) {
+    public AddRestaurants(String name, String image, String id, String location, String latitude, String longitude) {
         this.name = name;
         this.image = image;
         this.id = id;
         this.location = location;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
     public String getId() {

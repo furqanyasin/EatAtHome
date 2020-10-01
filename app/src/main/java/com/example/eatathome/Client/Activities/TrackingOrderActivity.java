@@ -10,6 +10,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -64,7 +65,8 @@ public class TrackingOrderActivity extends FragmentActivity implements OnMapRead
     Request currentOrder;
 
     IGoogleService mService;
-
+    Marker mCurrentMarker;
+    Location location;
     Marker shippingMarker;
     Polyline polyline;
 
@@ -128,6 +130,10 @@ public class TrackingOrderActivity extends FragmentActivity implements OnMapRead
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.getUiSettings().setZoomControlsEnabled(true);
+
+        final LatLng yourLocation = new LatLng(location.getLatitude(), location.getLongitude());
+        mCurrentMarker = mMap.addMarker(new MarkerOptions().position(yourLocation).title("Your location"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(yourLocation));
 
         trackingLocation();
     }

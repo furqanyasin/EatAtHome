@@ -13,7 +13,7 @@
             android:id="@+id/nav_menu"
             android:icon="@drawable/ic_restaurant"
             android:iconTint="@color/colorWhite"
-            android:title="Menu" />
+            android:title="Nearby Restaurants" />
 
         <item
             android:id="@+id/nav_favorites"

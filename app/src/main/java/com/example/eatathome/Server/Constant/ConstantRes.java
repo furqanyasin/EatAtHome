@@ -126,7 +126,7 @@ public class ConstantRes {
     public static String getDate(long time) {
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(time);
-        StringBuilder date = new StringBuilder(android.text.format.DateFormat.format("dd-MM-yyyy HH:mm"
+        StringBuilder date = new StringBuilder(android.text.format.DateFormat.format("dd-MM-yyyy hh:mm aaa"
                 , calendar).toString());
         return date.toString();
     }

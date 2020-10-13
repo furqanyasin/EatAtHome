@@ -13,7 +13,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="200dp"
+            android:layout_centerInParent="true"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -30,79 +30,78 @@
                 android:id="@+id/txt_slogan"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="50dp"
                 android:gravity="center"
                 android:text="@string/slogan"
                 android:textColor="@android:color/white"
                 android:textSize="20sp" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:orientation="vertical">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_sign_in"
-                android:layout_width="match_parent"
+                android:layout_width="300dp"
                 android:layout_height="60dp"
-                android:layout_margin="10dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="30dp"
                 android:text="@string/client_sign_in"
                 android:textAllCaps="false"
+                android:textColor="@android:color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:textColor="@android:color/white"
                 android:theme="@style/Theme.MyApp"
                 app:backgroundTint="@android:color/holo_green_dark"
-                app:cornerRadius="10dp"/>
+                app:cornerRadius="10dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_sign_in_restaurant"
-                android:layout_width="match_parent"
+                android:layout_width="300dp"
                 android:layout_height="60dp"
-                android:layout_margin="10dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="30dp"
+                android:text="@string/restaurant_sign_in"
                 android:textAllCaps="false"
+                android:textColor="@android:color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:text="@string/restaurant_sign_in"
-                android:textColor="@android:color/white"
                 android:theme="@style/Theme.MyApp"
                 app:backgroundTint="@android:color/holo_red_dark"
                 app:cornerRadius="10dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSignInAsShipper"
-                android:layout_width="match_parent"
+                android:layout_width="300dp"
                 android:layout_height="60dp"
-                android:layout_margin="10dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="30dp"
+                android:text="@string/rider_sign_in"
                 android:textAllCaps="false"
+                android:textColor="@android:color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:text="@string/rider_sign_in"
-                android:textColor="@android:color/white"
                 android:theme="@style/Theme.MyApp"
                 app:backgroundTint="@android:color/holo_orange_dark"
                 app:cornerRadius="10dp" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSignInAdmin"
-                android:layout_width="match_parent"
+                android:layout_width="300dp"
                 android:layout_height="60dp"
-                android:layout_margin="10dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="10dp"
+                android:text="Administrator Sign In"
                 android:textAllCaps="false"
+                android:textColor="@android:color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:text="Administrator Sign In"
-                android:textColor="@android:color/white"
                 android:theme="@style/Theme.MyApp"
                 app:backgroundTint="@android:color/holo_blue_bright"
                 app:cornerRadius="10dp" />
-
-
-
         </LinearLayout>
-
-
 
     </RelativeLayout>
 

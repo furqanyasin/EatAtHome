@@ -242,7 +242,7 @@ public class TrackingOrderActivity extends FragmentActivity implements OnMapRead
                         //if order has latlng
                         else if (currentOrder.getLatLng() != null && !currentOrder.getLatLng().isEmpty()) {
                             mService.getLocationFromAddress(new StringBuilder
-                                    ("https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyBW3rhW1EhjhW36DmMyoTTBup4E6Gu1LCY&latlng=")
+                                    ("https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyBanwRKl5Nsls3axT7N5x5M-DpV6TjAV0k&latlng=")
                                     .append(currentOrder.getLatLng()).toString())
                                     .enqueue(new Callback<String>() {
                                         @Override

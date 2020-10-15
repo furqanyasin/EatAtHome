@@ -4,40 +4,44 @@ public class Restaurant {
 
     private String name;
     private String image;
-    private Float latitude;
-    private Float longitude;
+    private String id;
     private String location;
+    private String latitude,longitude;
 
     public Restaurant() {
     }
 
-    public Restaurant(String name, String image, Float latitude, Float longitude, String location) {
+    public Restaurant(String name, String image, String id, String location, String latitude, String longitude) {
         this.name = name;
         this.image = image;
+        this.id = id;
+        this.location = location;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.location = location;
     }
 
-  /*    public Restaurant(String name, String image) {
-        this.name = name;
-        this.image = image;
-    }*/
-
-    public Float getLatitude() {
+    public String getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(Float latitude) {
+    public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
 
-    public Float getLongitude() {
+    public String getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(Float longitude) {
+    public void setLongitude(String longitude) {
         this.longitude = longitude;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getLocation() {

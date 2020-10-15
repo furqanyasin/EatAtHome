@@ -1,15 +1,23 @@
 package com.example.eatathome.Client.Activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,14 +32,17 @@ import com.example.eatathome.Client.Constant.Constant;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
 
-public class FoodListActivity extends AppCompatActivity {
+import io.paperdb.Paper;
 
+public class FoodListActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    TextView textFullName;
     FirebaseDatabase database;
     DatabaseReference foodList;
     RecyclerView recyclerViewFood;
@@ -51,14 +62,19 @@ public class FoodListActivity extends AppCompatActivity {
         toolbar.setTitle(" Food List");
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent cartIntent = new Intent(FoodListActivity.this, CartActivity.class);
-                startActivity(cartIntent);
-            }
-        });
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        //set name for user
+        final View headerView = navigationView.getHeaderView(0);
+        textFullName = headerView.findViewById(R.id.text_full_name);
+        textFullName.setText(Constant.currentUser.getName());
 
         //init firebase
         database = FirebaseDatabase.getInstance();
@@ -88,6 +104,16 @@ public class FoodListActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private void loadFood(String categoryId) {
@@ -201,6 +227,94 @@ public class FoodListActivity extends AppCompatActivity {
         recyclerViewFood.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.home, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.refresh)
+            loadFood(categoryId);
+        if (item.getItemId() == R.id.cart)
+            CartActivity();
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void CartActivity() {
+        Intent cartIntent = new Intent(FoodListActivity.this, CartActivity.class);
+        startActivity(cartIntent);
+    }
+
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_menu) {
+            Intent NearbyIntent = new Intent(FoodListActivity.this, NearbyRestaurantsActivity.class);
+            startActivity(NearbyIntent);
+
+        } else if (id == R.id.nav_cart) {
+            Intent cartIntent = new Intent(FoodListActivity.this, CartActivity.class);
+            startActivity(cartIntent);
+
+        } else if (id == R.id.nav_orders) {
+            Intent orderIntent = new Intent(FoodListActivity.this, OrderStatusActivity.class);
+            startActivity(orderIntent);
+
+        } else if (id == R.id.nav_sign_out) {
+
+            ConfirmSignOutDialog();
+
+        } else if (id == R.id.nav_profile) {
+
+            Intent profileIntent = new Intent(FoodListActivity.this, ProfileActivity.class);
+            startActivity(profileIntent);
+        } else if (id == R.id.nav_favorites) {
+            startActivity(new Intent(FoodListActivity.this, FavoritesActivity.class));
+        }
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+
+    private void ConfirmSignOutDialog() {
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(FoodListActivity.this);
+        alertDialog.setTitle("Confirm Sign Out?");
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View layout_signout = inflater.inflate(R.layout.confirm_signout_layout, null);
+        alertDialog.setView(layout_signout);
+        alertDialog.setIcon(R.drawable.ic_exit_to_app_black_24dp);
+
+        alertDialog.setPositiveButton("SIGN OUT", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                //Delete remember user && password
+                Paper.book().destroy();
+
+                //log out
+                Intent logout = new Intent(FoodListActivity.this, SignInActivity.class);
+                logout.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(logout);
+
+            }
+        });
+        alertDialog.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alertDialog.show();
     }
 
 }

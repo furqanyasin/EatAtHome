@@ -49,13 +49,13 @@ public class RestaurantListActivity extends AppCompatActivity implements Navigat
     FirebaseRecyclerAdapter<Restaurant, RestaurantViewHolder> adapter;
     FirebaseRecyclerOptions<Restaurant> firebaseRecyclerOptions;
 
-
     SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_list);
+
 
 
         //for first-time login, pop up notification to complete profile.
@@ -65,24 +65,17 @@ public class RestaurantListActivity extends AppCompatActivity implements Navigat
         toolbar.setTitle("Restaurants");
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent cartIntent = new Intent(RestaurantListActivity.this, CartActivity.class);
-                startActivity(cartIntent);
-            }
-        });
-
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        //paper init
+        Paper.init(this);
 
         //set name for user
         final View headerView = navigationView.getHeaderView(0);
@@ -97,8 +90,6 @@ public class RestaurantListActivity extends AppCompatActivity implements Navigat
 
         updateToken(FirebaseInstanceId.getInstance().getToken());
 
-        //paper init
-        Paper.init(this);
 
         recyclerView = findViewById(R.id.recyclerview_menu1);
         recyclerView.setHasFixedSize(true);
@@ -221,13 +212,20 @@ public class RestaurantListActivity extends AppCompatActivity implements Navigat
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.refresh)
             loadRestaurant();
+        if (item.getItemId() == R.id.cart)
+            CartActivity();
         return super.onOptionsItemSelected(item);
     }
 
+    private void CartActivity(){
+        Intent cartIntent = new Intent(RestaurantListActivity.this, CartActivity.class);
+        startActivity(cartIntent);
+    }
 
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.

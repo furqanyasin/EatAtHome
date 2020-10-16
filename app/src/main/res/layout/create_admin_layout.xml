@@ -18,9 +18,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="4dp"
-            app:boxStrokeColor="@android:color/white"
-            app:counterTextColor="@android:color/white"
-            app:hintTextColor="@android:color/white">
+            app:boxStrokeColor="@android:color/black"
+            app:counterTextColor="@android:color/black"
+            app:hintTextColor="@android:color/black">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_create_admin_phone"
@@ -30,7 +30,6 @@
                 android:inputType="phone"
                 android:text=""
                 android:textColor="@android:color/black"
-                android:textColorHint="@android:color/black"
                 android:textSize="20sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -41,8 +40,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="4dp"
-            app:boxStrokeColor="@android:color/white"
-            app:hintTextColor="@android:color/white">
+            app:boxStrokeColor="@android:color/black"
+            app:counterTextColor="@android:color/black"
+            app:hintTextColor="@android:color/black">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_create_admin_name"
@@ -52,7 +52,6 @@
                 android:inputType="text"
                 android:text=""
                 android:textColor="@android:color/black"
-                android:textColorHint="@android:color/black"
                 android:textSize="20sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -63,8 +62,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="4dp"
-            app:boxStrokeColor="@android:color/white"
-            app:hintTextColor="@android:color/white">
+            app:boxStrokeColor="@android:color/black"
+            app:counterTextColor="@android:color/black"
+            app:hintTextColor="@android:color/black">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_create_admin_id"
@@ -74,7 +74,6 @@
                 android:inputType="number"
                 android:text=""
                 android:textColor="@android:color/black"
-                android:textColorHint="@android:color/black"
                 android:textSize="20sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -85,9 +84,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="4dp"
-            app:boxStrokeColor="@android:color/white"
             app:endIconMode="password_toggle"
-            app:hintTextColor="@android:color/white">
+            app:boxStrokeColor="@android:color/black"
+            app:counterTextColor="@android:color/black"
+            app:hintTextColor="@android:color/black">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_create_admin_password"
@@ -97,7 +97,6 @@
                 android:inputType="textPassword"
                 android:text=""
                 android:textColor="@android:color/black"
-                android:textColorHint="@android:color/black"
                 android:textSize="20sp" />
 
         </com.google.android.material.textfield.TextInputLayout>

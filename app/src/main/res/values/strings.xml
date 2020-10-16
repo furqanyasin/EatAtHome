@@ -58,8 +58,8 @@
     <string name="food_name">Food Name</string>
     <string name="food_price">Food Price</string>
     <string name="food_description">Food Description</string>
-    <string name="select">Select</string>
-    <string name="upload">Upload</string>
+    <string name="select">Select Image</string>
+    <string name="upload">Upload Image</string>
     <string name="delete">DELETE</string>
     <string name="rs">Rs:</string>
     <string name="user_name">User Name</string>

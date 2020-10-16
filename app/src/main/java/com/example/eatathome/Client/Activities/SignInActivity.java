@@ -83,7 +83,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                         if (clientUsers.getPassword().equals(password)) {
                             Toast.makeText(SignInActivity.this, "Sign In Successfully !", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(SignInActivity.this, RestaurantListActivity.class);
-                            //Constant.currentUser = clientUsers;
+                            Constant.currentUser = clientUsers;
                             startActivity(intent);
                             finish();
 

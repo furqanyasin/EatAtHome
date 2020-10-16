@@ -56,8 +56,6 @@ public class RestaurantListActivity extends AppCompatActivity implements Navigat
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_list);
 
-
-
         //for first-time login, pop up notification to complete profile.
         sharedPreferences = getSharedPreferences("com.example.eatathome.Client", MODE_PRIVATE);
 
@@ -77,12 +75,6 @@ public class RestaurantListActivity extends AppCompatActivity implements Navigat
         //paper init
         Paper.init(this);
 
-        //set name for user
-        final View headerView = navigationView.getHeaderView(0);
-        textFullName = headerView.findViewById(R.id.text_full_name);
-        textFullName.setText(Constant.currentUser.getName());
-
-
         //init firebase
         database = FirebaseDatabase.getInstance();
         category = database.getReference("Restaurants");
@@ -90,6 +82,10 @@ public class RestaurantListActivity extends AppCompatActivity implements Navigat
 
         updateToken(FirebaseInstanceId.getInstance().getToken());
 
+        //set name for user
+        final View headerView = navigationView.getHeaderView(0);
+        textFullName = headerView.findViewById(R.id.text_full_name);
+        textFullName.setText(Constant.currentUser.getName());
 
         recyclerView = findViewById(R.id.recyclerview_menu1);
         recyclerView.setHasFixedSize(true);

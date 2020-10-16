@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.eatathome.Interface.ItemClickListener;
+import com.example.eatathome.MainActivity;
 import com.example.eatathome.R;
 import com.example.eatathome.Server.Constant.ConstantRes;
 import com.example.eatathome.Server.Models.CategoryRes;
@@ -273,7 +274,6 @@ public class MainAdminActivity extends AppCompatActivity
 
 
                     });
-            btnUpload.setText("Image Uploaded");
         }
     }
 
@@ -389,7 +389,7 @@ public class MainAdminActivity extends AppCompatActivity
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                Intent signout = new Intent(MainAdminActivity.this, RestaurantMainActivity.class);
+                Intent signout = new Intent(MainAdminActivity.this, MainActivity.class);
                 startActivity(signout);
             }
         });

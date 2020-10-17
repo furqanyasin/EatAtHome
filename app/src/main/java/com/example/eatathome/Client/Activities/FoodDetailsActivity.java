@@ -7,8 +7,10 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.eatathome.Client.Constant.Constant;
 import com.example.eatathome.Client.Database.Database;
 import com.example.eatathome.Client.Model.Food;
@@ -105,7 +107,7 @@ public class FoodDetailsActivity extends AppCompatActivity implements RatingDial
         //init firebase
         database = FirebaseDatabase.getInstance();
         food = database.getReference("Restaurants").child(Constant.restaurantSelected).child("detail").child("Foods");
-        ratingsTable = database.getReference("Ratings");
+        ratingsTable = database.getReference("Restaurants").child(Constant.restaurantSelected).child("Ratings");
 
 
         // get intent here
@@ -142,8 +144,7 @@ public class FoodDetailsActivity extends AppCompatActivity implements RatingDial
                 }
                 if (count != 0) {
                     float average;
-                    average = sum % count;
-
+                    average = sum / count;
                     ratingBar.setRating(average);
                 }
 
@@ -161,7 +162,7 @@ public class FoodDetailsActivity extends AppCompatActivity implements RatingDial
                 .setPositiveButtonText("Submit")
                 .setNegativeButtonText("Cancel")
                 .setNoteDescriptions(Arrays.asList("Very Bad", "Not good", "Quite ok", "Very Good", "Excellent !!!"))
-                .setDefaultRating(4)
+                .setDefaultRating(5)
                 .setTitle("Rate this food")
                 .setDescription("Please select some stars and give your feedback")
                 .setTitleTextColor(R.color.colorAccent)
@@ -207,18 +208,15 @@ public class FoodDetailsActivity extends AppCompatActivity implements RatingDial
                 comments,
                 currentFood.getImage()
         );
-
-       /* ratingsTable.child(Constant.currentUser.getPhone()).addValueEventListener(new ValueEventListener() {
+     /*   ratingsTable.child(Constant.currentUser.getPhone()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.child(Constant.currentUser.getPhone()).exists())
-                {
-
+                if (dataSnapshot.child(Constant.currentUser.getPhone()).exists()) {
                     ratingsTable.child(Constant.currentUser.getPhone()).removeValue();
 
                     ratingsTable.child(Constant.currentUser.getPhone()).setValue(rating);
 
-                }else
+                } else
 
                     ratingsTable.child(Constant.currentUser.getPhone()).setValue(rating);
 
@@ -229,7 +227,6 @@ public class FoodDetailsActivity extends AppCompatActivity implements RatingDial
 
             }
         });*/
-
         //Fix user can rate multiple time
         ratingsTable.push()
                 .setValue(rating)
@@ -248,4 +245,8 @@ public class FoodDetailsActivity extends AppCompatActivity implements RatingDial
 
     }
 
+    @Override
+    public void onNeutralButtonClicked() {
+
+    }
 }

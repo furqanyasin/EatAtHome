@@ -49,7 +49,8 @@ public class NearbyRestaurantsActivity extends FragmentActivity implements OnMap
         mapFragment.getMapAsync(this);
 
         database = FirebaseDatabase.getInstance();
-        restaurants = database.getReference("Restaurants").child(Constant.restaurantSelected);
+       restaurants = database.getReference("Restaurants").child(Constant.restaurantSelected);
+
     }
 
     /**
@@ -72,8 +73,7 @@ public class NearbyRestaurantsActivity extends FragmentActivity implements OnMap
     }
 
     private void subscribeToUpdates() {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Restaurants");
-        ref.addChildEventListener(new ChildEventListener() {
+        restaurants.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
                 setMarker(dataSnapshot);

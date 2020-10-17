@@ -33,9 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         activityMainBinding.btnSignInAsShipper.setOnClickListener(this);
         activityMainBinding.btnSignInAdmin.setOnClickListener(this);
 
-
     }
-
 
     @Override
     public void onClick(View view) {

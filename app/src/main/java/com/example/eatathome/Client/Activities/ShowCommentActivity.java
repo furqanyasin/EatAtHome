@@ -51,7 +51,7 @@ public class ShowCommentActivity extends AppCompatActivity {
 
         //Firebase
         database = FirebaseDatabase.getInstance();
-        ratingDb = database.getReference("Ratings");
+        ratingDb = database.getReference("Restaurants").child(Constant.restaurantSelected).child("Ratings");
 
         recyclerView =  findViewById(R.id.recyclerview_show_comment);
         layoutManager = new LinearLayoutManager(this);

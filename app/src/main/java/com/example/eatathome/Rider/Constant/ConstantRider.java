@@ -36,11 +36,6 @@ public class ConstantRider {
     public static final int REQUEST_CODE = 1000;
     public static final String baseURL = "https://maps.googleapis.com/";
 
-    public static String DISTANCE= "";
-    public static String DURATION= "";
-    public static String ESTIMATED_TIME = "";
-
-
     public static String convertCodeToStatus(String code){
 
         if(code.equals("0"))

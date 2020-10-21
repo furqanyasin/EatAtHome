@@ -18,11 +18,14 @@ public class MyFirebaseIdServiceRider extends FirebaseInstanceIdService {
     }
 
     private void updateTokenToFirebase(String tokenRefreshed) {
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference tokens = db.getReference("Tokens");
-        TokenRider token = new TokenRider(tokenRefreshed, false);
-        // false because token send from client app
+        if (ConstantRider.currentRider!=null){
+            FirebaseDatabase db = FirebaseDatabase.getInstance();
+            DatabaseReference tokens = db.getReference("Tokens");
+            TokenRider token = new TokenRider(tokenRefreshed, false);
+            // false because token send from client app
 
-        tokens.child(ConstantRider.currentRider.getPhone()).setValue(token);
+            tokens.child(ConstantRider.currentRider.getPhone()).setValue(token);
+        }
+
     }
 }

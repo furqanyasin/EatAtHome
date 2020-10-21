@@ -85,9 +85,9 @@ public class DirectionJSONParserRider {
                     int hours = (totalSeconds - days * 86400) / 3600;
                     int minutes = (totalSeconds - days * 86400 - hours * 3600) / 60;
                     int seconds = totalSeconds - days * 86400 - hours * 3600 - minutes * 60;
-
+/*
                     ConstantRider.DISTANCE = String.valueOf(dist + " km ");
-                    ConstantRider.DURATION = String.valueOf(hours + " hours " + minutes + " mins " + seconds + " seconds ");
+                    ConstantRider.DURATION = String.valueOf(hours + " hours " + minutes + " mins " + seconds + " seconds ");*/
 
                     SimpleDateFormat DBFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault());
                     String currentDateandTime = DBFormat.format(new Date());
@@ -99,13 +99,13 @@ public class DirectionJSONParserRider {
                         e.printStackTrace();
                     }
 
-                    Calendar calendar = Calendar.getInstance();
+        /*            Calendar calendar = Calendar.getInstance();
                     calendar.setTime(getFormatDate());
                     calendar.add(Calendar.HOUR, hours);
                     calendar.add(Calendar.MINUTE, minutes);
                     calendar.add(Calendar.SECOND, seconds);
                     Log.v("1st",""+calendar.getTime());
-                    ConstantRider.ESTIMATED_TIME = String.valueOf(DBFormat.format(calendar.getTime()));
+                    ConstantRider.ESTIMATED_TIME = String.valueOf(DBFormat.format(calendar.getTime()));*/
 
                 }
             }

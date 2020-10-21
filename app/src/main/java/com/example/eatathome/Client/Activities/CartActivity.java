@@ -242,7 +242,6 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
 
 
         places_fragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-        assert places_fragment != null;
         places_fragment.setPlaceFields(placesField);
         places_fragment.setCountry("PK");
         places_fragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -399,10 +398,11 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
 
-                //remove fragment
+                
+              /*  //remove fragment
                 getFragmentManager().beginTransaction()
                         .remove(getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment))
-                        .commit();
+                        .commit();*/
             }
         });
 

@@ -75,9 +75,9 @@ public class DirectionJSONParserRes {
                     int hours = (totalSeconds - days * 86400) / 3600;
                     int minutes = (totalSeconds - days * 86400 - hours * 3600) / 60;
                     int seconds = totalSeconds - days * 86400 - hours * 3600 - minutes * 60;
-
+/*
                     ConstantRes.DISTANCE = dist + " km ";
-                    ConstantRes.DURATION = hours + " hours " + minutes + " mins " + seconds + " seconds ";
+                    ConstantRes.DURATION = hours + " hours " + minutes + " mins " + seconds + " seconds ";*/
 
                     SimpleDateFormat DBFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault());
                     String currentDateandTime = DBFormat.format(new Date());
@@ -93,8 +93,8 @@ public class DirectionJSONParserRes {
                     calendar.setTime(getFormatDate());
                     calendar.add(Calendar.HOUR, hours);
                     calendar.add(Calendar.MINUTE, minutes);
-                    calendar.add(Calendar.SECOND, seconds);
-                    ConstantRes.ESTIMATED_TIME = DBFormat.format(calendar.getTime());
+                    calendar.add(Calendar.SECOND, seconds);/*
+                    ConstantRes.ESTIMATED_TIME = DBFormat.format(calendar.getTime());*/
                 }
             }
 

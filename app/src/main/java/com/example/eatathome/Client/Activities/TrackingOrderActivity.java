@@ -22,6 +22,8 @@ import com.example.eatathome.Client.Model.Request;
 import com.example.eatathome.Client.Activities.Model.ShippingInformation;
 import com.example.eatathome.R;
 import com.example.eatathome.Remote.IGoogleService;
+import com.example.eatathome.Rider.Constant.ConstantRider;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -33,6 +35,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -56,21 +59,15 @@ import retrofit2.Response;
 public class TrackingOrderActivity extends FragmentActivity implements OnMapReadyCallback, ValueEventListener {
 
     private GoogleMap mMap;
-    private static final int REQUEST_PHONE_CALL = 1;
 
     FirebaseDatabase database;
     DatabaseReference request, shippingOrder;
 
     Request currentOrder;
-
     IGoogleService mService;
-    Marker mCurrentMarker;
-    Location location;
     Marker shippingMarker;
     Polyline polyline;
 
-    MaterialButton btn_call;
-    TextView distance, duration, time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,37 +84,7 @@ public class TrackingOrderActivity extends FragmentActivity implements OnMapRead
         shippingOrder.addValueEventListener(this);
 
         mService = Constant.getGoogleMapAPI();
-        distance = findViewById(R.id.display_distance);
-        duration = findViewById(R.id.display_duration);
-        time = findViewById(R.id.display_expected_hour);
-        btn_call = findViewById(R.id.btnCall);
-
-        btn_call.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shippingOrder.child(Constant.currentKey).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        ShippingInformation shippingInformation = dataSnapshot.getValue(ShippingInformation.class);
-                        Intent intent = new Intent(Intent.ACTION_DIAL);
-                        intent.setData(Uri.parse("tel:" + shippingInformation.getShipperPhone()));
-                        if (ActivityCompat.checkSelfPermission(TrackingOrderActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                            ActivityCompat.requestPermissions(TrackingOrderActivity.this, new String[]{Manifest.permission.CALL_PHONE}, REQUEST_PHONE_CALL);
-                        }
-
-
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-            }
-        });
     }
-
 
     @Override
     protected void onStop() {
@@ -129,10 +96,6 @@ public class TrackingOrderActivity extends FragmentActivity implements OnMapRead
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.getUiSettings().setZoomControlsEnabled(true);
-
-        final LatLng yourLocation = new LatLng(location.getLatitude(), location.getLongitude());
-        mCurrentMarker = mMap.addMarker(new MarkerOptions().position(yourLocation).title("Your location"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(yourLocation));
 
         trackingLocation();
     }
@@ -386,9 +349,7 @@ public class TrackingOrderActivity extends FragmentActivity implements OnMapRead
         @Override
         protected void onPostExecute(List<List<HashMap<String, String>>> lists) {
             mDialog.dismiss();
-            distance.setText(Constant.DISTANCE);
-            duration.setText(Constant.DURATION);
-            time.setText(Constant.ESTIMATED_TIME);
+
 
             ArrayList points = null;
             PolylineOptions lineOptions = null;

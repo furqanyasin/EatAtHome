@@ -34,10 +34,6 @@ public class Constant {
     public static String currentKey;
     public static final String SHIPPER_INFO_TABLE = "ShippingOrders";
 
-    public static String DISTANCE= "";
-    public static String DURATION= "";
-    public static String ESTIMATED_TIME = "";
-
     public static String PHONE_TEXT = "userPhone";
 
     public static final int PICK_IMAGE_REQUEST = 71;

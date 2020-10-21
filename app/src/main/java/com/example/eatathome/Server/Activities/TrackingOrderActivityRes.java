@@ -67,8 +67,6 @@ public class TrackingOrderActivityRes extends FragmentActivity implements OnMapR
     private static int DISPLACEMENT = 10;
 
     private IGeoCoordinatesRes mService;
-    TextView distance,duration,time;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +74,6 @@ public class TrackingOrderActivityRes extends FragmentActivity implements OnMapR
         setContentView(R.layout.activity_tracking_order);
 
         mService = ConstantRes.getGeoCodeService();
-        distance = findViewById(R.id.display_distance);
-        duration = findViewById(R.id.display_duration);
-        time = findViewById(R.id.display_expected_hour);
 
         if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
@@ -368,10 +363,6 @@ public class TrackingOrderActivityRes extends FragmentActivity implements OnMapR
         @Override
         protected void onPostExecute(List<List<HashMap<String, String>>> lists) {
             mDialog.dismiss();
-            distance.setText(ConstantRes.DISTANCE);
-            duration.setText(ConstantRes.DURATION);
-            time.setText(ConstantRes.ESTIMATED_TIME);
-
 
             ArrayList points = null;
             PolylineOptions lineOptions = null;

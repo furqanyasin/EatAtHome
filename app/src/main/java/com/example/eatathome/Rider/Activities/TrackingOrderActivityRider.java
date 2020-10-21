@@ -73,8 +73,7 @@ public class TrackingOrderActivityRider extends FragmentActivity implements OnMa
     IGeoCoordinatesRes mService;
     Polyline polyline;
 
-    MaterialButton btn_call, btn_shipped;
-    TextView distance, duration, time;
+    MaterialButton btn_shipped;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,24 +84,7 @@ public class TrackingOrderActivityRider extends FragmentActivity implements OnMa
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        btn_call = findViewById(R.id.btnCall);
         btn_shipped = findViewById(R.id.btnShipped);
-        distance = findViewById(R.id.display_distance);
-        duration = findViewById(R.id.display_duration);
-        time = findViewById(R.id.display_expected_hour);
-
-        btn_call.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_CALL);
-                intent.setData(Uri.parse("tel:" + ConstantRider.currentRequest.getPhone()));
-                if (ActivityCompat.checkSelfPermission(TrackingOrderActivityRider.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    return;
-                }
-                startActivity(intent);
-            }
-        });
-
         btn_shipped.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -436,9 +418,6 @@ public class TrackingOrderActivityRider extends FragmentActivity implements OnMa
         @Override
         protected void onPostExecute(List<List<HashMap<String, String>>> lists) {
             mDialog.dismiss();
-            distance.setText(ConstantRider.DISTANCE);
-            duration.setText(ConstantRider.DURATION);
-            time.setText(ConstantRider.ESTIMATED_TIME);
 
             ArrayList points = null;
             PolylineOptions lineOptions = null;

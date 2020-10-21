@@ -28,13 +28,17 @@ import com.example.eatathome.Client.Model.Token;
 import com.example.eatathome.Client.Constant.Constant;
 import com.example.eatathome.Client.ViewHolder.RestaurantViewHolder;
 import com.example.eatathome.R;
+import com.example.eatathome.Rider.Constant.ConstantRider;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.squareup.picasso.Picasso;
 
 import io.paperdb.Paper;
@@ -82,10 +86,13 @@ public class RestaurantListActivity extends AppCompatActivity implements Navigat
 
         updateToken(FirebaseInstanceId.getInstance().getToken());
 
+
         //set name for user
         final View headerView = navigationView.getHeaderView(0);
         textFullName = headerView.findViewById(R.id.text_full_name);
-        textFullName.setText(Constant.currentUser.getName());
+        if (Constant.currentUser!=null){
+            textFullName.setText(Constant.currentUser.getName());
+        }
 
         recyclerView = findViewById(R.id.recyclerview_menu1);
         recyclerView.setHasFixedSize(true);
@@ -129,25 +136,29 @@ public class RestaurantListActivity extends AppCompatActivity implements Navigat
     @Override
     protected void onResume() {
         super.onResume();
-        textFullName.setText(Constant.currentUser.getName());
+        if (Constant.currentUser!=null){
+            textFullName.setText(Constant.currentUser.getName());
+        }
         if(adapter !=null)
             adapter.startListening();
         if (sharedPreferences.getBoolean("firstrun", true)){
             CompleteProfileNotification();
             sharedPreferences.edit().putBoolean("firstrun", false)
-                    .commit();
+                    .apply();
         }
     }
 
 
     private void updateToken(String token) {
+        if (Constant.currentUser!=null) {
+            FirebaseDatabase db = FirebaseDatabase.getInstance();
+            DatabaseReference tokens = db.getReference("Tokens");
+            Token data = new Token(token, false);
+            // false because token send from client app
 
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference tokens = db.getReference("Tokens");
-        Token data = new Token(token, false);
-        // false because token send from client app
+            tokens.child(Constant.currentUser.getPhone()).setValue(data);
 
-        tokens.child(Constant.currentUser.getPhone()).setValue(data);
+        }
     }
 
 

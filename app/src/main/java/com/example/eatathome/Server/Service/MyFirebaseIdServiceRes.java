@@ -1,5 +1,6 @@
 package com.example.eatathome.Server.Service;
 
+import com.example.eatathome.Client.Constant.Constant;
 import com.example.eatathome.Server.Constant.ConstantRes;
 import com.example.eatathome.Server.Models.TokenRes;
 import com.google.firebase.database.DatabaseReference;
@@ -18,11 +19,14 @@ public class MyFirebaseIdServiceRes extends FirebaseInstanceIdService {
     }
 
     private void updateTokenToFirebase(String tokenRefreshed) {
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference tokens = db.getReference("Tokens");
-        TokenRes token = new TokenRes(tokenRefreshed, true);
-        // false because token send from client app
+        if (ConstantRes.currentUser!=null){
+            FirebaseDatabase db = FirebaseDatabase.getInstance();
+            DatabaseReference tokens = db.getReference("Tokens");
+            TokenRes token = new TokenRes(tokenRefreshed, true);
+            // false because token send from client app
 
-        tokens.child(ConstantRes.currentUser.getPhone()).setValue(token);
+            tokens.child(ConstantRes.currentUser.getPhone()).setValue(token);
+        }
+
     }
 }

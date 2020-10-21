@@ -29,12 +29,7 @@ public class ConstantRes {
     public static UserRes currentUser;
     public static RequestRes currentRequest;
 
-    public static String DISTANCE = "";
-    public static String DURATION = "";
-    public static String ESTIMATED_TIME = "";
 
-
-    public static String topicName = "News";
 
     public static String PHONE_TEXT = "userPhone";
 

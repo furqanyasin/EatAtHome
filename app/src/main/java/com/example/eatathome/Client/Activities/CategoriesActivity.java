@@ -73,7 +73,9 @@ public class CategoriesActivity extends AppCompatActivity implements NavigationV
         //set name for user
         final View headerView = navigationView.getHeaderView(0);
         textFullName = headerView.findViewById(R.id.text_full_name);
-        textFullName.setText(Constant.currentUser.getName());
+        if (Constant.currentUser!=null){
+            textFullName.setText(Constant.currentUser.getName());
+        }
         //Load menu
         recyclerMenu = findViewById(R.id.recyclerview_menu1);
         recyclerMenu.setHasFixedSize(true);

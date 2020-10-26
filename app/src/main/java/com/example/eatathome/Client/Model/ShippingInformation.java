@@ -1,4 +1,4 @@
-package com.example.eatathome.Client.Activities.Model;
+package com.example.eatathome.Client.Model;
 
 public class ShippingInformation {
 

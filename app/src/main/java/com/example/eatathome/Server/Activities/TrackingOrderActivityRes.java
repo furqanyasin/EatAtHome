@@ -93,8 +93,6 @@ public class TrackingOrderActivityRes extends FragmentActivity implements OnMapR
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         displayLocation();
 
-
-
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -197,8 +195,6 @@ public class TrackingOrderActivityRes extends FragmentActivity implements OnMapR
                             MarkerOptions marker = new MarkerOptions().icon(BitmapDescriptorFactory.fromBitmap(bitmap))
                                     .title("Order of " + ConstantRes.currentRequest.getPhone())
                                     .position(orderLocation);
-
-
                             mMap.addMarker(marker);
 
                             //draw route
@@ -209,7 +205,7 @@ public class TrackingOrderActivityRes extends FragmentActivity implements OnMapR
                                         @Override
                                         public void onResponse(Call<String> call, Response<String> response) {
 
-                                            new ParserTask().execute(response.body().toString());
+                                            new ParserTask().execute(response.body());
                                         }
 
                                         @Override
@@ -387,8 +383,8 @@ public class TrackingOrderActivityRes extends FragmentActivity implements OnMapR
                 }
 
                 lineOptions.addAll(points);
-                lineOptions.width(8);
-                lineOptions.color(Color.RED);
+                lineOptions.width(12);
+                lineOptions.color(Color.BLUE);
                 lineOptions.geodesic(true);
             }
 

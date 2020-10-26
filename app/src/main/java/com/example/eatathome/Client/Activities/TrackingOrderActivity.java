@@ -19,7 +19,7 @@ import android.widget.TextView;
 import com.example.eatathome.Client.Constant.Constant;
 import com.example.eatathome.Client.Constant.DirectionJSONParser;
 import com.example.eatathome.Client.Model.Request;
-import com.example.eatathome.Client.Activities.Model.ShippingInformation;
+import com.example.eatathome.Client.Model.ShippingInformation;
 import com.example.eatathome.R;
 import com.example.eatathome.Remote.IGoogleService;
 import com.example.eatathome.Rider.Constant.ConstantRider;

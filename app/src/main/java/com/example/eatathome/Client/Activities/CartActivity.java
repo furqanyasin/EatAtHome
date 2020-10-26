@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -45,6 +46,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.gms.location.LocationListener;
@@ -80,6 +82,7 @@ import retrofit2.Response;
 public class CartActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener, RecyclerItemTouchHelperListener {
 
+
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
 
@@ -114,14 +117,12 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
     //declare root layout
     RelativeLayout rootLayout;
 
-    private Place placeSelected;
     private AutocompleteSupportFragment places_fragment;
     private PlacesClient placesClient;
     private List<Place.Field> placesField = Arrays.asList(Place.Field.ID,
             Place.Field.NAME,
             Place.Field.ADDRESS,
             Place.Field.LAT_LNG);
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,7 +161,6 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
         //Firebase
         database = FirebaseDatabase.getInstance();
         requests = database.getReference("Requests");
-
 
         //Init
         recyclerView = findViewById(R.id.listCart);
@@ -223,7 +223,6 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
         }
         return true;
     }
-
     private void showAlertDialog() {
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(CartActivity.this, R.style.Theme_AppCompat_DayNight_Dialog_Alert);
@@ -242,19 +241,21 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
 
 
         places_fragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        assert places_fragment != null;
         places_fragment.setPlaceFields(placesField);
         places_fragment.setCountry("PK");
-        places_fragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+        places_fragment.setOnPlaceSelectedListener(new PlaceSelectionListener()
+        {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
-                placeSelected = place;
-                rdyHomeAddress.setText(place.getAddress());
+                shippingAddress = place;
+                rdyShipToAddress.setText(place.getAddress());
 
             }
 
             @Override
             public void onError(@NonNull Status status) {
-                Toast.makeText(CartActivity.this, "" + status.getStatusMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("ERROR",status.getStatusMessage());
 
             }
         });
@@ -293,8 +294,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
                                 public void onResponse(Call<String> call, Response<String> response) {
                                     // if fetch API ok
                                     try {
-                                        assert response.body() != null;
-                                        JSONObject jsonObject = new JSONObject(response.body().toString());
+                                        JSONObject jsonObject = new JSONObject(response.body());
 
                                         JSONArray resultArray = jsonObject.getJSONArray("results");
 
@@ -305,8 +305,9 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
                                         //set this address to edtAddress
                                         places_fragment.setText(address);
 
-                                    /*    ((EditText) places_fragment.getView().findViewById(R.id.place_autocomplete_search_input))
-                                                .setText(address);*/
+
+                                        ((EditText) places_fragment.getView().findViewById(R.id.place_autocomplete_search_input))
+                                                .setText(address);
 
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -334,7 +335,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
                 //if user select home address, get homeaddress from profile and use it
                 if (!rdyShipToAddress.isChecked() && !rdyHomeAddress.isChecked()) {
                     if (shippingAddress != null)
-                        address = Objects.requireNonNull(shippingAddress.getAddress()).toString();
+                        address = Objects.requireNonNull(shippingAddress.getAddress());
                     else {
                         Toast.makeText(CartActivity.this, "Please enter address or select option address", Toast.LENGTH_SHORT).show();
 
@@ -398,11 +399,11 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
 
-                
-              /*  //remove fragment
+
+                //remove fragment
                 getFragmentManager().beginTransaction()
                         .remove(getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment))
-                        .commit();*/
+                        .commit();
             }
         });
 

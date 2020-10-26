@@ -71,11 +71,6 @@ public class FoodListActivity extends AppCompatActivity implements NavigationVie
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //set name for user
-        final View headerView = navigationView.getHeaderView(0);
-        textFullName = headerView.findViewById(R.id.text_full_name);
-        textFullName.setText(Constant.currentUser.getName());
-
         //init firebase
         database = FirebaseDatabase.getInstance();
         foodList = database.getReference("Restaurants").child(Constant.restaurantSelected).child("detail").child("Foods");
@@ -84,6 +79,12 @@ public class FoodListActivity extends AppCompatActivity implements NavigationVie
         //local db
         localDB = new Database(this);
 
+        //set name for user
+        final View headerView = navigationView.getHeaderView(0);
+        textFullName = headerView.findViewById(R.id.text_full_name);
+        if (Constant.currentUser!=null){
+            textFullName.setText(Constant.currentUser.getName());
+        }
 
         //Load menu
         recyclerViewFood = findViewById(R.id.recyclerview_menu1);

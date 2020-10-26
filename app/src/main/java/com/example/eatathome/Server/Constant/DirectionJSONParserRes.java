@@ -5,20 +5,11 @@ import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 public class DirectionJSONParserRes {
-
-    List<List<HashMap<String, String>>> message;
-    public static SimpleDateFormat DBFormat = new SimpleDateFormat("hh:mm a"	, Locale.getDefault());
 
     /**
      * Receives a JSONObject and returns a list of lists containing latitude and longitude
@@ -29,10 +20,6 @@ public class DirectionJSONParserRes {
         JSONArray jRoutes = null;
         JSONArray jLegs = null;
         JSONArray jSteps = null;
-        JSONObject jDistance = null;
-        JSONObject jDuration = null;
-        long totalDistance = 0;
-        int totalSeconds = 0;
 
         try {
 
@@ -46,13 +33,6 @@ public class DirectionJSONParserRes {
                 /** Traversing all legs */
                 for (int j = 0; j < jLegs.length(); j++) {
                     jSteps = ((JSONObject) jLegs.get(j)).getJSONArray("steps");
-                    /** Getting distance from the json data */
-                    jDistance = ((JSONObject) jLegs.get(j)).getJSONObject("distance");
-                    totalDistance = totalDistance + Long.parseLong(jDistance.getString("value"));
-
-                    /** Getting duration from the json data */
-                    jDuration = ((JSONObject) jLegs.get(j)).getJSONObject("duration");
-                    totalSeconds = totalSeconds + Integer.parseInt(jDuration.getString("value"));
 
                     /** Traversing all steps */
                     for (int k = 0; k < jSteps.length(); k++) {
@@ -69,32 +49,6 @@ public class DirectionJSONParserRes {
                         }
                     }
                     routes.add(path);
-
-                    double dist = totalDistance / 1000.0;
-                    int days = totalSeconds / 86400;
-                    int hours = (totalSeconds - days * 86400) / 3600;
-                    int minutes = (totalSeconds - days * 86400 - hours * 3600) / 60;
-                    int seconds = totalSeconds - days * 86400 - hours * 3600 - minutes * 60;
-/*
-                    ConstantRes.DISTANCE = dist + " km ";
-                    ConstantRes.DURATION = hours + " hours " + minutes + " mins " + seconds + " seconds ";*/
-
-                    SimpleDateFormat DBFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault());
-                    String currentDateandTime = DBFormat.format(new Date());
-
-                    Date date = null;
-                    try {
-                        date = DBFormat.parse(currentDateandTime);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(getFormatDate());
-                    calendar.add(Calendar.HOUR, hours);
-                    calendar.add(Calendar.MINUTE, minutes);
-                    calendar.add(Calendar.SECOND, seconds);/*
-                    ConstantRes.ESTIMATED_TIME = DBFormat.format(calendar.getTime());*/
                 }
             }
 
@@ -104,11 +58,6 @@ public class DirectionJSONParserRes {
         }
 
         return routes;
-    }
-
-    private Date getFormatDate() {
-        Date date = new Date();
-        return date;
     }
 
     /**
@@ -148,4 +97,3 @@ public class DirectionJSONParserRes {
         return poly;
     }
 }
-

@@ -49,7 +49,7 @@ public class NearbyRestaurantsActivity extends FragmentActivity implements OnMap
         mapFragment.getMapAsync(this);
 
         database = FirebaseDatabase.getInstance();
-       restaurants = database.getReference("Restaurants").child(Constant.restaurantSelected);
+       restaurants = database.getReference("Restaurants").child(Constant.restaurantSelected).child("name");
 
     }
 

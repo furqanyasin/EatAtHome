@@ -58,7 +58,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartViewHolder>{
                 //update txttotal
                 //calculation total price
                 float total = 0;
-                List<Order> orders = new Database(cart).getCarts(Constant.currentUser.getPhone());
+                List<Order> orders = new Database(cart).getCarts(Constant.currentUser.getPhone(), Constant.currentRestaurant.getId());
                 for(Order item:orders)
                     total +=(Float.parseFloat(item.getPrice()))*(Integer.parseInt(item.getQuantity()));
                 Locale locale = new Locale("en","PK");
@@ -66,6 +66,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartViewHolder>{
                 cart.txtTotalPrice.setText(fmt.format(total));
             }
         });
+
 
         Locale locale = new Locale("en","PK");
         NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);

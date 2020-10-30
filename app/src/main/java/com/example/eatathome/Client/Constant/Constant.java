@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import com.example.eatathome.Client.Model.Request;
+import com.example.eatathome.Client.Model.Restaurant;
 import com.example.eatathome.Client.Model.User;
 import com.example.eatathome.Remote.APIService;
 import com.example.eatathome.Remote.GoogleRetrofitClient;
@@ -22,8 +23,10 @@ import java.util.Locale;
 public class Constant {
     public static User currentUser;
     public static Request currentRequest;
+    public static Restaurant currentRestaurant;
     public static final String CATEGORY_ID = "CategoryId";
     public static final String FOOD_ID = "FoodId";
+    public static final String RESTAURANT_ID = "RestaurantId";
     public static final String UPDATE = "Update";
     public static final String DELETE = "Delete";
     public static final String USER_KEY = "User";

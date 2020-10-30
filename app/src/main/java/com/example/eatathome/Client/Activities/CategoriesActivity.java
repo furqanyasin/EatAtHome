@@ -45,6 +45,7 @@ public class CategoriesActivity extends AppCompatActivity implements NavigationV
     RecyclerView.LayoutManager layoutManager;
     FirebaseRecyclerAdapter<Category, MenuViewHolder> adapter;
     FirebaseRecyclerOptions<Category> firebaseRecyclerOptions;
+    String RestaurantId = "";
 
 
     @Override
@@ -81,6 +82,10 @@ public class CategoriesActivity extends AppCompatActivity implements NavigationV
         recyclerMenu.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getBaseContext());
         recyclerMenu.setLayoutManager(layoutManager);
+
+        // get intent here
+        if (getIntent() != null)
+            RestaurantId = getIntent().getStringExtra(Constant.RESTAURANT_ID);
 
         if (Constant.isConnectedToInternet(this))
             loadMenu();
@@ -127,6 +132,7 @@ public class CategoriesActivity extends AppCompatActivity implements NavigationV
                         Intent foodList = new Intent(CategoriesActivity.this, FoodListActivity.class);
                         //Because CategoryId is a key, so we just key of this item
                         foodList.putExtra(Constant.CATEGORY_ID, adapter.getRef(position).getKey());
+
                         startActivity(foodList);
                     }
                 });

@@ -47,16 +47,16 @@ public class Database extends SQLiteAssetHelper {
         return flag;
     }
 
-    public List<Order> getCarts(String userPhone) {
+    public List<Order> getCarts(String phone, String currentRestaurant) {
 
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
-        String[] sqlSelect = {"UserPhone", "ProductName", "ProductId", "Quantity", "Price", "Image"};
+        String[] sqlSelect = {"UserPhone", "ProductName", "ProductId", "Quantity", "Price", "Image","RestaurantId"};
         String sqlTable = "OrderDetail";
 
         qb.setTables(sqlTable);
-        Cursor c = qb.query(db, sqlSelect, "UserPhone=?", new String[]{userPhone}, null, null, null);
+        Cursor c = qb.query(db, sqlSelect, "UserPhone=?", new String[]{currentRestaurant}, null, null, null);
 
         final List<Order> result = new ArrayList<>();
         if (c.moveToFirst()) {
@@ -67,7 +67,8 @@ public class Database extends SQLiteAssetHelper {
                         c.getString(c.getColumnIndex("ProductName")),
                         c.getString(c.getColumnIndex("Quantity")),
                         c.getString(c.getColumnIndex("Price")),
-                        c.getString(c.getColumnIndex("Image"))
+                        c.getString(c.getColumnIndex("Image")),
+                        c.getString(c.getColumnIndex("RestaurantId"))
 
                 ));
             } while (c.moveToNext());
@@ -78,14 +79,15 @@ public class Database extends SQLiteAssetHelper {
     public void addToCart(Order order) {
 
         SQLiteDatabase db = getReadableDatabase();
-        String query = String.format("INSERT OR REPLACE INTO OrderDetail(UserPhone,ProductId,ProductName,Quantity,Price,Image)" +
-                        "VALUES('%s','%s','%s','%s','%s','%s');",
+        String query = String.format("INSERT OR REPLACE INTO OrderDetail(UserPhone,ProductId,ProductName,Quantity,Price,Image, RestaurantId)" +
+                        "VALUES('%s','%s','%s','%s','%s','%s','%s');",
                 order.getUserPhone(),
                 order.getProductId(),
                 order.getProductName(),
                 order.getQuantity(),
                 order.getPrice(),
-                order.getImage());
+                order.getImage(),
+                order.getRestaurantId());
 
 
         db.execSQL(query);

@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eatathome.Client.Database.Database;
+import com.example.eatathome.Client.Model.Restaurant;
 import com.example.eatathome.Interface.ItemClickListener;
 import com.example.eatathome.Client.Model.Favorites;
 import com.example.eatathome.Client.Model.Food;
@@ -50,6 +51,7 @@ public class FoodListActivity extends AppCompatActivity implements NavigationVie
     FirebaseRecyclerAdapter<Food, FoodViewHolder> adapter;
     FirebaseRecyclerOptions<Food> firebaseRecyclerOptions;
     String categoryId = "";
+    String RestaurantId = "";
 
     Database localDB;
 
@@ -105,6 +107,10 @@ public class FoodListActivity extends AppCompatActivity implements NavigationVie
             }
         }
 
+        // get intent here
+        if (getIntent() != null)
+            RestaurantId = getIntent().getStringExtra(Constant.RESTAURANT_ID);
+
     }
 
     @Override
@@ -151,7 +157,8 @@ public class FoodListActivity extends AppCompatActivity implements NavigationVie
                                     model.getName(),
                                     "1",
                                     model.getPrice(),
-                                    model.getImage()
+                                    model.getImage(),
+                                    Constant.RESTAURANT_ID
 
                             ));
                         } else {

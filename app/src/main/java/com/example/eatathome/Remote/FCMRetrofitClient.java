@@ -9,7 +9,7 @@ public class FCMRetrofitClient {
 
     public static Retrofit getClient(String baseURL){
 
-        if(retrofit == null){
+        if (retrofit == null){
 
             retrofit = new Retrofit.Builder()
                     .baseUrl(baseURL)

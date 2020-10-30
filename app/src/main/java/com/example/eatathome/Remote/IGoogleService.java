@@ -13,6 +13,6 @@ public interface IGoogleService {
     @GET
     Call<String> getLocationFromAddress(@Url String url);
 
-    @GET("maps/api/directions/json?key=&sensor=true&language=en&mode=driving")
+    @GET("maps/api/directions/json&sensor=true&language=en&mode=driving")
     Call<String> getDirections(@Query("origin") String origin, @Query("destination") String destination);
 }

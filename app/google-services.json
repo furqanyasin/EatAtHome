@@ -1,34 +1,42 @@
 {
   "project_info": {
-    "project_number": "986402752712",
-    "firebase_url": "https://eat-at-home-3e9ee.firebaseio.com",
-    "project_id": "eat-at-home-3e9ee",
-    "storage_bucket": "eat-at-home-3e9ee.appspot.com"
+    "project_number": "5158754185",
+    "firebase_url": "https://eatathome-4e6d0.firebaseio.com",
+    "project_id": "eatathome-4e6d0",
+    "storage_bucket": "eatathome-4e6d0.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:986402752712:android:6505726e638717ecc13dfd",
+        "mobilesdk_app_id": "1:5158754185:android:d94da74c42bd857f16f358",
         "android_client_info": {
           "package_name": "com.example.eatathome"
         }
       },
       "oauth_client": [
         {
-          "client_id": "986402752712-plq007on37sh4df8rk72uaje0kq91v42.apps.googleusercontent.com",
+          "client_id": "5158754185-tq3pojb2ik31vc5h8ovg092nj7i7n6as.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.eatathome",
+            "certificate_hash": "d659147f2685d028cbe28e474fa2a7fcc8abc006"
+          }
+        },
+        {
+          "client_id": "5158754185-4pdeoeo9orn2g96r7re2vgs6nmq7ank4.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA8Y84gyQV5811cA_p4S_gqT52UpsR8vf8"
+          "current_key": "AIzaSyCUwHYmOta4JsnN9DMyvgqN93TmTt3Lhpo"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "986402752712-plq007on37sh4df8rk72uaje0kq91v42.apps.googleusercontent.com",
+              "client_id": "5158754185-4pdeoeo9orn2g96r7re2vgs6nmq7ank4.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -185,6 +185,7 @@ public class RestaurantListActivity extends AppCompatActivity implements Navigat
                     public void onClick(View view, int position, boolean isLongClick) {
                         Intent foodList = new Intent(RestaurantListActivity.this, CategoriesActivity.class);
                         Constant.restaurantSelected = adapter.getRef(position).getKey();
+                        foodList.putExtra(Constant.RESTAURANT_ID, adapter.getRef(position).getKey());
                         startActivity(foodList);
                     }
                 });

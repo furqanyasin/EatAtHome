@@ -4,17 +4,27 @@ package com.example.eatathome.Client.Model;
 public class Food {
 
     private String name,image,description,price,menuId;
+    private String restaurantId;
 
     public Food(){
 
     }
 
-    public Food(String name, String image, String description, String price, String menuId) {
+    public Food(String name, String image, String description, String price, String menuId, String restaurantId) {
         this.name = name;
         this.image = image;
         this.description = description;
         this.price = price;
         this.menuId = menuId;
+        this.restaurantId = restaurantId;
+    }
+
+    public String getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(String restaurantId) {
+        this.restaurantId = restaurantId;
     }
 
     public String getName() {

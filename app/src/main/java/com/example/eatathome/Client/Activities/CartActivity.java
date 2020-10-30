@@ -46,7 +46,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.gms.location.LocationListener;
@@ -98,6 +97,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
     Place shippingAddress;
 
     String address;
+    String RestaurantId = "";
 
     //location
     private LocationRequest mLocationRequest;
@@ -171,6 +171,10 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
         //Swipe to delete
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
+
+        // get intent here
+        if (getIntent() != null)
+            RestaurantId = getIntent().getStringExtra(Constant.RESTAURANT_ID);
 
         txtTotalPrice = findViewById(R.id.total);
         btnPlace = findViewById(R.id.btn_place_order);
@@ -477,18 +481,26 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private void loadListFood() {
 
-        cart = new Database(this).getCarts(Constant.currentUser.getPhone());
-        adapter = new CartAdapter(cart, this);
-        adapter.notifyDataSetChanged();
-        recyclerView.setAdapter(adapter);
+        if (Constant.currentUser.getPhone() != null){
+            cart = new Database(this).getCarts(Constant.currentUser.getPhone(), Constant.currentUser.getPhone());
+            adapter = new CartAdapter(cart, this);
+            adapter.notifyDataSetChanged();
+            recyclerView.setAdapter(adapter);
+            //calculation total price
 
-        //calculation total price
-        float total = 0;
-        for (Order order : cart)
-            total += (Float.parseFloat(order.getPrice())) * (Integer.parseInt(order.getQuantity()));
-        Locale locale = new Locale("en", "PK");
-        java.text.NumberFormat fmt = java.text.NumberFormat.getCurrencyInstance(locale);
-        txtTotalPrice.setText(fmt.format(total));
+            try {
+                float total = 0;
+                for (Order order : cart)
+                    total += (Float.parseFloat(order.getPrice())) * (Integer.parseInt(order.getQuantity()));
+                Locale locale = new Locale("en", "PK");
+                java.text.NumberFormat fmt = java.text.NumberFormat.getCurrencyInstance(locale);
+                txtTotalPrice.setText(fmt.format(total));
+            } catch (Exception e){
+                System.out.println("not a number");
+            }
+
+        }
+
     }
 
     @Override
@@ -578,7 +590,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
             //update txttotal
             //calculation total price
             float total = 0;
-            List<Order> orders = new Database(getBaseContext()).getCarts(Constant.currentUser.getPhone());
+            List<Order> orders = new Database(getBaseContext()).getCarts(Constant.currentUser.getPhone(), Constant.currentUser.getPhone());
             for (Order item : orders)
                 total += (Float.parseFloat(item.getPrice())) * (Integer.parseInt(item.getQuantity()));
             Locale locale = new Locale("en", "PK");
@@ -596,7 +608,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
                     //update txt total
                     //calculation total price
                     float total = 0;
-                    List<Order> orders = new Database(getBaseContext()).getCarts(Constant.currentUser.getPhone());
+                    List<Order> orders = new Database(getBaseContext()).getCarts(Constant.currentUser.getPhone(), Constant.currentUser.getPhone());
                     for (Order item : orders)
                         total += (Float.parseFloat(item.getPrice())) * (Integer.parseInt(item.getQuantity()));
                     Locale locale = new Locale("en", "PK");

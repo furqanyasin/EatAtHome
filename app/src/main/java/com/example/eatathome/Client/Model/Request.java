@@ -30,7 +30,6 @@ public class Request {
         this.foods = foods;
     }
 
-
     public String getPhone() {
         return phone;
     }

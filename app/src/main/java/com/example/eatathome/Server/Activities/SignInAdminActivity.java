@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.eatathome.R;
@@ -24,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 public class SignInAdminActivity extends AppCompatActivity {
 
     TextInputEditText edtPhone, edtPassword;
+    TextView addRestaurant;
     MaterialButton btnSignInAsAdmin;
     FirebaseDatabase db;
     DatabaseReference users;
@@ -41,6 +43,14 @@ public class SignInAdminActivity extends AppCompatActivity {
         btnSignInAsAdmin =  findViewById(R.id.btn_sign_in);
 
         //Init firebase
+
+        addRestaurant = findViewById(R.id.tv_add_restaurant);
+        addRestaurant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         db = FirebaseDatabase.getInstance();
         users = db.getReference("UserRestaurantAdmin");

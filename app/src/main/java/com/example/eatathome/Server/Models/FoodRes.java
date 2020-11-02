@@ -3,17 +3,27 @@ package com.example.eatathome.Server.Models;
 public class FoodRes {
 
     private String name,image,description,price,menuId;
+    private String restaurantId;
 
     public FoodRes(){
 
     }
 
-    public FoodRes(String name, String image, String description, String price, String menuId) {
+    public FoodRes(String name, String image, String description, String price, String menuId, String restaurantId) {
         this.name = name;
         this.image = image;
         this.description = description;
         this.price = price;
         this.menuId = menuId;
+        this.restaurantId = restaurantId;
+    }
+
+    public String getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(String restaurantId) {
+        this.restaurantId = restaurantId;
     }
 
     public String getName() {

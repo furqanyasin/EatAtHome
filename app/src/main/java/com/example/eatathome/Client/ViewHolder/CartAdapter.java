@@ -1,5 +1,6 @@
 package com.example.eatathome.Client.ViewHolder;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import java.util.Locale;
 
 public class CartAdapter extends RecyclerView.Adapter<CartViewHolder>{
 
+    private Context context;
     private List<Order> listData = new ArrayList<>();
     private CartActivity cart;
 

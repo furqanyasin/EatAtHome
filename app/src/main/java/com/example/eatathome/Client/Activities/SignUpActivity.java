@@ -2,7 +2,11 @@ package com.example.eatathome.Client.Activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Toast;
 
@@ -13,6 +17,7 @@ import androidx.databinding.DataBindingUtil;
 import com.example.eatathome.Client.Constant.Constant;
 import com.example.eatathome.Client.Model.User;
 import com.example.eatathome.R;
+import com.example.eatathome.Server.Activities.ManageAccountActivity;
 import com.example.eatathome.databinding.ActivitySignUpBinding;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,6 +37,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         activitySignUpBinding.btnSignUp.setOnClickListener(this);
         activitySignUpBinding.txtSignIn.setOnClickListener(this);
+
     }
 
     @Override
@@ -60,30 +66,31 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             mDialog.setMessage("Please waiting...");
             mDialog.show();
 
-            table_users.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    //check if user not exit in database
-                    if (dataSnapshot.child(phoneNumber).exists()) {
-                        //Get User Information
-                        mDialog.dismiss();
-                        Toast.makeText(SignUpActivity.this, "Phone Number already exists", Toast.LENGTH_SHORT).show();
+                table_users.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        //check if user not exit in database
+                        if (dataSnapshot.child(phoneNumber).exists()) {
+                            //Get User Information
+                            mDialog.dismiss();
+                            Toast.makeText(SignUpActivity.this, "Phone Number already exists", Toast.LENGTH_SHORT).show();
 
-                    } else {
-                        mDialog.dismiss();
-                        User clientUsers = new User(name,password,  phoneNumber, secureCode,null,null);
-                        table_users.child(phoneNumber).setValue(clientUsers);
-                        Toast.makeText(SignUpActivity.this, "Sign Up Successfully", Toast.LENGTH_SHORT).show();
-                        finish();
+                        } else {
+                            mDialog.dismiss();
+                            User clientUsers = new User(name, password, phoneNumber, secureCode, null, null);
+                            table_users.child(phoneNumber).setValue(clientUsers);
+                            Toast.makeText(SignUpActivity.this, "Sign Up Successfully", Toast.LENGTH_SHORT).show();
+                            finish();
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
                     }
-                }
+                });
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
         } else {
             Toast.makeText(this, "Please check your Internet Connection", Toast.LENGTH_SHORT).show();
             return;
@@ -92,4 +99,5 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
 
     }
+
 }

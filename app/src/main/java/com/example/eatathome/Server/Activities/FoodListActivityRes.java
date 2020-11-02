@@ -264,7 +264,7 @@ public class FoodListActivityRes extends AppCompatActivity {
             @Override
             public FoodViewHolderRes onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View itemView = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.food_item, parent, false);
+                        .inflate(R.layout.food_item_res, parent, false);
                 return new FoodViewHolderRes(itemView);
             }
         };

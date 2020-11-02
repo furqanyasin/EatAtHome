@@ -67,7 +67,6 @@ public class TrackingOrderActivityRider extends FragmentActivity implements OnMa
     LocationCallback locationCallback;
     LocationRequest locationRequest;
     Location mLastLocation;
-    RequestRider currentOrder;
 
     Marker mCurrentMarker;
     IGeoCoordinatesRes mService;
@@ -203,7 +202,7 @@ public class TrackingOrderActivityRider extends FragmentActivity implements OnMa
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
                     try {
-                        JSONObject jsonObject = new JSONObject(response.body().toString());
+                        JSONObject jsonObject = new JSONObject(response.body());
 
                         String lat = ((JSONArray) jsonObject.get("results"))
                                 .getJSONObject(0)
@@ -236,7 +235,7 @@ public class TrackingOrderActivityRider extends FragmentActivity implements OnMa
                                     @Override
                                     public void onResponse(Call<String> call, Response<String> response) {
 
-                                        new ParserTask().execute(response.body().toString());
+                                        new ParserTask().execute(response.body());
 
                                     }
 
@@ -311,6 +310,8 @@ public class TrackingOrderActivityRider extends FragmentActivity implements OnMa
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
+        mMap.setMyLocationEnabled(true);
+
         fusedLocationProviderClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
@@ -337,7 +338,7 @@ public class TrackingOrderActivityRider extends FragmentActivity implements OnMa
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
                     try {
-                        JSONObject jsonObject = new JSONObject(response.body().toString());
+                        JSONObject jsonObject = new JSONObject(response.body());
 
                         String lat = ((JSONArray) jsonObject.get("results"))
                                 .getJSONObject(0)

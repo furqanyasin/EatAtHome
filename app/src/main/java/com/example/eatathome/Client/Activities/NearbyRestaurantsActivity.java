@@ -1,17 +1,30 @@
 package com.example.eatathome.Client.Activities;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.example.eatathome.Client.Constant.Constant;
+import com.example.eatathome.Client.Model.Restaurant;
 import com.example.eatathome.R;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -25,6 +38,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
@@ -38,7 +52,7 @@ public class NearbyRestaurantsActivity extends FragmentActivity implements OnMap
 
     FirebaseDatabase database;
     DatabaseReference restaurants;
-
+    Marker marker;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,8 +62,10 @@ public class NearbyRestaurantsActivity extends FragmentActivity implements OnMap
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+
         database = FirebaseDatabase.getInstance();
-       restaurants = database.getReference("Restaurants").child(Constant.restaurantSelected).child("name");
+        restaurants = database.getReference("Restaurants");
+        restaurants.push().setValue(marker);
 
     }
 
@@ -65,10 +81,26 @@ public class NearbyRestaurantsActivity extends FragmentActivity implements OnMap
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        // map is a GoogleMap object
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        }
+        mMap.setMyLocationEnabled(true);
 
-        mMap = googleMap;
         mMap.setMaxZoomPreference(16);
 
+        //Zoom controls//
+        //mMap.getUiSettings().setZoomControlsEnabled(true);
+
+  /*      mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                Intent intent = new Intent(NearbyRestaurantsActivity.this, RestaurantListActivity.class);
+                startActivity(intent);
+                return false;
+            }
+        });*/
         subscribeToUpdates();
     }
 
@@ -76,12 +108,12 @@ public class NearbyRestaurantsActivity extends FragmentActivity implements OnMap
         restaurants.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-                setMarker(dataSnapshot);
+                setNameMarker();
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
-                setMarker(dataSnapshot);
+                setNameMarker();
             }
 
             @Override
@@ -99,25 +131,23 @@ public class NearbyRestaurantsActivity extends FragmentActivity implements OnMap
         });
     }
 
-    private void setMarker(DataSnapshot dataSnapshot) {
-        // When a location update is received, put or update
-        // its value in mMarkers, which contains all the markers
-        // for locations received, so that we can build the
-        // boundaries required to show them all on the map at once
-        String key = dataSnapshot.getKey();
-        HashMap<String, Object> value = (HashMap<String, Object>) dataSnapshot.getValue();
-        double lat = Double.parseDouble(value.get("latitude").toString());
-        double lng = Double.parseDouble(value.get("longitude").toString());
-        LatLng location = new LatLng(lat, lng);
-        if (!mMarkers.containsKey(key)) {
-            mMarkers.put(key, mMap.addMarker(new MarkerOptions().title(key).position(location)));
-        } else {
-            mMarkers.get(key).setPosition(location);
-        }
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        for (Marker marker : mMarkers.values()) {
-            builder.include(marker.getPosition());
-        }
-        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 300));
+    private void setNameMarker(){
+        restaurants.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot s : snapshot.getChildren()) {
+                    Restaurant restaurant = s.getValue(Restaurant.class);
+                    LatLng location = new LatLng(Double.parseDouble(restaurant.getLatitude()), Double.parseDouble(restaurant.getLongitude()));
+                    mMap.addMarker(new MarkerOptions().position(location).title(restaurant.getName()));
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 13));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
+
 }

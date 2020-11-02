@@ -91,4 +91,15 @@
     <string name="firebase_path" translatable="false">Restaurants</string>
     <string name="firebase_email" translatable="false">test@example.com</string>
     <string name="firebase_password" translatable="false">password</string>
+    <string name="login">Login</string>
+    <string name="app_admin_login">App Admin Login</string>
+    <string name="restaurant_login">Restaurant Login</string>
+    <string name="add_food_by_restaurant">Add Food By Restaurant</string>
+    <string name="client_login">Client Login</string>
+    <string name="buy_your_favourite_food">Buy Your Favourite Food</string>
+    <string name="client_signup">Client Sign Up</string>
+    <string name="create_account_to_buy_food">Create Account to Buy Food</string>
+    <string name="deliver_your_pickup_food">Deliver your Pickup Food</string>
+    <string name="rider_login">Rider Login</string>
+    <string name="manage_restaurants">Manage Restaurants</string>
 </resources>

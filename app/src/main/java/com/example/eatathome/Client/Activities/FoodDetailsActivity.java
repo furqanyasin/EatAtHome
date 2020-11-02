@@ -83,8 +83,6 @@ public class FoodDetailsActivity extends AppCompatActivity implements RatingDial
         if (getIntent() != null)
             RestaurantId = getIntent().getStringExtra(Constant.RESTAURANT_ID);
 
-        Query resid = foods.orderByChild("foodId").equalTo(foodId);
-
         btnCart = findViewById(R.id.btn_cart);
         btnCart.setOnClickListener(new View.OnClickListener() {
             @Override

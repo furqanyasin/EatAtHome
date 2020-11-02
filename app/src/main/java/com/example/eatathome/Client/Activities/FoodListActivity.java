@@ -21,8 +21,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.andremion.counterfab.CounterFab;
 import com.example.eatathome.Client.Database.Database;
-import com.example.eatathome.Client.Model.Restaurant;
 import com.example.eatathome.Interface.ItemClickListener;
 import com.example.eatathome.Client.Model.Favorites;
 import com.example.eatathome.Client.Model.Food;
@@ -32,7 +32,6 @@ import com.example.eatathome.R;
 import com.example.eatathome.Client.Constant.Constant;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -53,12 +52,15 @@ public class FoodListActivity extends AppCompatActivity implements NavigationVie
     String categoryId = "";
     String RestaurantId = "";
 
+
     Database localDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_list);
+
+        CounterFab counterFab = findViewById(R.id.fab);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(" Food List");
@@ -84,7 +86,7 @@ public class FoodListActivity extends AppCompatActivity implements NavigationVie
         //set name for user
         final View headerView = navigationView.getHeaderView(0);
         textFullName = headerView.findViewById(R.id.text_full_name);
-        if (Constant.currentUser!=null){
+        if (Constant.currentUser != null) {
             textFullName.setText(Constant.currentUser.getName());
         }
 
@@ -140,7 +142,7 @@ public class FoodListActivity extends AppCompatActivity implements NavigationVie
 
                 viewHolder.food_name.setText(model.getName());
                 viewHolder.food_price.setText(String.format("%s", model.getPrice().toString()));
-                Picasso.get().load(model.getImage()).into(viewHolder.food_image);
+                Picasso.get().load(model.getImage()).placeholder(R.drawable.placeholderfood).into(viewHolder.food_image);
 
                 //Quick cart
 
@@ -261,8 +263,11 @@ public class FoodListActivity extends AppCompatActivity implements NavigationVie
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        if (id == R.id.nav_home) {
+            Intent NearbyIntent = new Intent(FoodListActivity.this, RestaurantListActivity.class);
+            startActivity(NearbyIntent);
 
-        if (id == R.id.nav_menu) {
+        } else if (id == R.id.nav_menu) {
             Intent NearbyIntent = new Intent(FoodListActivity.this, NearbyRestaurantsActivity.class);
             startActivity(NearbyIntent);
 

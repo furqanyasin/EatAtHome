@@ -28,19 +28,13 @@ import com.example.eatathome.Client.Model.Token;
 import com.example.eatathome.Client.Constant.Constant;
 import com.example.eatathome.Client.ViewHolder.RestaurantViewHolder;
 import com.example.eatathome.R;
-import com.example.eatathome.Rider.Constant.ConstantRider;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.squareup.picasso.Picasso;
-
 import io.paperdb.Paper;
 
 public class RestaurantListActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -176,7 +170,7 @@ public class RestaurantListActivity extends AppCompatActivity implements Navigat
             protected void onBindViewHolder(@NonNull RestaurantViewHolder holder, int position, @NonNull Restaurant model) {
                 holder.restaurantName.setText(model.getName());
                 holder.restaurantLocation.setText(model.getLocation());
-                Picasso.get().load(model.getImage())
+                Picasso.get().load(model.getImage()).placeholder(R.drawable.placeholder)
                         .into(holder.restaurantImage);
 
                 final Restaurant clickItem = model;
@@ -239,7 +233,11 @@ public class RestaurantListActivity extends AppCompatActivity implements Navigat
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_menu) {
+        if (id == R.id.nav_home) {
+            Intent NearbyIntent = new Intent(RestaurantListActivity.this, RestaurantListActivity.class);
+            startActivity(NearbyIntent);
+
+        } else if (id == R.id.nav_menu) {
             Intent NearbyIntent = new Intent(RestaurantListActivity.this, NearbyRestaurantsActivity.class);
             startActivity(NearbyIntent);
 

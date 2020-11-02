@@ -120,7 +120,7 @@ public class CategoriesActivity extends AppCompatActivity implements NavigationV
             @Override
             protected void onBindViewHolder(@NonNull final MenuViewHolder holder, int position, @NonNull Category model) {
                 holder.txtMenuName.setText(model.getName());
-                Picasso.get().load(model.getImage())
+                Picasso.get().load(model.getImage()).placeholder(R.drawable.placeholder)
                         .into(holder.imageView);
 
                 final Category clickItem = model;
@@ -169,7 +169,11 @@ public class CategoriesActivity extends AppCompatActivity implements NavigationV
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_menu) {
+        if (id == R.id.nav_home) {
+            Intent NearbyIntent = new Intent(CategoriesActivity.this, RestaurantListActivity.class);
+            startActivity(NearbyIntent);
+
+        } else if (id == R.id.nav_menu) {
             Intent NearbyIntent = new Intent(CategoriesActivity.this, NearbyRestaurantsActivity.class);
             startActivity(NearbyIntent);
 

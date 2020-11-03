@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eatathome.R;
 import com.example.eatathome.Server.Models.OrderRes;
+import com.example.eatathome.Server.Models.RestaurantRes;
 
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class OrderDetailAdapterRes extends RecyclerView.Adapter<MyViewHolderRes>
         this.myOrders = myOrders;
 
     }
+
 
 
     @NonNull

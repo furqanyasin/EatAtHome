@@ -236,14 +236,6 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
         LayoutInflater inflater = this.getLayoutInflater();
         View order_address_comment = inflater.inflate(R.layout.order_address_comment, null);
 
-        final TextInputEditText edtComment = order_address_comment.findViewById(R.id.et_edtComment);
-
-        //radio button
-        final RadioButton rdyShipToAddress = order_address_comment.findViewById(R.id.rdyShipToAddress);
-        final RadioButton rdyHomeAddress = order_address_comment.findViewById(R.id.rdyHomeAddress);
-        final RadioButton cashOnDelivery = order_address_comment.findViewById(R.id.cashOnDelivery);
-
-
         places_fragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         assert places_fragment != null;
         places_fragment.setPlaceFields(placesField);
@@ -253,7 +245,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
             @Override
             public void onPlaceSelected(@NonNull Place place) {
                 shippingAddress = place;
-                rdyShipToAddress.setText(place.getAddress());
+                //rdyShipToAddress.setText(place.getAddress());
 
             }
 
@@ -263,6 +255,12 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
 
             }
         });
+
+        final TextInputEditText edtComment = order_address_comment.findViewById(R.id.et_edtComment);
+        //radio button
+        final RadioButton rdyShipToAddress = order_address_comment.findViewById(R.id.rdyShipToAddress);
+        final RadioButton rdyHomeAddress = order_address_comment.findViewById(R.id.rdyHomeAddress);
+        final RadioButton cashOnDelivery = order_address_comment.findViewById(R.id.cashOnDelivery);
 
         //radio event
         rdyHomeAddress.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

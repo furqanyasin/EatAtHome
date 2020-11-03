@@ -8,28 +8,19 @@ public class Order {
     private String quantity;
     private String price;
     private String image;
-    private String restaurantId;
 
     public Order() {
     }
 
-    public Order(String userPhone, String productId, String productName, String quantity, String price, String image, String restaurantId) {
+    public Order(String userPhone, String productId, String productName, String quantity, String price, String image) {
         this.userPhone = userPhone;
         this.productId = productId;
         this.productName = productName;
         this.quantity = quantity;
         this.price = price;
         this.image = image;
-        this.restaurantId = restaurantId;
     }
 
-    public String getRestaurantId() {
-        return restaurantId;
-    }
-
-    public void setRestaurantId(String restaurantId) {
-        this.restaurantId = restaurantId;
-    }
 
     public String getUserPhone() {
         return userPhone;

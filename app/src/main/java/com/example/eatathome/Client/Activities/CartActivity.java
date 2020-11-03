@@ -482,7 +482,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
     private void loadListFood() {
 
         if (Constant.currentUser.getPhone() != null){
-            cart = new Database(this).getCarts(Constant.currentUser.getPhone(), Constant.currentUser.getPhone());
+            cart = new Database(this).getCarts(Constant.currentUser.getPhone());
             adapter = new CartAdapter(cart, this);
             adapter.notifyDataSetChanged();
             recyclerView.setAdapter(adapter);
@@ -590,7 +590,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
             //update txttotal
             //calculation total price
             float total = 0;
-            List<Order> orders = new Database(getBaseContext()).getCarts(Constant.currentUser.getPhone(), Constant.currentUser.getPhone());
+            List<Order> orders = new Database(getBaseContext()).getCarts(Constant.currentUser.getPhone());
             for (Order item : orders)
                 total += (Float.parseFloat(item.getPrice())) * (Integer.parseInt(item.getQuantity()));
             Locale locale = new Locale("en", "PK");
@@ -608,7 +608,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
                     //update txt total
                     //calculation total price
                     float total = 0;
-                    List<Order> orders = new Database(getBaseContext()).getCarts(Constant.currentUser.getPhone(), Constant.currentUser.getPhone());
+                    List<Order> orders = new Database(getBaseContext()).getCarts(Constant.currentUser.getPhone());
                     for (Order item : orders)
                         total += (Float.parseFloat(item.getPrice())) * (Integer.parseInt(item.getQuantity()));
                     Locale locale = new Locale("en", "PK");

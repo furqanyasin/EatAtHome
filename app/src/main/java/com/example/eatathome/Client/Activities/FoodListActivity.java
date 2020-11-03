@@ -159,8 +159,7 @@ public class FoodListActivity extends AppCompatActivity implements NavigationVie
                                     model.getName(),
                                     "1",
                                     model.getPrice(),
-                                    model.getImage(),
-                                    Constant.RESTAURANT_ID
+                                    model.getImage()
 
                             ));
                         } else {

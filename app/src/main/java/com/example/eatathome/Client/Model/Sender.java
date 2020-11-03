@@ -3,15 +3,15 @@ package com.example.eatathome.Client.Model;
 public class  Sender {
 
     public String to;
-    public com.example.eatathome.Client.Model.Notification notification;
+    public Notification notification;
 
 
-    public Sender(String to, com.example.eatathome.Client.Model.Notification notification) {
+    public Sender(String to, Notification notification) {
         this.to = to;
         this.notification = notification;
     }
 
-    public void setNotification(com.example.eatathome.Client.Model.Notification notification) {
+    public void setNotification(Notification notification) {
         this.notification = notification;
     }
 

@@ -54,7 +54,6 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesViewHolder> 
                 if (!isExists) {
                     new Database(context).addToCart(new Order(
                             Constant.currentUser.getPhone(),
-                            Constant.restaurantSelected,
                             favoritesList.get(position).getFoodId(),
                             favoritesList.get(position).getFoodName(),
                             "1",

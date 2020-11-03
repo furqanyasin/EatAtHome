@@ -122,7 +122,7 @@ public class TrackingOrderActivity extends FragmentActivity implements OnMapRead
                                                 JSONObject jsonObject = new JSONObject(response.body());
 
                                                 String lat = ((JSONArray) jsonObject.get("results"))
-                                                        .getJSONObject(00)
+                                                        .getJSONObject(0)
                                                         .getJSONObject("geometry")
                                                         .getJSONObject("location")
                                                         .get("lat").toString();

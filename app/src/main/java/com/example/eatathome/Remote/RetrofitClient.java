@@ -13,7 +13,7 @@ public class RetrofitClient {
         if (retrofit == null){
 
             retrofit = new Retrofit.Builder()
-                    .addConverterFactory(ScalarsConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create())
                     .baseUrl(baseURL)
                     .build();
         }

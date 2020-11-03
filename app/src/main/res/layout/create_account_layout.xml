@@ -18,9 +18,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="4dp"
-            app:boxStrokeColor="@android:color/white"
-            app:counterTextColor="@android:color/white"
-            app:hintTextColor="@android:color/white">
+            app:boxStrokeColor="@android:color/black"
+            app:counterTextColor="@android:color/black"
+            app:hintTextColor="@android:color/black">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_create_account_phone"
@@ -41,8 +41,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="4dp"
-            app:boxStrokeColor="@android:color/white"
-            app:hintTextColor="@android:color/white">
+            app:boxStrokeColor="@android:color/black"
+            app:hintTextColor="@android:color/black">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_create_account_name"
@@ -63,9 +63,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="4dp"
-            app:boxStrokeColor="@android:color/white"
+            app:boxStrokeColor="@android:color/black"
             app:endIconMode="password_toggle"
-            app:hintTextColor="@android:color/white">
+            app:hintTextColor="@android:color/black">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_create_account_password"

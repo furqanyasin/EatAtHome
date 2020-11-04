@@ -77,7 +77,7 @@ public class OrderStatusActivity extends AppCompatActivity {
 
         adapter = new FirebaseRecyclerAdapter<Request, OrderViewHolder>(orderOptions) {
             @Override
-            protected void onBindViewHolder(@NonNull OrderViewHolder viewHolder, final int position, @NonNull Request model) {
+            protected void onBindViewHolder(@NonNull OrderViewHolder viewHolder, final int position, @NonNull final Request model) {
                 viewHolder.txtOrderId.setText(adapter.getRef(position).getKey());
                 viewHolder.txtOrderStatus.setText(Constant.convertCodeToStatus(model.getStatus()));
                 viewHolder.txtOrderPhone.setText(model.getPhone());
@@ -90,10 +90,16 @@ public class OrderStatusActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         Constant.currentKey = adapter.getRef(position).getKey();
-                        if (adapter.getItem(position).getStatus().equals("2"))
-                            startActivity(new Intent(OrderStatusActivity.this, TrackingOrderActivity.class));
+                        if (adapter.getItem(position).getStatus().equals("2")){
+                            Intent trackingOrder = new Intent(OrderStatusActivity.this, TrackingOrderActivity.class);
+                            Constant.currentRequest = model;
+                            startActivity(trackingOrder);
+
+                            //startActivity(new Intent(OrderStatusActivity.this, TrackingOrderActivity.class));
+                        }
+
                         else
-                            Toast.makeText(OrderStatusActivity.this, "You cannot track this Order!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(OrderStatusActivity.this, "You cannot track this Order!", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -131,6 +137,7 @@ public class OrderStatusActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
         recyclerView.setAdapter(adapter);
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -170,9 +177,9 @@ public class OrderStatusActivity extends AppCompatActivity {
                 dialog.dismiss();
                 requests.child(key).removeValue();
                 Toast.makeText(OrderStatusActivity.this,
-                        "Order"  + " "+
-                        key +
-                        " " + "has been deleted", Toast.LENGTH_SHORT).show();
+                        "Order" + " " +
+                                key +
+                                " " + "has been deleted", Toast.LENGTH_SHORT).show();
 
             }
         });

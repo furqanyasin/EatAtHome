@@ -1,4 +1,5 @@
-package com.example.eatathome.Remote;
+package com.example.eatathome.Client.Remote;
+
 
 import retrofit2.Retrofit;
 import retrofit2.converter.scalars.ScalarsConverterFactory;

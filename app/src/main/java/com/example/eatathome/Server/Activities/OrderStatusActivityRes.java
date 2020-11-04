@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.eatathome.R;
-import com.example.eatathome.Remote.APIServiceRes;
+import com.example.eatathome.Server.Remote.APIServiceRes;
 import com.example.eatathome.Server.Constant.ConstantRes;
 import com.example.eatathome.Server.Models.MyResponseRes;
 import com.example.eatathome.Server.Models.NotificationRes;

@@ -37,8 +37,8 @@ import com.example.eatathome.Client.Model.Order;
 import com.example.eatathome.Client.Model.Request;
 import com.example.eatathome.Client.Model.Sender;
 import com.example.eatathome.Client.Model.Token;
-import com.example.eatathome.Remote.APIService;
-import com.example.eatathome.Remote.IGoogleService;
+import com.example.eatathome.Client.Remote.APIService;
+import com.example.eatathome.Client.Remote.IGoogleService;
 import com.example.eatathome.Client.ViewHolder.CartAdapter;
 import com.example.eatathome.Client.ViewHolder.CartViewHolder;
 import com.example.eatathome.R;
@@ -129,7 +129,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
-        Places.initialize(this, getString(R.string.google_maps_key));
+        Places.initialize(this, getString(R.string.google_maps_key_client));
         placesClient = Places.createClient(this);
 
 
@@ -227,6 +227,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
         }
         return true;
     }
+
     private void showAlertDialog() {
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(CartActivity.this, R.style.Theme_AppCompat_DayNight_Dialog_Alert);
@@ -237,21 +238,18 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
         View order_address_comment = inflater.inflate(R.layout.order_address_comment, null);
 
         places_fragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-        assert places_fragment != null;
         places_fragment.setPlaceFields(placesField);
         places_fragment.setCountry("PK");
-        places_fragment.setOnPlaceSelectedListener(new PlaceSelectionListener()
-        {
+        places_fragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
                 shippingAddress = place;
-                //rdyShipToAddress.setText(place.getAddress());
 
             }
 
             @Override
             public void onError(@NonNull Status status) {
-                Log.e("ERROR",status.getStatusMessage());
+                Log.e("ERROR", status.getStatusMessage());
 
             }
         });
@@ -307,9 +305,9 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
                                         //set this address to edtAddress
                                         places_fragment.setText(address);
 
-
+/*
                                         ((EditText) places_fragment.getView().findViewById(R.id.place_autocomplete_search_input))
-                                                .setText(address);
+                                                .setText(address);*/
 
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -401,11 +399,11 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
 
-
+/*
                 //remove fragment
                 getFragmentManager().beginTransaction()
                         .remove(getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment))
-                        .commit();
+                        .commit();*/
             }
         });
 
@@ -479,7 +477,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private void loadListFood() {
 
-        if (Constant.currentUser.getPhone() != null){
+        if (Constant.currentUser.getPhone() != null) {
             cart = new Database(this).getCarts(Constant.currentUser.getPhone());
             adapter = new CartAdapter(cart, this);
             adapter.notifyDataSetChanged();
@@ -493,7 +491,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
                 Locale locale = new Locale("en", "PK");
                 java.text.NumberFormat fmt = java.text.NumberFormat.getCurrencyInstance(locale);
                 txtTotalPrice.setText(fmt.format(total));
-            } catch (Exception e){
+            } catch (Exception e) {
                 System.out.println("not a number");
             }
 
@@ -619,4 +617,3 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
         }
     }
 }
-

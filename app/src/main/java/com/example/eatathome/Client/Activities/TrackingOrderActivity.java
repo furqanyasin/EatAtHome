@@ -6,24 +6,17 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.location.Location;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
 
 import com.example.eatathome.Client.Constant.Constant;
 import com.example.eatathome.Client.Constant.DirectionJSONParser;
 import com.example.eatathome.Client.Model.Request;
 import com.example.eatathome.Client.Model.ShippingInformation;
 import com.example.eatathome.R;
-import com.example.eatathome.Remote.IGoogleService;
-import com.example.eatathome.Rider.Constant.ConstantRider;
-import com.google.android.gms.location.FusedLocationProviderClient;
+import com.example.eatathome.Client.Remote.IGoogleService;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -35,8 +28,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -177,7 +168,7 @@ public class TrackingOrderActivity extends FragmentActivity implements OnMapRead
                                                                         .enqueue(new Callback<String>() {
                                                                             @Override
                                                                             public void onResponse(Call<String> call, Response<String> response) {
-                                                                                new ParserTask().execute(response.body().toString());
+                                                                                new ParserTask().execute(response.body());
                                                                             }
 
                                                                             @Override

@@ -14,13 +14,12 @@ import android.graphics.Color;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.eatathome.R;
 import com.example.eatathome.Server.Constant.ConstantRes;
 import com.example.eatathome.Server.Constant.DirectionJSONParserRes;
-import com.example.eatathome.Remote.IGeoCoordinatesRes;
+import com.example.eatathome.Server.Remote.IGeoCoordinatesRes;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -34,6 +33,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import org.json.JSONArray;
@@ -54,6 +54,7 @@ public class TrackingOrderActivityRes extends FragmentActivity implements OnMapR
         LocationListener {
 
     private GoogleMap mMap;
+    JSONObject jsonObject;
 
     private final static int PLAY_SERVICE_RESOLUTION_REQUEST = 1000;
     private final static int LOCATION_PERMISSION_REQUEST = 1001;
@@ -67,6 +68,7 @@ public class TrackingOrderActivityRes extends FragmentActivity implements OnMapR
     private static int DISPLACEMENT = 10;
 
     private IGeoCoordinatesRes mService;
+    Polyline polyline;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,16 +77,13 @@ public class TrackingOrderActivityRes extends FragmentActivity implements OnMapR
 
         mService = ConstantRes.getGeoCodeService();
 
-        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
-                (this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-
-        {
+                (this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestRuntimePermission();
-        }
-        else{
+        } else {
 
-            if(checkPlayServices()){
+            if (checkPlayServices()) {
                 buildGoogleApiClient();
                 createLocationRequest();
             }
@@ -130,19 +129,14 @@ public class TrackingOrderActivityRes extends FragmentActivity implements OnMapR
     }
 
     private void displayLocation() {
-        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
-                (this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-
-        {
+                (this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestRuntimePermission();
-        }
-        else
-        {
+        } else {
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
-            if (mLastLocation != null)
-            {
+            if (mLastLocation != null) {
                 double latitude = mLastLocation.getLatitude();
                 double longitude = mLastLocation.getLongitude();
 
@@ -157,9 +151,7 @@ public class TrackingOrderActivityRes extends FragmentActivity implements OnMapR
 
                 drawRoute(yourLocation, ConstantRes.currentRequest.getAddress());
 
-            }
-            else
-            {
+            } else {
                 //Toast.makeText(this, "Couldn't get the location", Toast.LENGTH_SHORT).show();
             }
         }
@@ -167,21 +159,20 @@ public class TrackingOrderActivityRes extends FragmentActivity implements OnMapR
     }
 
     private void drawRoute(final LatLng yourLocation, final String address) {
-
         mService.getGeoCode(address)
                 .enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
-                        try{
-                            JSONObject jsonObject = new JSONObject(response.body().toString());
+                        try {
+                            jsonObject = new JSONObject(response.body().toString());
 
-                            String lat = ((JSONArray)jsonObject.get("results"))
+                            String lat = ((JSONArray) jsonObject.get("results"))
                                     .getJSONObject(0)
                                     .getJSONObject("geometry")
                                     .getJSONObject("location")
                                     .get("lat").toString();
 
-                            String lng = ((JSONArray)jsonObject.get("results"))
+                            String lng = ((JSONArray) jsonObject.get("results"))
                                     .getJSONObject(0)
                                     .getJSONObject("geometry")
                                     .getJSONObject("location")
@@ -214,8 +205,7 @@ public class TrackingOrderActivityRes extends FragmentActivity implements OnMapR
                                         }
                                     });
 
-                        }
-                        catch (JSONException e){
+                        } catch (JSONException e) {
 
                             e.printStackTrace();
                         }
@@ -226,6 +216,7 @@ public class TrackingOrderActivityRes extends FragmentActivity implements OnMapR
 
                     }
                 });
+
     }
 
 
@@ -252,20 +243,18 @@ public class TrackingOrderActivityRes extends FragmentActivity implements OnMapR
     private boolean checkPlayServices() {
 
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
-        if(resultCode != ConnectionResult.SUCCESS){
+        if (resultCode != ConnectionResult.SUCCESS) {
 
-            if(GooglePlayServicesUtil.isUserRecoverableError(resultCode)){
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
 
                 GooglePlayServicesUtil.getErrorDialog(resultCode, this, PLAY_SERVICE_RESOLUTION_REQUEST).show();
-            }
-            else
-            {
+            } else {
                 Toast.makeText(this, "This device is not support", Toast.LENGTH_SHORT).show();
                 finish();
             }
             return false;
         }
-        return  true;
+        return true;
     }
 
     @Override
@@ -296,11 +285,9 @@ public class TrackingOrderActivityRes extends FragmentActivity implements OnMapR
     }
 
     private void startLocationUpdates() {
-        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
-                (this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-
-        {
+                (this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, (com.google.android.gms.location.LocationListener) this);
@@ -332,7 +319,7 @@ public class TrackingOrderActivityRes extends FragmentActivity implements OnMapR
             mGoogleApiClient.connect();
     }
 
-    private class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String,String>>>> {
+    private class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
 
         ProgressDialog mDialog = new ProgressDialog(TrackingOrderActivityRes.this);
 
@@ -347,14 +334,14 @@ public class TrackingOrderActivityRes extends FragmentActivity implements OnMapR
         protected List<List<HashMap<String, String>>> doInBackground(String... strings) {
 
             JSONObject jsonObject;
-            List<List<HashMap<String,String>>> routes = null;
-            try{
+            List<List<HashMap<String, String>>> routes = null;
+            try {
                 jsonObject = new JSONObject(strings[0]);
                 DirectionJSONParserRes parser = new DirectionJSONParserRes();
 
                 routes = parser.parse(jsonObject);
 
-            }catch (JSONException e){
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
             return routes;
@@ -367,21 +354,21 @@ public class TrackingOrderActivityRes extends FragmentActivity implements OnMapR
             ArrayList points = null;
             PolylineOptions lineOptions = null;
 
-            for (int i = 0; i<lists.size(); i++){
+            for (int i = 0; i < lists.size(); i++) {
 
                 points = new ArrayList();
                 lineOptions = new PolylineOptions();
 
-                List<HashMap<String,String>> path = lists.get(i);
+                List<HashMap<String, String>> path = lists.get(i);
 
-                for (int j = 0; j<path.size(); j++){
+                for (int j = 0; j < path.size(); j++) {
 
-                    HashMap<String,String> point = path.get(j);
+                    HashMap<String, String> point = path.get(j);
 
                     double lat = Double.parseDouble(point.get("lat"));
                     double lng = Double.parseDouble(point.get("lng"));
 
-                    LatLng position = new LatLng(lat,lng);
+                    LatLng position = new LatLng(lat, lng);
 
                     points.add(position);
                 }

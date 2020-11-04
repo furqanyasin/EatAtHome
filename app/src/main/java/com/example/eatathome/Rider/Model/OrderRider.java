@@ -10,7 +10,7 @@ public class OrderRider {
 
     }
 
-    public OrderRider(String productId, String productName, String quantity, String price, String image) {
+    public OrderRider(String productId, String productName, String quantity, String price) {
         ProductId = productId;
         ProductName = productName;
         Quantity = quantity;

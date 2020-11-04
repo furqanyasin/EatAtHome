@@ -1,14 +1,14 @@
-package com.example.eatathome.Remote;
+package com.example.eatathome.Client.Remote;
 
-import com.example.eatathome.Server.Models.MyResponseRes;
-import com.example.eatathome.Server.Models.SenderRes;
+import com.example.eatathome.Client.Model.MyResponse;
+import com.example.eatathome.Client.Model.Sender;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
-public interface APIServiceRes {
+public interface APIService {
 
     @Headers(
             {
@@ -19,5 +19,5 @@ public interface APIServiceRes {
     )
 
     @POST("fcm/send")
-    Call<MyResponseRes> sendNotification(@Body SenderRes body);
+    Call<MyResponse> sendNotification(@Body Sender body);
 }

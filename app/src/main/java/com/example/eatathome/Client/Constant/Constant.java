@@ -11,11 +11,10 @@ import android.net.NetworkInfo;
 import com.example.eatathome.Client.Model.Request;
 import com.example.eatathome.Client.Model.Restaurant;
 import com.example.eatathome.Client.Model.User;
-import com.example.eatathome.Remote.APIService;
-import com.example.eatathome.Remote.GoogleRetrofitClient;
-import com.example.eatathome.Remote.IGoogleService;
-import com.example.eatathome.Remote.RetrofitClient;
-import com.example.eatathome.Remote.IGeoCoordinatesRes;
+import com.example.eatathome.Client.Remote.APIService;
+import com.example.eatathome.Client.Remote.GoogleRetrofitClient;
+import com.example.eatathome.Client.Remote.IGoogleService;
+import com.example.eatathome.Client.Remote.RetrofitClient;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -40,12 +39,6 @@ public class Constant {
     public static String PHONE_TEXT = "userPhone";
 
     public static final int PICK_IMAGE_REQUEST = 71;
-
-    public static final String baseUrl = "https://maps.googleapis.com";
-
-    public static IGeoCoordinatesRes getGeoCodeService(){
-        return RetrofitClient.getClient(baseUrl).create(IGeoCoordinatesRes.class);
-    }
 
     private static final String BASE_URL = "https://fcm.googleapis.com/";
     private static final String GOOGLE_API_URL = "https://maps.googleapis.com/";

@@ -18,14 +18,13 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.eatathome.R;
-import com.example.eatathome.Remote.IGeoCoordinatesRes;
 import com.example.eatathome.Rider.Constant.ConstantRider;
 import com.example.eatathome.Rider.Constant.DirectionJSONParserRider;
 import com.example.eatathome.Rider.Model.RequestRider;
+import com.example.eatathome.Rider.Remote.IGeoCoordinatesRider;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -69,10 +68,11 @@ public class TrackingOrderActivityRider extends FragmentActivity implements OnMa
     Location mLastLocation;
 
     Marker mCurrentMarker;
-    IGeoCoordinatesRes mService;
+    IGeoCoordinatesRider mService;
     Polyline polyline;
 
     MaterialButton btn_shipped;
+    JSONObject jsonObject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +106,33 @@ public class TrackingOrderActivityRider extends FragmentActivity implements OnMa
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        // Add a marker and move the camera
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        fusedLocationProviderClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                mLastLocation = location;
+                final LatLng yourLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                mCurrentMarker = mMap.addMarker(new MarkerOptions().position(yourLocation).title("Your location"));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(yourLocation));
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(16.0f));
+                mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(Marker marker) {
+                        showGoogleMapDirection(new LatLng(mLastLocation.getLatitude(),
+                                mLastLocation.getLongitude()), ConstantRider.currentRequest);
+                        return false;
+                    }
+                });
+            }
+        });
+    }
 
     private void ConfirmDialog() {
 
@@ -176,14 +203,16 @@ public class TrackingOrderActivityRider extends FragmentActivity implements OnMa
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 mLastLocation = locationResult.getLastLocation();
-                if (mCurrentMarker != null)
-                    mCurrentMarker.setPosition(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude())); //update location for marker
+                if(mCurrentMarker!=null)
+                mCurrentMarker.setPosition(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude())); //update location for marker
 
                 //update location on firebase
                 ConstantRider.updateShippingInformation(ConstantRider.currentKey, mLastLocation);
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(mLastLocation.getLatitude(),
-                        mLastLocation.getLongitude())));
-                mMap.animateCamera(CameraUpdateFactory.zoomTo(16.0f));
+                if(mMap!=null){
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(mLastLocation.getLatitude(),
+                            mLastLocation.getLongitude())));
+                    mMap.animateCamera(CameraUpdateFactory.zoomTo(16.0f));
+                }
 
                 drawRoute(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()), ConstantRider.currentRequest);
 
@@ -202,7 +231,7 @@ public class TrackingOrderActivityRider extends FragmentActivity implements OnMa
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
                     try {
-                        JSONObject jsonObject = new JSONObject(response.body());
+                        jsonObject = new JSONObject(response.body());
 
                         String lat = ((JSONArray) jsonObject.get("results"))
                                 .getJSONObject(0)
@@ -295,41 +324,17 @@ public class TrackingOrderActivityRider extends FragmentActivity implements OnMa
         locationRequest.setFastestInterval(3000);
     }
 
-    @Override
+  /*  @Override
     protected void onStop() {
         if (fusedLocationProviderClient != null)
             fusedLocationProviderClient.removeLocationUpdates(locationCallback);
         super.onStop();
-    }
+    }*/
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-
-        // Add a marker and move the camera
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        mMap.setMyLocationEnabled(true);
-
-        fusedLocationProviderClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                mLastLocation = location;
-                final LatLng yourLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                mCurrentMarker = mMap.addMarker(new MarkerOptions().position(yourLocation).title("Your location"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(yourLocation));
-                mMap.animateCamera(CameraUpdateFactory.zoomTo(16.0f));
-                mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                    @Override
-                    public boolean onMarkerClick(Marker marker) {
-                        showGoogleMapDirection(new LatLng(mLastLocation.getLatitude(),
-                                mLastLocation.getLongitude()), ConstantRider.currentRequest);
-                        return false;
-                    }
-                });
-            }
-        });
+    protected void onDestroy() {
+        fusedLocationProviderClient.removeLocationUpdates(locationCallback);
+        super.onDestroy();
     }
 
     private void showGoogleMapDirection(final LatLng yourLocation, final RequestRider request) {
@@ -338,7 +343,7 @@ public class TrackingOrderActivityRider extends FragmentActivity implements OnMa
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
                     try {
-                        JSONObject jsonObject = new JSONObject(response.body());
+                        jsonObject = new JSONObject(response.body());
 
                         String lat = ((JSONArray) jsonObject.get("results"))
                                 .getJSONObject(0)

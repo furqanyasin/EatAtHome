@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import com.example.eatathome.Client.Model.Rating;
 import com.example.eatathome.Client.ViewHolder.ShowCommentViewHolder;
 import com.example.eatathome.Client.Constant.Constant;
-import com.example.eatathome.Client.Constant.NumberOfFood;
 import com.example.eatathome.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -79,7 +78,7 @@ public class ShowCommentActivity extends AppCompatActivity {
                             holder.ratingBar.setRating(Float.parseFloat(model.getRateValue()));
                             holder.txtComment.setText(model.getComment());
                             holder.txtUserPhone.setText(model.getUserPhone());
-                            holder.txtFoodName.setText(NumberOfFood.convertIdToName(model.getFoodId()));
+                            holder.txtFoodName.setText(model.getFoodId());
                             Picasso.get().load(model.getImage()).into(holder.commentImage);
 
                         }
@@ -120,7 +119,7 @@ public class ShowCommentActivity extends AppCompatActivity {
                             holder.ratingBar.setRating(Float.parseFloat(model.getRateValue()));
                             holder.txtComment.setText(model.getComment());
                             holder.txtUserPhone.setText(model.getUserPhone());
-                            holder.txtFoodName.setText(NumberOfFood.convertIdToName(model.getFoodId()));
+                            holder.txtFoodName.setText(model.getFoodId());
                             Picasso.get().load(model.getImage()).into(holder.commentImage);
                         }
 

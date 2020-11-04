@@ -1,6 +1,5 @@
 package com.example.eatathome.Server.Constant;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -10,12 +9,13 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import com.example.eatathome.Client.Model.Restaurant;
-import com.example.eatathome.Remote.APIServiceRes;
-import com.example.eatathome.Remote.RetrofitClient;
+import com.example.eatathome.Server.Remote.APIServiceRes;
+import com.example.eatathome.Client.Remote.RetrofitClient;
 import com.example.eatathome.Server.Models.RequestRes;
 import com.example.eatathome.Server.Models.UserRes;
-import com.example.eatathome.Remote.FCMRetrofitClient;
-import com.example.eatathome.Remote.IGeoCoordinatesRes;
+import com.example.eatathome.Server.Remote.FCMRetrofitClientRes;
+import com.example.eatathome.Server.Remote.IGeoCoordinatesRes;
+import com.example.eatathome.Server.Remote.RetrofitClientRes;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -27,19 +27,15 @@ public class ConstantRes {
     public static final String Staff_TABLE = "User";
 
     public static  String restaurantSelected = "";
-
     public static Restaurant currentRestaurant;
 
     public static UserRes currentUser;
     public static RequestRes currentRequest;
 
-
-
     public static String PHONE_TEXT = "userPhone";
 
     public static final String INTENT_ACCOUNT = "Account";
     public static final String INTENT_FOOD_ID = "FoodId";
-
 
     public static final String UPDATE = "Update";
     public static final String DELETE = "Delete";
@@ -79,11 +75,11 @@ public class ConstantRes {
     }
 
     public static APIServiceRes getFCMClient() {
-        return FCMRetrofitClient.getClient(fcmURL).create(APIServiceRes.class);
+        return FCMRetrofitClientRes.getClient(fcmURL).create(APIServiceRes.class);
     }
 
     public static IGeoCoordinatesRes getGeoCodeService() {
-        return RetrofitClient.getClient(baseURL).create(IGeoCoordinatesRes.class);
+        return RetrofitClientRes.getClient(baseURL).create(IGeoCoordinatesRes.class);
     }
 
     public static boolean isConnectedToInternet(Context context) {

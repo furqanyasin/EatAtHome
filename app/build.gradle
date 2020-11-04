@@ -52,8 +52,8 @@ dependencies {
     implementation 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
     implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
 
- /*   implementation 'androidx.room:room-rxjava2:2.2.0-rc01'
-    annotationProcessor 'androidx.room:room-compiler:2.2.0-rc01'*/
+    implementation 'androidx.room:room-rxjava2:2.2.0-rc01'
+    annotationProcessor 'androidx.room:room-compiler:2.2.0-rc01'
 
     //spinner
     implementation 'com.jaredrummler:material-spinner:1.1.0'

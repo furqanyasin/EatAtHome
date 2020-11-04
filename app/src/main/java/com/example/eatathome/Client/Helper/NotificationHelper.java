@@ -15,8 +15,8 @@ import com.example.eatathome.R;
 
 public class NotificationHelper extends ContextWrapper {
 
-    private static final String EatatHome_ID = "com.example.eatathome.Client.EatAtHome";
-    private static final String EatatHome_Name = "EatAtHome";
+    private static final String EatatHome_ID = "com.example.eatathome.Client";
+    private static final String EatatHome_Name = "Client";
 
     private NotificationManager manager;
 

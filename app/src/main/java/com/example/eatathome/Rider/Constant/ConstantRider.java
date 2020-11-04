@@ -9,11 +9,11 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.eatathome.Remote.IGeoCoordinatesRes;
-import com.example.eatathome.Remote.RetrofitClient;
 import com.example.eatathome.Rider.Model.RequestRider;
 import com.example.eatathome.Rider.Model.UserRider;
 import com.example.eatathome.Rider.Model.ShippingInformationRider;
+import com.example.eatathome.Rider.Remote.IGeoCoordinatesRider;
+import com.example.eatathome.Rider.Remote.RetrofitClientRider;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -95,8 +95,8 @@ public class ConstantRider {
                     }
                 });
     }
-    public static IGeoCoordinatesRes getGeoCodeService(){
-        return RetrofitClient.getClient(baseURL).create(IGeoCoordinatesRes.class);
+    public static IGeoCoordinatesRider getGeoCodeService(){
+        return RetrofitClientRider.getClient(baseURL).create(IGeoCoordinatesRider.class);
     }
 
     public static Bitmap scaleBitmap(Bitmap bitmap, int newWidth, int newHeight){

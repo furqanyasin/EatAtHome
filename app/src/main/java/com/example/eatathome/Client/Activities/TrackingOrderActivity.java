@@ -317,8 +317,8 @@ public class TrackingOrderActivity extends FragmentActivity implements OnMapRead
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mDialog.setMessage("Please waiting...");
             mDialog.show();
+            mDialog.setMessage("Please waiting...");
 
         }
 
@@ -345,8 +345,34 @@ public class TrackingOrderActivity extends FragmentActivity implements OnMapRead
         protected void onPostExecute(List<List<HashMap<String, String>>> lists) {
             mDialog.dismiss();
 
+            ArrayList<LatLng> points = new ArrayList<LatLng>();;
+            PolylineOptions lineOptions = new PolylineOptions();;
 
-            ArrayList points = null;
+            // Traversing through all the routes
+            for(int i=0;i<lists.size();i++){
+                // Fetching i-th route
+                List<HashMap<String, String>> path = lists.get(i);
+                // Fetching all the points in i-th route
+                for(int j=0;j<path.size();j++){
+                    HashMap<String,String> point = path.get(j);
+                    double lat = Double.parseDouble(point.get("lat"));
+                    double lng = Double.parseDouble(point.get("lng"));
+                    LatLng position = new LatLng(lat, lng);
+                    points.add(position);
+                }
+                // Adding all the points in the route to LineOptions
+
+                lineOptions.addAll(points);
+                lineOptions.width(8);
+                lineOptions.color(Color.RED);
+                lineOptions.geodesic(true);
+
+            }
+            // Drawing polyline in the Google Map for the i-th route
+            if(points.size()!=0)mMap.addPolyline(lineOptions);//to avoid crash
+
+/*
+            ArrayList points ;
             PolylineOptions lineOptions = null;
 
             for (int i = 0; i < lists.size(); i++) {
@@ -374,7 +400,7 @@ public class TrackingOrderActivity extends FragmentActivity implements OnMapRead
                 lineOptions.geodesic(true);
             }
 
-            polyline = mMap.addPolyline(lineOptions);
+            polyline = mMap.addPolyline(lineOptions);*/
         }
     }
 }

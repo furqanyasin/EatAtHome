@@ -58,10 +58,10 @@ public class OrderStatusActivity extends AppCompatActivity {
         if (getIntent().getExtras() != null)
             loadOrder(Constant.currentUser.getPhone());
         else {
-            if (getIntent().getStringExtra("userPhone") == null)
+            if (getIntent().getStringExtra(Constant.PHONE_TEXT) == null)
                 loadOrder(Constant.currentUser.getPhone());
             else
-                loadOrder(getIntent().getStringExtra("userPhone"));
+                loadOrder(getIntent().getStringExtra(Constant.PHONE_TEXT));
 
         }
     }
@@ -90,16 +90,14 @@ public class OrderStatusActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         Constant.currentKey = adapter.getRef(position).getKey();
-                        if (adapter.getItem(position).getStatus().equals("2")){
-                            Intent trackingOrder = new Intent(OrderStatusActivity.this, TrackingOrderActivity.class);
+                        if (adapter.getItem(position).getStatus().equals("2")) {
+                         /*   Intent trackingOrder = new Intent(OrderStatusActivity.this, TrackingOrderActivity.class);
                             Constant.currentRequest = model;
                             startActivity(trackingOrder);
-
-                            //startActivity(new Intent(OrderStatusActivity.this, TrackingOrderActivity.class));
-                        }
-
-                        else
-                        Toast.makeText(OrderStatusActivity.this, "You cannot track this Order!", Toast.LENGTH_SHORT).show();
+*/
+                            startActivity(new Intent(OrderStatusActivity.this, TrackingOrderActivity.class));
+                        } else
+                            Toast.makeText(OrderStatusActivity.this, "You cannot track this Order!", Toast.LENGTH_SHORT).show();
                     }
                 });
 

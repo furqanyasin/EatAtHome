@@ -448,10 +448,8 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
                         public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
                             //only run when get result
                             if (response.code() == 200) {
-                                assert response.body() != null;
                                 if (response.body().success == 1) {
                                     Toast.makeText(CartActivity.this, "Thank you, Order placed.", Toast.LENGTH_SHORT).show();
-                                    finish();
                                 } else {
                                     Toast.makeText(CartActivity.this, "Failed to place order.", Toast.LENGTH_SHORT).show();
 

@@ -34,7 +34,6 @@ public class Constant {
 
 
     public static String currentKey;
-    public static final String SHIPPER_INFO_TABLE = "ShippingOrders";
 
     public static String PHONE_TEXT = "userPhone";
 

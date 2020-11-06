@@ -32,7 +32,6 @@ public class Constant {
     public static final String PASSWORD_KEY = "Password";
     public static  String restaurantSelected = "";
 
-
     public static String currentKey;
 
     public static String PHONE_TEXT = "userPhone";
@@ -62,22 +61,6 @@ public class Constant {
             return "Shipping";
         else
             return "Delivered";
-    }
-
-    public static Bitmap scaleBitmap(Bitmap bitmap, int newWidth, int newHight)
-    {
-        Bitmap scaledBitmap = Bitmap.createBitmap(newWidth,newHight, Bitmap.Config.ARGB_8888);
-        float scaleX  = newWidth/(float)bitmap.getWidth();
-        float scaleY  = newHight/(float)bitmap.getHeight();
-        float pivotX=0, pivotY=0;
-
-        Matrix scaleMatrix = new Matrix();
-        scaleMatrix.setScale(scaleX,scaleY,pivotX,pivotY);
-
-        Canvas canvas = new Canvas(scaledBitmap);
-        canvas.setMatrix(scaleMatrix);
-        canvas.drawBitmap(bitmap,0,0, new Paint(Paint.FILTER_BITMAP_FLAG));
-        return scaledBitmap;
     }
 
     public static boolean isConnectedToInternet(Context context){

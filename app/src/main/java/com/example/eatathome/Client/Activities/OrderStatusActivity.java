@@ -90,13 +90,9 @@ public class OrderStatusActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         Constant.currentKey = adapter.getRef(position).getKey();
-                        if (adapter.getItem(position).getStatus().equals("2")) {
-                         /*   Intent trackingOrder = new Intent(OrderStatusActivity.this, TrackingOrderActivity.class);
-                            Constant.currentRequest = model;
-                            startActivity(trackingOrder);
-*/
+                        if (adapter.getItem(position).getStatus().equals("2"))
                             startActivity(new Intent(OrderStatusActivity.this, TrackingOrderActivity.class));
-                        } else
+                        else
                             Toast.makeText(OrderStatusActivity.this, "You cannot track this Order!", Toast.LENGTH_SHORT).show();
                     }
                 });

@@ -1,7 +1,6 @@
 package com.example.eatathome.Administrator.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +8,6 @@ import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Toast;
-
 import com.example.eatathome.Administrator.ConstantAdmin;
 import com.example.eatathome.Administrator.Model.UserAdministrator;
 import com.example.eatathome.R;
@@ -41,7 +39,6 @@ public class SignInActivityAppAdmin extends AppCompatActivity {
         btnSignInAsAdmin = findViewById(R.id.btn_sign_in);
 
         //Init firebase
-
         db = FirebaseDatabase.getInstance();
         users = db.getReference("Administrator");
 
@@ -93,4 +90,6 @@ public class SignInActivityAppAdmin extends AppCompatActivity {
             }
         });
     }
+
+
 }

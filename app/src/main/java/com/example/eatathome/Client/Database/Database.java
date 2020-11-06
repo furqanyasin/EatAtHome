@@ -1,15 +1,12 @@
 package com.example.eatathome.Client.Database;
 
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
-
 import com.example.eatathome.Client.Model.Favorites;
 import com.example.eatathome.Client.Model.Order;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +24,7 @@ public class Database extends SQLiteAssetHelper {
         }
         return sInstance;
     }
+
     public Database(Context context) {
         super(context, DATABASE, null, VERSION);
     }

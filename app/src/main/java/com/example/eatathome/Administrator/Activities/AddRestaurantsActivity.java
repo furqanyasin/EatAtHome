@@ -66,8 +66,6 @@ public class AddRestaurantsActivity extends AppCompatActivity implements Navigat
 
     AddRestaurants newRestaurants;
     Uri saveUri;
-    boolean flag = true;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,9 +81,7 @@ public class AddRestaurantsActivity extends AppCompatActivity implements Navigat
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
-
         FloatingActionButton add_restaurants = findViewById(R.id.fab_add_restaurants);
-
         add_restaurants.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -93,12 +89,10 @@ public class AddRestaurantsActivity extends AppCompatActivity implements Navigat
             }
         });
 
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -137,7 +131,6 @@ public class AddRestaurantsActivity extends AppCompatActivity implements Navigat
         adapter.startListening();
         adapter.notifyDataSetChanged();
         recycler_menu_admin.setAdapter(adapter);
-
     }
 
     @Override
@@ -151,7 +144,6 @@ public class AddRestaurantsActivity extends AppCompatActivity implements Navigat
         super.onStart();
         adapter.startListening();
     }
-
 
     private void addRestaurants() {
 
@@ -315,7 +307,6 @@ public class AddRestaurantsActivity extends AppCompatActivity implements Navigat
         }
     }
 
-
     //Update and delete
 
     @Override
@@ -332,7 +323,6 @@ public class AddRestaurantsActivity extends AppCompatActivity implements Navigat
 
         return super.onContextItemSelected(item);
     }
-
 
     private void ConfirmDeleteDialog(final MenuItem item) {
 
@@ -360,9 +350,7 @@ public class AddRestaurantsActivity extends AppCompatActivity implements Navigat
         alertDialog.show();
     }
 
-
     private void showUpdateDialog(final String key, final AddRestaurants item) {
-
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(AddRestaurantsActivity.this, R.style.Theme_AppCompat_DayNight_Dialog_Alert);
         alertDialog.setTitle("Update Restaurant");
@@ -457,7 +445,6 @@ public class AddRestaurantsActivity extends AppCompatActivity implements Navigat
         restaurants.child(key).removeValue();
         Toast.makeText(AddRestaurantsActivity.this, "Restaurant Deleted Successfully!", Toast.LENGTH_SHORT).show();
     }
-
 
     private void changeImage(final AddRestaurants item) {
 

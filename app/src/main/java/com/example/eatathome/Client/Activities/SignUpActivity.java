@@ -2,22 +2,15 @@ package com.example.eatathome.Client.Activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-
 import com.example.eatathome.Client.Constant.Constant;
 import com.example.eatathome.Client.Model.User;
 import com.example.eatathome.R;
-import com.example.eatathome.Server.Activities.ManageAccountActivity;
 import com.example.eatathome.databinding.ActivitySignUpBinding;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -40,10 +33,13 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
+
     @Override
     public void onClick(View view) {
         if (view == activitySignUpBinding.btnSignUp) {
+
             buttonSignUp();
+
         } else if (view == activitySignUpBinding.txtSignIn) {
             Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
             startActivity(intent);
@@ -53,18 +49,18 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     public void buttonSignUp() {
 
-        phoneNumber = activitySignUpBinding.etPhoneNumber.getText().toString();
-        password = activitySignUpBinding.etPassword.getText().toString();
-        name = activitySignUpBinding.etName.getText().toString();
-        secureCode = activitySignUpBinding.etSecureCode.getText().toString();
+        if (!validatePhoneNumber() | !validateName() | !validatePassword() | !validateSecureCode()) {
+            Toast.makeText(this, "Please enter correct info ", Toast.LENGTH_SHORT).show();
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference table_users = database.getReference("User");
+        } else {
 
-        if (Constant.isConnectedToInternet(getBaseContext())) {
-            final ProgressDialog mDialog = new ProgressDialog(SignUpActivity.this);
-            mDialog.setMessage("Please waiting...");
-            mDialog.show();
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            final DatabaseReference table_users = database.getReference("User");
+
+            if (Constant.isConnectedToInternet(getBaseContext())) {
+                final ProgressDialog mDialog = new ProgressDialog(SignUpActivity.this);
+                mDialog.setMessage("Please waiting...");
+                mDialog.show();
 
                 table_users.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -91,13 +87,78 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     }
                 });
 
-        } else {
-            Toast.makeText(this, "Please check your Internet Connection", Toast.LENGTH_SHORT).show();
-            return;
+            } else {
+                Toast.makeText(this, "Please check your Internet Connection", Toast.LENGTH_SHORT).show();
+                return;
 
+            }
         }
 
 
     }
+
+    private boolean validatePhoneNumber() {
+        phoneNumber = activitySignUpBinding.etPhoneNumber.getText().toString();
+        if (phoneNumber.isEmpty()) {
+            activitySignUpBinding.etPhoneNumber.setError("Phone Number is required. Can't be empty.");
+            return false;
+        } else if (phoneNumber.length() < 11) {
+            activitySignUpBinding.etPhoneNumber.setError("Phone Number cannot less than 11 digits!");
+            return false;
+        } else if (phoneNumber.length() > 13) {
+            activitySignUpBinding.etPhoneNumber.setError("Phone Number cannot exceed 13 digits!");
+            return false;
+        } else {
+            activitySignUpBinding.etPhoneNumber.setError(null);
+            return true;
+        }
+
+    }
+
+    private boolean validateSecureCode() {
+
+        secureCode = activitySignUpBinding.etSecureCode.getText().toString();
+
+        if (secureCode.isEmpty()) {
+            activitySignUpBinding.etSecureCode.setError("SecureCode is required. Can't be empty.");
+            return false;
+        } else if (secureCode.length() < 8) {
+            activitySignUpBinding.etSecureCode.setError("SecureCode length short. Minimum 8 characters required.");
+            return true;
+        } else {
+            activitySignUpBinding.etSecureCode.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validateName() {
+
+        name = activitySignUpBinding.etName.getText().toString();
+
+        if (name.isEmpty()) {
+            activitySignUpBinding.etName.setError("UserName is required. Can't be empty.");
+            return false;
+        } else {
+            activitySignUpBinding.etName.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validatePassword() {
+
+        password = activitySignUpBinding.etPassword.getText().toString();
+
+        if (password.isEmpty()) {
+            activitySignUpBinding.etPassword.setError("Password is required. Can't be empty.");
+            return false;
+        } else if (password.length() < 8) {
+            activitySignUpBinding.etPassword.setError("Password length short. Minimum 8 characters required.");
+            return true;
+        } else {
+            activitySignUpBinding.etPassword.setError(null);
+            return true;
+        }
+    }
+
 
 }

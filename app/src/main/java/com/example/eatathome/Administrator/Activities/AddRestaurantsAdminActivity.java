@@ -35,23 +35,22 @@ public class AddRestaurantsAdminActivity extends AppCompatActivity {
 
 
     FloatingActionButton fabAddRestaurants;
+
     FirebaseDatabase database;
     DatabaseReference adminsRestaurants;
 
-    public RecyclerView recyclerView;
-    public RecyclerView.LayoutManager layoutManager;
+    RecyclerView recyclerView;
+    RecyclerView.LayoutManager layoutManager;
 
     FirebaseRecyclerAdapter<AddRestaurantsAdmin, AddRestaurantsAdminViewHolder> adapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_restaurants_admin);
 
-
         //Init View
-        fabAddRestaurants =  findViewById(R.id.fab_add_restaurants);
+        fabAddRestaurants = findViewById(R.id.fab_add_restaurants);
         fabAddRestaurants.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,7 +58,7 @@ public class AddRestaurantsAdminActivity extends AppCompatActivity {
             }
         });
 
-        recyclerView =  findViewById(R.id.recycler_restaurants_admins);
+        recyclerView = findViewById(R.id.recycler_restaurants_admins);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -76,10 +75,10 @@ public class AddRestaurantsAdminActivity extends AppCompatActivity {
         FirebaseRecyclerOptions<AddRestaurantsAdmin> allAdmins = new FirebaseRecyclerOptions.Builder<AddRestaurantsAdmin>()
                 .setQuery(adminsRestaurants, AddRestaurantsAdmin.class)
                 .build();
+
         adapter = new FirebaseRecyclerAdapter<AddRestaurantsAdmin, AddRestaurantsAdminViewHolder>(allAdmins) {
             @Override
             protected void onBindViewHolder(@NonNull AddRestaurantsAdminViewHolder holder, final int position, @NonNull final AddRestaurantsAdmin model) {
-
                 holder.admin_phone.setText(model.getPhone());
                 holder.admin_name.setText(model.getName());
                 holder.admin_id.setText(model.getRestaurantId());
@@ -186,7 +185,7 @@ public class AddRestaurantsAdminActivity extends AppCompatActivity {
             }
         });
         alertDialog.show();
-        
+
     }
 
     private void showDeleteAccountDialog(final String key) {
@@ -218,8 +217,7 @@ public class AddRestaurantsAdminActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
-
-    private void showEditDialog(String key, AddRestaurantsAdmin model) {
+    private void showEditDialog(final String key, AddRestaurantsAdmin model) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(AddRestaurantsAdminActivity.this, R.style.Theme_AppCompat_DayNight_Dialog_Alert);
         alertDialog.setTitle("Update  Admin Account");
         alertDialog.setMessage("Please fill in all information");
@@ -234,12 +232,11 @@ public class AddRestaurantsAdminActivity extends AppCompatActivity {
         admin_password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         admin_password.setTransformationMethod(new PasswordTransformationMethod());
 
-
         //set data
         admin_name.setText(model.getName());
         admin_phone.setText(model.getPhone());
         admin_id.setText(model.getRestaurantId());
-        admin_phone.setEnabled(false);
+        //admin_phone.setEnabled(false);
         admin_password.setText(model.getPassword());
 
         alertDialog.setView(layout_admin);
@@ -273,8 +270,8 @@ public class AddRestaurantsAdminActivity extends AppCompatActivity {
                     update.put("restaurantId", admin_id.getText().toString());
                     update.put("password", admin_password.getText().toString());
 
-                    adminsRestaurants.child(admin_phone.getText().toString())
-                            .updateChildren(update)
+
+                    adminsRestaurants.child(key).updateChildren(update)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {

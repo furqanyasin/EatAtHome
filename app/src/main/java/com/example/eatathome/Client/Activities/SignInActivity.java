@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import com.example.eatathome.Administrator.Activities.AddRestaurantsAdminActivity;
 import com.example.eatathome.Client.Constant.Constant;
 import com.example.eatathome.Client.Model.User;
 import com.example.eatathome.R;
@@ -112,6 +114,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View view) {
         if (view == activitySignInBinding.btnSignIn) {
             buttonSignIn();
+
         } else if (view == activitySignInBinding.txtSignUp) {
             Intent intent = new Intent(SignInActivity.this, SignUpActivity.class);
             startActivity(intent);
@@ -176,62 +179,99 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     public void buttonSignIn() {
 
-        phoneNumber = activitySignInBinding.etPhoneNumber.getText().toString();
-        password = activitySignInBinding.etPassword.getText().toString();
 
-        database = FirebaseDatabase.getInstance();
-        table_users = database.getReference("User");
+        if (!validatePhoneNumber() | !validatePassword()) {
+            Toast.makeText(this, "Please enter correct info ", Toast.LENGTH_SHORT).show();
 
-        if (Constant.isConnectedToInternet(getBaseContext())) {
+        } else {
+            database = FirebaseDatabase.getInstance();
+            table_users = database.getReference("User");
 
-            //save user & password
-            if (activitySignInBinding.chkRemember.isChecked()) {
-                Paper.book().write(Constant.USER_KEY, phoneNumber);
-                Paper.book().write(Constant.PASSWORD_KEY, password);
-            }
+            if (Constant.isConnectedToInternet(getBaseContext())) {
+
+                //save user & password
+                if (activitySignInBinding.chkRemember.isChecked()) {
+                    Paper.book().write(Constant.USER_KEY, phoneNumber);
+                    Paper.book().write(Constant.PASSWORD_KEY, password);
+                }
 
 
-            final ProgressDialog mDialog = new ProgressDialog(SignInActivity.this);
-            mDialog.setMessage("Please waiting...");
-            mDialog.show();
+                final ProgressDialog mDialog = new ProgressDialog(SignInActivity.this);
+                mDialog.setMessage("Please waiting...");
+                mDialog.show();
 
-            table_users.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                table_users.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                    //check if user not exit in database
-                    if (dataSnapshot.child(activitySignInBinding.etPhoneNumber.getText().toString()).exists()) {
-                        //Get User Information
-                        mDialog.dismiss();
-                        User clientUsers = dataSnapshot.child(activitySignInBinding.etPhoneNumber.getText().toString()).getValue(User.class);
-                        clientUsers.setPhone(activitySignInBinding.etPhoneNumber.getText().toString());
-                        if (clientUsers.getPassword().equals(activitySignInBinding.etPassword.getText().toString())) {
-                            Toast.makeText(SignInActivity.this, "Sign In Successfully !", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(SignInActivity.this, RestaurantListActivity.class);
-                            Constant.currentUser = clientUsers;
-                            startActivity(intent);
-                            finish();
+                        //check if user not exit in database
+                        if (dataSnapshot.child(activitySignInBinding.etPhoneNumber.getText().toString()).exists()) {
+                            //Get User Information
+                            mDialog.dismiss();
+                            User clientUsers = dataSnapshot.child(activitySignInBinding.etPhoneNumber.getText().toString()).getValue(User.class);
+                            clientUsers.setPhone(activitySignInBinding.etPhoneNumber.getText().toString());
+                            if (clientUsers.getPassword().equals(activitySignInBinding.etPassword.getText().toString())) {
+                                Toast.makeText(SignInActivity.this, "Sign In Successfully !", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(SignInActivity.this, RestaurantListActivity.class);
+                                Constant.currentUser = clientUsers;
+                                startActivity(intent);
+                                finish();
 
+                            } else {
+                                Toast.makeText(SignInActivity.this, "Wrong Password!!", Toast.LENGTH_SHORT).show();
+                            }
                         } else {
-                            Toast.makeText(SignInActivity.this, "Wrong Password!!", Toast.LENGTH_SHORT).show();
+                            mDialog.dismiss();
+                            Toast.makeText(SignInActivity.this, "User not exists ", Toast.LENGTH_SHORT).show();
                         }
-                    } else {
-                        mDialog.dismiss();
-                        Toast.makeText(SignInActivity.this, "User not exists ", Toast.LENGTH_SHORT).show();
+
                     }
 
-                }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-        } else {
-            Toast.makeText(this, "Please check your Internet Connection", Toast.LENGTH_SHORT).show();
-            return;
+                    }
+                });
+            } else {
+                Toast.makeText(this, "Please check your Internet Connection", Toast.LENGTH_SHORT).show();
+                return;
+            }
         }
 
 
+    }
+
+    private boolean validatePhoneNumber() {
+        phoneNumber = activitySignInBinding.etPhoneNumber.getText().toString();
+        if (phoneNumber.isEmpty()) {
+            activitySignInBinding.etPhoneNumber.setError("Phone Number is required. Can't be empty.");
+            return false;
+        } else if (phoneNumber.length() < 11) {
+            activitySignInBinding.etPhoneNumber.setError("Phone Number cannot less than 11 digits!");
+            return false;
+        } else if (phoneNumber.length() > 13) {
+            activitySignInBinding.etPhoneNumber.setError("Phone Number cannot exceed 13 digits!");
+            return false;
+        } else {
+            activitySignInBinding.etPhoneNumber.setError(null);
+            return true;
+        }
+
+    }
+
+    private boolean validatePassword() {
+
+        password = activitySignInBinding.etPassword.getText().toString();
+
+        if (password.isEmpty()) {
+            activitySignInBinding.etPassword.setError("Password is required. Can't be empty.");
+            return false;
+        } else if (password.length() < 8) {
+            activitySignInBinding.etPassword.setError("Password length short. Minimum 8 characters required.");
+            return true;
+        } else {
+            activitySignInBinding.etPassword.setError(null);
+            return true;
+        }
     }
 }

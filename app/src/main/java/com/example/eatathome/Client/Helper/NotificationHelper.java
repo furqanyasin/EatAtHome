@@ -1,6 +1,5 @@
 package com.example.eatathome.Client.Helper;
 
-
 import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -45,7 +44,7 @@ public class NotificationHelper extends ContextWrapper {
     }
 
     @TargetApi(Build.VERSION_CODES.O)
-    public android.app.Notification.Builder getiDeliveryChannelNotification
+    public android.app.Notification.Builder getEatAtHomeChannelNotification
             (String title, String body, PendingIntent contentIntent, Uri soundUri)
     {
         return new android.app.Notification.Builder(getApplicationContext(), EatatHome_ID)

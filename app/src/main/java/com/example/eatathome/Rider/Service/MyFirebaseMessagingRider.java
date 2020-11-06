@@ -40,7 +40,7 @@ public class MyFirebaseMessagingRider extends FirebaseMessagingService {
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationHelper helper = new NotificationHelper(this);
-        android.app.Notification.Builder builder = helper.getiDeliveryChannelNotification(title,content,pendingIntent,defaultSoundUri);
+        android.app.Notification.Builder builder = helper.getEatAtHomeChannelNotification(title,content,pendingIntent,defaultSoundUri);
 
         //get random ID for notification to show all notifications
         helper.getManager().notify(new Random().nextInt(), builder.build());

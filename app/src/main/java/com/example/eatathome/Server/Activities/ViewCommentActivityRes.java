@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.eatathome.Client.Constant.Constant;
 import com.example.eatathome.R;
 import com.example.eatathome.Server.Constant.ConstantRes;
 import com.example.eatathome.Server.Constant.NumberOfFood;
@@ -85,7 +86,7 @@ public class ViewCommentActivityRes extends AppCompatActivity {
 
         //Firebase
         database = FirebaseDatabase.getInstance();
-        ratingDb = database.getReference("Ratings");
+        ratingDb = database.getReference("Restaurants").child(Constant.restaurantSelected).child("Ratings");
 
         recyclerView =  findViewById(R.id.recycler_comment);
         layoutManager = new LinearLayoutManager(this);
@@ -103,7 +104,8 @@ public class ViewCommentActivityRes extends AppCompatActivity {
                 holder.txtComment.setText(model.getComment());
                 holder.txtUserPhone.setText(model.getUserPhone());
                 holder.txtFoodName.setText(NumberOfFood.convertIdToName(model.getFoodId()));
-                Picasso.get().load(model.getImage()).into(holder.commentImage);
+                Picasso.get().load(model.getImage()).resize(70,70)
+                        .centerCrop().into(holder.commentImage);
 
                 holder.btnDeleteComment.setOnClickListener(new View.OnClickListener() {
                     @Override

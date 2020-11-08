@@ -8,14 +8,18 @@ public class RiderRes {
     private String isstaff;
     private String isadmin;
 
+    private String restaurantId;
+
 
     public RiderRes(){
 
     }
 
-    public RiderRes(String Pname, String Ppassword){
-        name = Pname;
-        password = Ppassword;
+    public RiderRes(String name, String password, String phone, String isstaff, String isadmin, String restaurantId) {
+        this.name = name;
+        this.password = password;
+        this.phone = phone;
+        this.restaurantId = restaurantId;
     }
 
     public String getName() {
@@ -24,6 +28,14 @@ public class RiderRes {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(String restaurantId) {
+        this.restaurantId = restaurantId;
     }
 
     public String getPassword() {

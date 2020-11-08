@@ -36,6 +36,7 @@ public class OrderStatusActivity extends AppCompatActivity {
 
     FirebaseDatabase database;
     DatabaseReference requests;
+    private String userID;
 
     FirebaseRecyclerAdapter<Request, OrderViewHolder> adapter;
 
@@ -43,6 +44,7 @@ public class OrderStatusActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_status);
+
 
         //init firebase
         database = FirebaseDatabase.getInstance();

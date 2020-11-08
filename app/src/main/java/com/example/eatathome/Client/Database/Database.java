@@ -46,7 +46,7 @@ public class Database extends SQLiteAssetHelper {
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
-        String[] sqlSelect = {"UserPhone", "ProductName", "ProductId", "Quantity", "Price", "Image"};
+        String[] sqlSelect = {"UserPhone", "ProductName", "ProductId", "Quantity", "Price", "Image","RestaurantId"};
         String sqlTable = "OrderDetail";
 
         qb.setTables(sqlTable);
@@ -61,7 +61,8 @@ public class Database extends SQLiteAssetHelper {
                         c.getString(c.getColumnIndex("ProductName")),
                         c.getString(c.getColumnIndex("Quantity")),
                         c.getString(c.getColumnIndex("Price")),
-                        c.getString(c.getColumnIndex("Image"))
+                        c.getString(c.getColumnIndex("Image")),
+                        c.getString(c.getColumnIndex("RestaurantId"))
 
                 ));
             } while (c.moveToNext());
@@ -72,14 +73,15 @@ public class Database extends SQLiteAssetHelper {
     public void addToCart(Order order) {
 
         SQLiteDatabase db = getReadableDatabase();
-        String query = String.format("INSERT OR REPLACE INTO OrderDetail(UserPhone,ProductId,ProductName,Quantity,Price,Image)" +
-                        "VALUES('%s','%s','%s','%s','%s','%s');",
+        String query = String.format("INSERT OR REPLACE INTO OrderDetail(UserPhone,ProductId,ProductName,Quantity,Price,Image,RestaurantId)" +
+                        "VALUES('%s','%s','%s','%s','%s','%s','%s');",
                 order.getUserPhone(),
                 order.getProductId(),
                 order.getProductName(),
                 order.getQuantity(),
                 order.getPrice(),
-                order.getImage());
+                order.getImage(),
+                order.getRestaurantId());
 
 
         db.execSQL(query);
@@ -133,15 +135,16 @@ public class Database extends SQLiteAssetHelper {
 
         SQLiteDatabase db = getReadableDatabase();
         String query = String.format("INSERT INTO Favorites(" +
-                        "FoodId,FoodName,FoodPrice,FoodMenuId,FoodImage,FoodDescription,UserPhone)" +
-                        "VALUES('%s','%s','%s','%s','%s','%s','%s');",
+                        "FoodId,FoodName,FoodPrice,FoodMenuId,FoodImage,FoodDescription,UserPhone, RestaurantId)" +
+                        "VALUES('%s','%s','%s','%s','%s','%s','%s','%s');",
                 food.getFoodId(),
                 food.getFoodName(),
                 food.getFoodPrice(),
                 food.getFoodMenuId(),
                 food.getFoodImage(),
                 food.getFoodDescription(),
-                food.getUserPhone());
+                food.getUserPhone(),
+                food.getRestaurantId());
         db.execSQL(query);
     }
 
@@ -171,7 +174,7 @@ public class Database extends SQLiteAssetHelper {
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
-        String[] sqlSelect = {"UserPhone", "FoodId", "FoodName", "FoodPrice", "FoodMenuId", "FoodImage", "FoodDescription"};
+        String[] sqlSelect = {"UserPhone", "FoodId", "FoodName", "FoodPrice", "FoodMenuId", "FoodImage", "FoodDescription","RestaurantId"};
         String sqlTable = "Favorites";
 
         qb.setTables(sqlTable);
@@ -187,7 +190,8 @@ public class Database extends SQLiteAssetHelper {
                         c.getString(c.getColumnIndex("FoodMenuId")),
                         c.getString(c.getColumnIndex("FoodImage")),
                         c.getString(c.getColumnIndex("FoodDescription")),
-                        c.getString(c.getColumnIndex("UserPhone"))
+                        c.getString(c.getColumnIndex("UserPhone")),
+                        c.getString(c.getColumnIndex("RestaurantId"))
                 ));
             } while (c.moveToNext());
         }

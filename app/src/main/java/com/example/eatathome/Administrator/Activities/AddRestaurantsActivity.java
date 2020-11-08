@@ -194,7 +194,7 @@ public class AddRestaurantsActivity extends AppCompatActivity implements Navigat
 
                 AddRestaurants restaurant = new AddRestaurants();
                 restaurant.setName(edtName.getText().toString());
-                restaurant.setId(edtId.getText().toString());
+                restaurant.setRestaurantId(edtId.getText().toString());
                 restaurant.setLocation(edtLocation.getText().toString());
                 restaurant.setLatitude(latitude.getText().toString());
                 restaurant.setLongitude(longitude.getText().toString());
@@ -278,7 +278,7 @@ public class AddRestaurantsActivity extends AppCompatActivity implements Navigat
                             newRestaurants = new AddRestaurants();
                             newRestaurants.setName(edtName.getText().toString());
                             newRestaurants.setLocation(edtLocation.getText().toString());
-                            newRestaurants.setId(edtId.getText().toString());
+                            newRestaurants.setRestaurantId(edtId.getText().toString());
                             newRestaurants.setLatitude(latitude.getText().toString());
                             newRestaurants.setLongitude(longitude.getText().toString());
                             newRestaurants.setImage(uri.toString());
@@ -369,7 +369,7 @@ public class AddRestaurantsActivity extends AppCompatActivity implements Navigat
 
         //set default name
         edtName.setText(item.getName());
-        edtId.setText(item.getId());
+        edtId.setText(item.getRestaurantId());
         edtLocation.setText(item.getLocation());
         latitude.setText(item.getLatitude());
         longitude.setText(item.getLongitude());

@@ -35,8 +35,6 @@ public class OrderDetailAdapterRes extends RecyclerView.Adapter<MyViewHolderRes>
 
     }
 
-
-
     @NonNull
     @Override
     public MyViewHolderRes onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

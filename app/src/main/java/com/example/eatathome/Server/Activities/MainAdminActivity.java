@@ -364,10 +364,7 @@ public class MainAdminActivity extends AppCompatActivity
         } else if (id == R.id.nav_shipper) {
             Intent shippers = new Intent(MainAdminActivity.this, RiderManagementActivityRes.class);
             startActivity(shippers);
-        } /*else if (id == R.id.nav_about) {
-         *//* Intent about = new Intent(MainAdminActivity.this, AdminScrollingActivity.class);
-            startActivity(about);*//*
-        }*/
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_admin);
         drawer.closeDrawer(GravityCompat.START);

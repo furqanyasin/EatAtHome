@@ -10,6 +10,9 @@ import android.widget.TextView;
 import com.example.eatathome.R;
 import com.example.eatathome.Server.Constant.ConstantRes;
 import com.example.eatathome.Server.ViewHolder.OrderDetailAdapterRes;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 public class OrderDetailActivity extends AppCompatActivity {
 
@@ -17,12 +20,23 @@ public class OrderDetailActivity extends AppCompatActivity {
     String order_id_value = "";
     RecyclerView lstFoods;
     RecyclerView.LayoutManager layoutManager;
+    FirebaseDatabase database;
+    DatabaseReference shippers;
+
+    String restId;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_detail);
+
+
+        database = FirebaseDatabase.getInstance();
+        shippers = database.getReference(ConstantRes.SHIPPER_TABLE);
+
+
+        restId = ConstantRes.currentUser.getRestaurantId().trim();
 
         order_id = findViewById(R.id.order_id);
         order_phone = findViewById(R.id.order_phone);
@@ -44,6 +58,8 @@ public class OrderDetailActivity extends AppCompatActivity {
             order_total.setText(ConstantRes.currentRequest.getTotal());
             order_address.setText(ConstantRes.currentRequest.getAddress());
             order_comment.setText(ConstantRes.currentRequest.getComment());
+
+            Query loadAllFood = shippers.orderByChild("restaurantId").equalTo(restId);
 
             OrderDetailAdapterRes adapter = new OrderDetailAdapterRes(ConstantRes.currentRequest.getFoods());
             adapter.notifyDataSetChanged();

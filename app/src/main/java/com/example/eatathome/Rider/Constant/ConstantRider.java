@@ -31,6 +31,7 @@ public class ConstantRider {
     public static UserRider currentRider;
     public static RequestRider currentRequest;
     public static String currentKey;
+    public static  String restaurantSelected = "";
 
 
     public static final int REQUEST_CODE = 1000;

@@ -4,13 +4,24 @@ public class UserRider {
 
     private String name,phone,password;
 
+    private String restaurantId;
+
     public UserRider() {
     }
 
-    public UserRider(String name, String phone, String password) {
+    public UserRider(String name, String phone, String password, String restaurantId) {
         this.name = name;
         this.phone = phone;
         this.password = password;
+        this.restaurantId = restaurantId;
+    }
+
+    public String getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(String restaurantId) {
+        this.restaurantId = restaurantId;
     }
 
     public String getName() {

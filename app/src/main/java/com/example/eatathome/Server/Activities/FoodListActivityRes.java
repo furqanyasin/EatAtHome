@@ -58,6 +58,7 @@ public class FoodListActivityRes extends AppCompatActivity {
     StorageReference storageReference;
 
     String categoryId = "";
+    String restaurantId= "";
 
     FirebaseRecyclerAdapter<FoodRes, FoodViewHolderRes> adapter;
 
@@ -82,7 +83,7 @@ public class FoodListActivityRes extends AppCompatActivity {
 
         //Init
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view_food_list);
+        recyclerView =  findViewById(R.id.recycler_view_food_list);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -98,6 +99,8 @@ public class FoodListActivityRes extends AppCompatActivity {
                 showAddFoodDialog();
             }
         });
+
+        restaurantId = ConstantRes.currentUser.getRestaurantId().trim();
 
         if (getIntent() != null)
             categoryId = getIntent().getStringExtra("CategoryId");
@@ -201,6 +204,7 @@ public class FoodListActivityRes extends AppCompatActivity {
                             newFood.setDescription(foodDescription.getText().toString());
                             newFood.setPrice(foodPrice.getText().toString());
                             newFood.setMenuId(categoryId);
+                            newFood.setRestaurantId(restaurantId);
                             newFood.setImage(uri.toString());
                         }
                     });

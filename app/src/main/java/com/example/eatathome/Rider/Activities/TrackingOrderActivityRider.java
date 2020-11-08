@@ -2,6 +2,7 @@ package com.example.eatathome.Rider.Activities;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
@@ -12,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -204,12 +206,12 @@ public class TrackingOrderActivityRider extends FragmentActivity implements OnMa
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 mLastLocation = locationResult.getLastLocation();
-                if(mCurrentMarker!=null)
-                mCurrentMarker.setPosition(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude())); //update location for marker
+                if (mCurrentMarker != null)
+                    mCurrentMarker.setPosition(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude())); //update location for marker
 
                 //update location on firebase
                 ConstantRider.updateShippingInformation(ConstantRider.currentKey, mLastLocation);
-                if(mMap!=null){
+                if (mMap != null) {
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(mLastLocation.getLatitude(),
                             mLastLocation.getLongitude())));
                     mMap.animateCamera(CameraUpdateFactory.zoomTo(16.0f));
@@ -325,13 +327,6 @@ public class TrackingOrderActivityRider extends FragmentActivity implements OnMa
         locationRequest.setFastestInterval(3000);
     }
 
-  /*  @Override
-    protected void onStop() {
-        if (fusedLocationProviderClient != null)
-            fusedLocationProviderClient.removeLocationUpdates(locationCallback);
-        super.onStop();
-    }*/
-
     @Override
     protected void onDestroy() {
         fusedLocationProviderClient.removeLocationUpdates(locationCallback);
@@ -426,16 +421,18 @@ public class TrackingOrderActivityRider extends FragmentActivity implements OnMa
         protected void onPostExecute(List<List<HashMap<String, String>>> lists) {
             mDialog.dismiss();
 
-            ArrayList<LatLng> points = new ArrayList<LatLng>();;
-            PolylineOptions lineOptions = new PolylineOptions();;
+            ArrayList<LatLng> points = new ArrayList<LatLng>();
+            ;
+            PolylineOptions lineOptions = new PolylineOptions();
+            ;
 
             // Traversing through all the routes
-            for(int i=0;i<lists.size();i++){
+            for (int i = 0; i < lists.size(); i++) {
                 // Fetching i-th route
                 List<HashMap<String, String>> path = lists.get(i);
                 // Fetching all the points in i-th route
-                for(int j=0;j<path.size();j++){
-                    HashMap<String,String> point = path.get(j);
+                for (int j = 0; j < path.size(); j++) {
+                    HashMap<String, String> point = path.get(j);
                     double lat = Double.parseDouble(point.get("lat"));
                     double lng = Double.parseDouble(point.get("lng"));
                     LatLng position = new LatLng(lat, lng);
@@ -450,38 +447,8 @@ public class TrackingOrderActivityRider extends FragmentActivity implements OnMa
 
             }
             // Drawing polyline in the Google Map for the i-th route
-            if(points.size()!=0)mMap.addPolyline(lineOptions);//to avoid crash
+            if (points.size() != 0) mMap.addPolyline(lineOptions);//to avoid crash
 
-            /*ArrayList points = null;
-            PolylineOptions lineOptions = null;
-
-            for (int i = 0; i < lists.size(); i++) {
-
-
-                points = new ArrayList();
-                lineOptions = new PolylineOptions();
-
-                List<HashMap<String, String>> path = lists.get(i);
-
-                for (int j = 0; j < path.size(); j++) {
-
-                    HashMap<String, String> point = path.get(j);
-
-                    double lat = Double.parseDouble(point.get("lat"));
-                    double lng = Double.parseDouble(point.get("lng"));
-
-                    LatLng position = new LatLng(lat, lng);
-
-                    points.add(position);
-                }
-
-                lineOptions.addAll(points);
-                lineOptions.width(8);
-                lineOptions.color(Color.RED);
-                lineOptions.geodesic(true);
-            }
-
-            mMap.addPolyline(lineOptions);*/
         }
     }
 }

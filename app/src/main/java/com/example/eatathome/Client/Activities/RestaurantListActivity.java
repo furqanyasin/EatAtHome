@@ -1,5 +1,6 @@
 package com.example.eatathome.Client.Activities;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -35,6 +36,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.picasso.Picasso;
+
 import io.paperdb.Paper;
 
 public class RestaurantListActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -48,6 +50,7 @@ public class RestaurantListActivity extends AppCompatActivity implements Navigat
     FirebaseRecyclerOptions<Restaurant> firebaseRecyclerOptions;
 
     SharedPreferences sharedPreferences;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +87,7 @@ public class RestaurantListActivity extends AppCompatActivity implements Navigat
         //set name for user
         final View headerView = navigationView.getHeaderView(0);
         textFullName = headerView.findViewById(R.id.text_full_name);
-        if (Constant.currentUser!=null){
+        if (Constant.currentUser != null) {
             textFullName.setText(Constant.currentUser.getName());
         }
 
@@ -130,12 +133,12 @@ public class RestaurantListActivity extends AppCompatActivity implements Navigat
     @Override
     protected void onResume() {
         super.onResume();
-        if (Constant.currentUser!=null){
+        if (Constant.currentUser != null) {
             textFullName.setText(Constant.currentUser.getName());
         }
-        if(adapter !=null)
+        if (adapter != null)
             adapter.startListening();
-        if (sharedPreferences.getBoolean("firstrun", true)){
+        if (sharedPreferences.getBoolean("firstrun", true)) {
             CompleteProfileNotification();
             sharedPreferences.edit().putBoolean("firstrun", false)
                     .apply();
@@ -144,7 +147,7 @@ public class RestaurantListActivity extends AppCompatActivity implements Navigat
 
 
     private void updateToken(String token) {
-        if (Constant.currentUser!=null) {
+        if (Constant.currentUser != null) {
             FirebaseDatabase db = FirebaseDatabase.getInstance();
             DatabaseReference tokens = db.getReference("Tokens");
             Token data = new Token(token, false);
@@ -167,13 +170,12 @@ public class RestaurantListActivity extends AppCompatActivity implements Navigat
             }
 
             @Override
-            protected void onBindViewHolder(@NonNull RestaurantViewHolder holder, int position, @NonNull Restaurant model) {
+            protected void onBindViewHolder(@NonNull RestaurantViewHolder holder, int position, @NonNull final Restaurant model) {
                 holder.restaurantName.setText(model.getName());
                 holder.restaurantLocation.setText(model.getLocation());
                 Picasso.get().load(model.getImage()).placeholder(R.drawable.placeholder)
                         .into(holder.restaurantImage);
 
-                final Restaurant clickItem = model;
                 holder.setItemClickListener(new ItemClickListener() {
                     @Override
                     public void onClick(View view, int position, boolean isLongClick) {
@@ -224,7 +226,7 @@ public class RestaurantListActivity extends AppCompatActivity implements Navigat
         return super.onOptionsItemSelected(item);
     }
 
-    private void CartActivity(){
+    private void CartActivity() {
         Intent cartIntent = new Intent(RestaurantListActivity.this, CartActivity.class);
         startActivity(cartIntent);
     }
@@ -263,7 +265,7 @@ public class RestaurantListActivity extends AppCompatActivity implements Navigat
         } else if (id == R.id.nav_favorites) {
             startActivity(new Intent(RestaurantListActivity.this, FavoritesActivity.class));
         }
-        DrawerLayout drawer =  findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

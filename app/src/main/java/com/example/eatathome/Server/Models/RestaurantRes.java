@@ -4,17 +4,17 @@ public class RestaurantRes {
 
     private String name;
     private String image;
-    private String id;
+    private String restaurantId;
     private String location;
     private String latitude,longitude;
 
     public RestaurantRes() {
     }
 
-    public RestaurantRes(String name, String image, String id, String location, String latitude, String longitude) {
+    public RestaurantRes(String name, String image, String restaurantId, String location, String latitude, String longitude) {
         this.name = name;
         this.image = image;
-        this.id = id;
+        this.restaurantId = restaurantId;
         this.location = location;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -36,12 +36,12 @@ public class RestaurantRes {
         this.longitude = longitude;
     }
 
-    public String getId() {
-        return id;
+    public String getRestaurantId() {
+        return restaurantId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setRestaurantId(String restaurantId) {
+        this.restaurantId = restaurantId;
     }
 
     public String getLocation() {

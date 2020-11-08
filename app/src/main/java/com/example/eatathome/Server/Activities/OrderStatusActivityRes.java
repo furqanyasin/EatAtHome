@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.eatathome.Client.Constant.Constant;
 import com.example.eatathome.R;
 import com.example.eatathome.Server.Remote.APIServiceRes;
 import com.example.eatathome.Server.Constant.ConstantRes;
@@ -30,6 +31,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 
@@ -50,10 +52,14 @@ public class OrderStatusActivityRes extends AppCompatActivity {
 
     FirebaseDatabase db;
     DatabaseReference requests;
+    DatabaseReference shippers;
 
     MaterialSpinner spinner, shipperSpinner;
 
     APIServiceRes mService;
+
+
+    String restId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +70,8 @@ public class OrderStatusActivityRes extends AppCompatActivity {
         db = FirebaseDatabase.getInstance();
         requests = db.getReference("Requests");
 
+        restId = ConstantRes.currentUser.getRestaurantId().trim();
+
         //Init service
         mService = ConstantRes.getFCMClient();
 
@@ -73,13 +81,16 @@ public class OrderStatusActivityRes extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        loadOrders();
+        loadOrders(restId);
     }
 
-    private void loadOrders() {
+    private void loadOrders(String restId) {
+
+
+        Query getOrderByAdmin = requests.orderByChild("restaurantId").equalTo(restId);
 
         FirebaseRecyclerOptions<RequestRes> options = new FirebaseRecyclerOptions.Builder<RequestRes>()
-                .setQuery(requests, RequestRes.class)
+                .setQuery(getOrderByAdmin, RequestRes.class)
                 .build();
         adapter = new FirebaseRecyclerAdapter<RequestRes, OrderViewHolderRes>(options) {
             @Override
@@ -170,21 +181,23 @@ public class OrderStatusActivityRes extends AppCompatActivity {
         shipperSpinner = view.findViewById(R.id.shipperSpinner);
 
         //load all shipper to spinner
+
+        shippers = db.getReference("Shippers");
+        final Query loadAllShipper = shippers.orderByChild("restaurantId").equalTo(restId);
         final List<String> shipperList = new ArrayList<>();
-        FirebaseDatabase.getInstance().getReference(ConstantRes.SHIPPER_TABLE)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for (DataSnapshot shipperSnapshot : dataSnapshot.getChildren())
-                            shipperList.add(shipperSnapshot.getKey());
-                        shipperSpinner.setItems(shipperList);
-                    }
+        loadAllShipper.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot shipperSnapshot : dataSnapshot.getChildren())
+                    shipperList.add(shipperSnapshot.getKey());
+                shipperSpinner.setItems(shipperList);
+            }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    }
-                });
+            }
+        });
 
         alertDialog.setView(view);
 

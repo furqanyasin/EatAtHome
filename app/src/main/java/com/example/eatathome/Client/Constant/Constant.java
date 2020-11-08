@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.example.eatathome.Client.Model.Food;
 import com.example.eatathome.Client.Model.Request;
 import com.example.eatathome.Client.Model.Restaurant;
 import com.example.eatathome.Client.Model.User;
@@ -23,6 +24,7 @@ public class Constant {
     public static User currentUser;
     public static Request currentRequest;
     public static Restaurant currentRestaurant;
+    public static Food currentFood;
     public static final String CATEGORY_ID = "CategoryId";
     public static final String FOOD_ID = "FoodId";
     public static final String RESTAURANT_ID = "RestaurantId";

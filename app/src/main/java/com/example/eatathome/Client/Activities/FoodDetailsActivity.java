@@ -93,7 +93,8 @@ public class FoodDetailsActivity extends AppCompatActivity implements RatingDial
                         currentFood.getName(),
                         numberButton.getNumber(),
                         currentFood.getPrice(),
-                        currentFood.getImage()
+                        currentFood.getImage(),
+                        currentFood.getRestaurantId()
 
                 ));
                 Toast.makeText(FoodDetailsActivity.this, "Added to Cart", Toast.LENGTH_SHORT).show();
@@ -113,7 +114,6 @@ public class FoodDetailsActivity extends AppCompatActivity implements RatingDial
         //init firebase
         database = FirebaseDatabase.getInstance();
         food = database.getReference("Restaurants").child(Constant.restaurantSelected).child("detail").child("Foods");
-        DatabaseReference foods = database.getReference("Restaurants").child(Constant.restaurantSelected);
         ratingsTable = database.getReference("Restaurants").child(Constant.restaurantSelected).child("Ratings");
 
 

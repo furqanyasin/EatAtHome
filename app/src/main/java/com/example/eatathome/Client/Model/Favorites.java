@@ -2,13 +2,13 @@ package com.example.eatathome.Client.Model;
 
 public class Favorites {
 
-    private String FoodId, FoodName, FoodPrice, FoodMenuId, FoodImage, FoodDescription, UserPhone;
+    private String FoodId, FoodName, FoodPrice, FoodMenuId, FoodImage, FoodDescription, UserPhone, restaurantId;
 
     public Favorites(){
 
     }
 
-    public Favorites(String foodId, String foodName, String foodPrice, String foodMenuId, String foodImage, String foodDescription, String userPhone) {
+    public Favorites(String foodId, String foodName, String foodPrice, String foodMenuId, String foodImage, String foodDescription, String userPhone, String restaurantId) {
         FoodId = foodId;
         FoodName = foodName;
         FoodPrice = foodPrice;
@@ -16,6 +16,15 @@ public class Favorites {
         FoodImage = foodImage;
         FoodDescription = foodDescription;
         UserPhone = userPhone;
+        this.restaurantId = restaurantId;
+    }
+
+    public String getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(String restaurantId) {
+        this.restaurantId = restaurantId;
     }
 
     public String getFoodId() {

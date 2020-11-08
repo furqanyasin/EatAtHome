@@ -104,7 +104,7 @@ public class TrackingOrderActivity extends FragmentActivity implements OnMapRead
                         //if order has address
                         if (currentOrder.getAddress() != null && !currentOrder.getAddress().isEmpty()) {
                             mService.getLocationFromAddress(new StringBuilder
-                                    ("https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyBanwRKl5Nsls3axT7N5x5M-DpV6TjAV0k&address=")
+                                    ("https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyAjgUWFjKBq5CiUZ4JD9PQeBdj28bGin10&address=")
                                     .append(currentOrder.getAddress()).toString())
                                     .enqueue(new Callback<String>() {
                                         @Override
@@ -199,7 +199,7 @@ public class TrackingOrderActivity extends FragmentActivity implements OnMapRead
                         //if order has latlng
                         else if (currentOrder.getLatLng() != null && !currentOrder.getLatLng().isEmpty()) {
                             mService.getLocationFromAddress(new StringBuilder
-                                    ("https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyBanwRKl5Nsls3axT7N5x5M-DpV6TjAV0k&latlng=")
+                                    ("https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyAjgUWFjKBq5CiUZ4JD9PQeBdj28bGin10&latlng=")
                                     .append(currentOrder.getLatLng()).toString())
                                     .enqueue(new Callback<String>() {
                                         @Override

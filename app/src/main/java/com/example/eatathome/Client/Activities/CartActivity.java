@@ -2,9 +2,12 @@ package com.example.eatathome.Client.Activities;
 
 import android.Manifest;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -30,6 +33,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.eatathome.Client.Constant.Constant;
 import com.example.eatathome.Client.Database.Database;
 import com.example.eatathome.Client.Helper.RecyclerItemTouchHelper;
+import com.example.eatathome.Client.Model.Restaurant;
 import com.example.eatathome.Interface.RecyclerItemTouchHelperListener;
 import com.example.eatathome.Client.Model.MyResponse;
 import com.example.eatathome.Client.Model.Notification;
@@ -42,6 +46,7 @@ import com.example.eatathome.Client.Remote.IGoogleService;
 import com.example.eatathome.Client.ViewHolder.CartAdapter;
 import com.example.eatathome.Client.ViewHolder.CartViewHolder;
 import com.example.eatathome.R;
+import com.example.eatathome.Server.Constant.ConstantRes;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -97,12 +102,12 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
     Place shippingAddress;
 
     String address;
-    String RestaurantId = "";
 
     //location
     private LocationRequest mLocationRequest;
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
+
 
     private static final int UPDATE_INTERVAL = 5000;
     private static final int FASTEST_INTERVAL = 3000;
@@ -114,7 +119,6 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
     IGoogleService mGoogleMapService;
     APIService mService;
 
-    //declare root layout
     RelativeLayout rootLayout;
 
     private AutocompleteSupportFragment places_fragment;
@@ -131,7 +135,6 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
 
         Places.initialize(this, getString(R.string.google_maps_key_client));
         placesClient = Places.createClient(this);
-
 
         //Runtime permission
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
@@ -171,10 +174,6 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
         //Swipe to delete
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
-
-        // get intent here
-        if (getIntent() != null)
-            RestaurantId = getIntent().getStringExtra(Constant.RESTAURANT_ID);
 
         txtTotalPrice = findViewById(R.id.total);
         btnPlace = findViewById(R.id.btn_place_order);
@@ -305,10 +304,6 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
                                         //set this address to edtAddress
                                         places_fragment.setText(address);
 
-/*
-                                        ((EditText) places_fragment.getView().findViewById(R.id.place_autocomplete_search_input))
-                                                .setText(address);*/
-
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -335,14 +330,9 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
                 //if user select home address, get homeaddress from profile and use it
                 if (!rdyShipToAddress.isChecked() && !rdyHomeAddress.isChecked()) {
                     if (shippingAddress != null)
-                        address = Objects.requireNonNull(shippingAddress.getAddress());
+                        address = shippingAddress.getAddress();
                     else {
                         Toast.makeText(CartActivity.this, "Please enter address or select option address", Toast.LENGTH_SHORT).show();
-
-                        //Fix crash fragment
-                        getFragmentManager().beginTransaction()
-                                .remove(getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment))
-                                .commit();
 
                         return;
                     }
@@ -351,11 +341,6 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
                 if (TextUtils.isEmpty(address)) {
                     Toast.makeText(CartActivity.this, "Please enter address or select option address", Toast.LENGTH_SHORT).show();
 
-                    //Fix crash fragment
-                    getFragmentManager().beginTransaction()
-                            .remove(getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment))
-                            .commit();
-
                     return;
                 }
 
@@ -363,10 +348,6 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
                 if (!cashOnDelivery.isChecked()) {
                     Toast.makeText(CartActivity.this, "Please select Payment option", Toast.LENGTH_SHORT).show();
 
-                    //Fix crash fragment
-                    getFragmentManager().beginTransaction()
-                            .remove(getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment))
-                            .commit();
 
                 } else if (cashOnDelivery.isChecked()) {
                     //create new request
@@ -379,6 +360,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
                             Objects.requireNonNull(edtComment.getText()).toString(),
                             "Cash On Delivery",
                             String.format("%s,%s", mLastLocation.getLatitude(), mLastLocation.getLongitude()),
+                            Constant.restaurantSelected,
                             cart
                     );
 
@@ -450,10 +432,11 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
                             if (response.code() == 200) {
                                 if (response.body().success == 1) {
                                     Toast.makeText(CartActivity.this, "Thank you, Order placed.", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(CartActivity.this, "Failed to place order.", Toast.LENGTH_SHORT).show();
-
+                                    finish();
                                 }
+                            } else {
+                                Toast.makeText(CartActivity.this, "Failed to place order.", Toast.LENGTH_SHORT).show();
+
                             }
                         }
 

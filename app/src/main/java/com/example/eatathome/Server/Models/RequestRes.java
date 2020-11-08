@@ -10,6 +10,7 @@ public class RequestRes {
     private String total;
     private String status;
     private String comment;
+    private String restaurantId;
     private String paymentMethod;
     private String latLng;
     private List<OrderRes> foods;
@@ -18,16 +19,25 @@ public class RequestRes {
 
     }
 
-    public RequestRes(String phone, String name, String address, String total, String status, String comment, String paymentMethod, String latLng, List<OrderRes> foods) {
+    public RequestRes(String phone, String name, String address, String total, String status, String comment, String restaurantId, String paymentMethod, String latLng, List<OrderRes> foods) {
         this.phone = phone;
         this.name = name;
         this.address = address;
         this.total = total;
         this.status = status;
         this.comment = comment;
+        this.restaurantId = restaurantId;
         this.paymentMethod = paymentMethod;
         this.latLng = latLng;
         this.foods = foods;
+    }
+
+    public String getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(String restaurantId) {
+        this.restaurantId = restaurantId;
     }
 
     public String getPhone() {

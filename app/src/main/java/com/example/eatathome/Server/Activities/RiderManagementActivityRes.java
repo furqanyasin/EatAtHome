@@ -28,6 +28,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,6 +42,8 @@ public class RiderManagementActivityRes extends AppCompatActivity {
     public RecyclerView recyclerView;
     public RecyclerView.LayoutManager layoutManager;
 
+    String restId;
+
     FirebaseRecyclerAdapter<RiderRes, RiderViewHolderRes> adapter;
 
     @Override
@@ -48,9 +51,10 @@ public class RiderManagementActivityRes extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shipper_management);
 
+        restId = ConstantRes.currentUser.getRestaurantId().trim();
 
         //Init View
-        fabAdd =  findViewById(R.id.fab_add);
+        fabAdd = findViewById(R.id.fab_add);
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,7 +62,7 @@ public class RiderManagementActivityRes extends AppCompatActivity {
             }
         });
 
-        recyclerView =  findViewById(R.id.recycler_shippers);
+        recyclerView = findViewById(R.id.recycler_shippers);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -68,13 +72,16 @@ public class RiderManagementActivityRes extends AppCompatActivity {
         shippers = database.getReference(ConstantRes.SHIPPER_TABLE);
 
         //load all shipper
-        loadAllShipper();
+        loadAllShipper(restId);
     }
 
 
-    private void loadAllShipper() {
+    private void loadAllShipper(String restId) {
+
+        Query loadAllShipper = shippers.orderByChild("restaurantId").equalTo(restId);
+
         FirebaseRecyclerOptions<RiderRes> allShipper = new FirebaseRecyclerOptions.Builder<RiderRes>()
-                .setQuery(shippers, RiderRes.class)
+                .setQuery(loadAllShipper, RiderRes.class)
                 .build();
 
         adapter = new FirebaseRecyclerAdapter<RiderRes, RiderViewHolderRes>(allShipper) {
@@ -261,6 +268,7 @@ public class RiderManagementActivityRes extends AppCompatActivity {
                     shipper.setPhone(shipper_phone.getText().toString());
                     shipper.setIsadmin("false");
                     shipper.setIsstaff("true");
+                    shipper.setRestaurantId(restId);
 
                     shippers.child(shipper_phone.getText().toString())
                             .setValue(shipper)

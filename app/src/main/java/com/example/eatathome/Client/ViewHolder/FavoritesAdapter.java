@@ -58,7 +58,8 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesViewHolder> 
                             favoritesList.get(position).getFoodName(),
                             "1",
                             favoritesList.get(position).getFoodPrice(),
-                            favoritesList.get(position).getFoodImage()
+                            favoritesList.get(position).getFoodImage(),
+                            favoritesList.get(position).getRestaurantId()
 
                     ));
                 } else {

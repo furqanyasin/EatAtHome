@@ -6,16 +6,26 @@ public class OrderRes {
     private String productName;
     private String quantity;
     private String price;
+    private String restaurantId;
 
     public OrderRes(){
 
     }
 
-    public OrderRes(String productId, String productName, String quantity, String price) {
+    public OrderRes(String productId, String productName, String quantity, String price, String restaurantId) {
         this.productId = productId;
         this.productName = productName;
         this.quantity = quantity;
         this.price = price;
+        this.restaurantId = restaurantId;
+    }
+
+    public String getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(String restaurantId) {
+        this.restaurantId = restaurantId;
     }
 
     public String getProductId() {

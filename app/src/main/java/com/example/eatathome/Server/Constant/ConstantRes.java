@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import com.example.eatathome.Client.Model.Restaurant;
+import com.example.eatathome.Server.Models.RestaurantRes;
 import com.example.eatathome.Server.Remote.APIServiceRes;
 import com.example.eatathome.Client.Remote.RetrofitClient;
 import com.example.eatathome.Server.Models.RequestRes;
@@ -27,7 +28,10 @@ public class ConstantRes {
     public static final String Staff_TABLE = "User";
 
     public static  String restaurantSelected = "";
-    public static Restaurant currentRestaurant;
+    public static  String foodSelected  = "";
+    public static RestaurantRes currentRestaurant;
+
+
 
     public static UserRes currentUser;
     public static RequestRes currentRequest;

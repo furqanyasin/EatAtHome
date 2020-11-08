@@ -14,10 +14,13 @@ public class UserRes {
 
     }
 
-
-    public UserRes(String Pname, String Ppassword){
-        name = Pname;
-        password = Ppassword;
+    public UserRes(String name, String password, String phone, String isstaff, String isadmin, String restaurantId) {
+        this.name = name;
+        this.password = password;
+        this.phone = phone;
+        this.isstaff = isstaff;
+        this.isadmin = isadmin;
+        this.restaurantId = restaurantId;
     }
 
     public String getRestaurantId() {

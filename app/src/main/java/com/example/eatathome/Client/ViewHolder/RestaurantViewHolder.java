@@ -13,8 +13,7 @@ import com.example.eatathome.Interface.ItemClickListener;
 import com.example.eatathome.R;
 
 public class RestaurantViewHolder extends RecyclerView.ViewHolder implements
-        View.OnClickListener,
-        View.OnCreateContextMenuListener{
+        View.OnClickListener{
 
     public TextView restaurantName, restaurantLocation;
     public ImageView restaurantImage;
@@ -28,7 +27,6 @@ public class RestaurantViewHolder extends RecyclerView.ViewHolder implements
         restaurantImage = itemView.findViewById(R.id.restaurant_image);
         restaurantLocation = itemView.findViewById(R.id.restaurant_location);
         itemView.setOnClickListener(this);
-        itemView.setOnCreateContextMenuListener(this);
 
     }
 
@@ -43,11 +41,4 @@ public class RestaurantViewHolder extends RecyclerView.ViewHolder implements
 
     }
 
-    @Override
-    public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
-        contextMenu.setHeaderTitle("Select the action");
-        contextMenu.add(0,0,getAdapterPosition(), Constant.UPDATE);
-        contextMenu.add(0,1,getAdapterPosition(), Constant.DELETE);
-
-    }
 }

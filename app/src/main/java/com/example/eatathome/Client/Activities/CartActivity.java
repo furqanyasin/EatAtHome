@@ -236,6 +236,13 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
         LayoutInflater inflater = this.getLayoutInflater();
         View order_address_comment = inflater.inflate(R.layout.order_address_comment, null);
 
+        final TextInputEditText edtComment = order_address_comment.findViewById(R.id.et_edtComment);
+        //radio button
+        final RadioButton rdyShipToAddress = order_address_comment.findViewById(R.id.rdyShipToAddress);
+        final RadioButton rdyHomeAddress = order_address_comment.findViewById(R.id.rdyHomeAddress);
+        final RadioButton rdyOtherAddress = order_address_comment.findViewById(R.id.rdyOtherAddress);
+        final RadioButton cashOnDelivery = order_address_comment.findViewById(R.id.cashOnDelivery);
+
         places_fragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         places_fragment.setPlaceFields(placesField);
         places_fragment.setCountry("PK");
@@ -253,11 +260,17 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         });
 
-        final TextInputEditText edtComment = order_address_comment.findViewById(R.id.et_edtComment);
-        //radio button
-        final RadioButton rdyShipToAddress = order_address_comment.findViewById(R.id.rdyShipToAddress);
-        final RadioButton rdyHomeAddress = order_address_comment.findViewById(R.id.rdyHomeAddress);
-        final RadioButton cashOnDelivery = order_address_comment.findViewById(R.id.cashOnDelivery);
+        //radio event
+        rdyOtherAddress.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+
+                    places_fragment.setText("Search");
+
+                }
+            }
+        });
 
         //radio event
         rdyHomeAddress.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -285,7 +298,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
                 //ship to this address feature
                 if (isChecked) {
 
-                    mGoogleMapService.getAddressName(String.format("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + mLastLocation.getLatitude() + "," + mLastLocation.getLongitude() + "&sensor=false&key=AIzaSyBanwRKl5Nsls3axT7N5x5M-DpV6TjAV0k",
+                    mGoogleMapService.getAddressName(String.format("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + mLastLocation.getLatitude() + "," + mLastLocation.getLongitude() + "&sensor=false&key=AIzaSyAjgUWFjKBq5CiUZ4JD9PQeBdj28bGin10",
                             mLastLocation.getLatitude(),
                             mLastLocation.getLongitude()))
                             .enqueue(new Callback<String>() {
@@ -332,14 +345,14 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
                     if (shippingAddress != null)
                         address = shippingAddress.getAddress();
                     else {
-                        Toast.makeText(CartActivity.this, "Please enter address or select option address", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CartActivity.this, "Please enter address or select option address address", Toast.LENGTH_SHORT).show();
 
                         return;
                     }
                 }
 
                 if (TextUtils.isEmpty(address)) {
-                    Toast.makeText(CartActivity.this, "Please enter address or select option address", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CartActivity.this, "Please enter address or  select option address", Toast.LENGTH_SHORT).show();
 
                     return;
                 }
@@ -366,7 +379,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
 
                     //submit to firebase
                     String order_number = String.valueOf(System.currentTimeMillis());
-                    requests.child(order_number).setValue(request);
+                    requests.child(order_number).setValue(request.getRestaurantId());
 
                     //delete cart
                     new Database(getBaseContext()).cleanCart(Constant.currentUser.getPhone());
@@ -381,11 +394,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
 
-/*
-                //remove fragment
-                getFragmentManager().beginTransaction()
-                        .remove(getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment))
-                        .commit();*/
+
             }
         });
 

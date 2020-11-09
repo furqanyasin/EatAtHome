@@ -57,13 +57,18 @@
                 android:id="@+id/rdyShipToAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Ship To This Address" />
+                android:text="Current Device Location" />
 
             <RadioButton
                 android:id="@+id/rdyHomeAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Home Address" />
+            <RadioButton
+                android:id="@+id/rdyOtherAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Other Search Address from Google" />
 
         </RadioGroup>
 

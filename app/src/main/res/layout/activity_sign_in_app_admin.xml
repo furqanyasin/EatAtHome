@@ -30,6 +30,7 @@
                 android:textColor="@android:color/white"
                 android:textSize="35sp"
                 android:textStyle="bold" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -40,14 +41,6 @@
                 android:textStyle="bold" />
 
         </LinearLayout>
-
-   <!--     <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp"
-            android:src="@drawable/admin"
-            android:contentDescription="@string/admin_picture" />-->
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/ti_phone_number"
@@ -66,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/phone_number"
                 android:inputType="phone"
-                android:text="03004893327"
+                android:text=""
                 android:textColor="@android:color/white"
                 android:textColorHint="@android:color/white"
                 android:textSize="20sp" />
@@ -90,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Password"
                 android:inputType="textPassword"
-                android:text="123456"
+                android:text=""
                 android:textColor="@android:color/white"
                 android:textColorHint="@android:color/white"
                 android:textSize="20sp" />

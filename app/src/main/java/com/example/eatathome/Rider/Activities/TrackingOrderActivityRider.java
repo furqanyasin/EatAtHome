@@ -117,6 +117,7 @@ public class TrackingOrderActivityRider extends FragmentActivity implements OnMa
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
+        mMap.setMyLocationEnabled(true);
         fusedLocationProviderClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
@@ -135,6 +136,8 @@ public class TrackingOrderActivityRider extends FragmentActivity implements OnMa
                 });
             }
         });
+
+
     }
 
     private void ConfirmDialog() {

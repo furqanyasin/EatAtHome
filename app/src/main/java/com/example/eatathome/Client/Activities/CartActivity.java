@@ -379,7 +379,7 @@ public class CartActivity extends AppCompatActivity implements GoogleApiClient.C
 
                     //submit to firebase
                     String order_number = String.valueOf(System.currentTimeMillis());
-                    requests.child(order_number).setValue(request.getRestaurantId());
+                    requests.child(order_number).setValue(request);
 
                     //delete cart
                     new Database(getBaseContext()).cleanCart(Constant.currentUser.getPhone());

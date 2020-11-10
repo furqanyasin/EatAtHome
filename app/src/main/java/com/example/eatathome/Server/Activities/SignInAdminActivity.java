@@ -48,6 +48,8 @@ public class SignInAdminActivity extends AppCompatActivity {
         addRestaurant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(SignInAdminActivity.this, AboutActivityRes.class);
+                startActivity(intent);
 
             }
         });

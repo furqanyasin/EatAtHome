@@ -42,15 +42,6 @@
 
         </LinearLayout>
 
-
-        <!--   <ImageView
-               android:layout_width="100dp"
-               android:layout_height="100dp"
-               android:layout_gravity="center_horizontal"
-               android:layout_margin="10dp"
-               android:src="@drawable/admin"
-               android:contentDescription="@string/admin_picture" />-->
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/ti_phone_number"
             style="@style/Theme.MyApp"
